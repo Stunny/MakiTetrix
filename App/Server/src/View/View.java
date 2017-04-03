@@ -53,7 +53,6 @@ public class View extends JFrame{
         rightPane.add(rightScroll, BorderLayout.CENTER);
         leftPane.add(leftScroll, BorderLayout.CENTER);
 
-
         //configuracio basica de la nostra finestra
         setSize(500, 700);
         setTitle("Administrator view");
