@@ -17,7 +17,8 @@ public class GestioDades {
 
         void conectar() {
             try {
-                Connection c = DriverManager.getConnection("jdbc:mysql://localhost:8080/MakiTetris", "root", "root");
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection c = DriverManager.getConnection( "jdbc:mysql://localhost:3306/MakiTetris","root", "root");
                 Statement s = c.createStatement();
                 ResultSet r = s.executeQuery("select * from Login");
                 while (r.next()){

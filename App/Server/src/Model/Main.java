@@ -36,7 +36,7 @@ public class Main {
                 ServerController sController = new ServerController(view, gestioDades,  threadSocket);
                 //view.controlador(sController);
                 view.setVisible(true);
-
+                gestioDades.conectar();
             }
         });
     }
