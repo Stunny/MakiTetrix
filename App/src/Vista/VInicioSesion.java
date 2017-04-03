@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * Ventana principal de login del cliente
  * Created by jorti on 30/03/2017.
  */
 public class VInicioSesion extends JFrame{

@@ -3,6 +3,7 @@ import Vista.VInicioSesion;
 import javax.swing.*;
 
 /**
+ * Clase principal de la aplicacion cliente
  * Created by jorti on 30/03/2017.
  */
 
