@@ -1,11 +1,12 @@
 package Model;
 
 import javax.swing.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import Controller.ServerController;
+import Network.ThreadSocket;
+import View.*;
 
 /**
- * Created by Admin on 03/04/2017.
+ * Created by Admin on 20/03/2017.
  */
 public class Main {
     public static void main(String[] args) {
@@ -13,7 +14,7 @@ public class Main {
             @Override
             public void run() {
 
-                //Averiguem quina direccio IP hem d'utilitzar
+                /* Averiguem quina direccio IP hem d'utilitzar
                 InetAddress iAddress = null;
                 try {
                     iAddress = InetAddress.getLocalHost();
@@ -22,8 +23,8 @@ public class Main {
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 }
+                */
 
-                /*
                 //creem la vista
                 View view = new View();
                 //creem el socket
@@ -32,10 +33,8 @@ public class Main {
                 GestioDades gestioDades = new GestioDades();
                 //creem el controlador
                 ServerController sController = new ServerController(view, gestioDades,  threadSocket);
-
                 //view.controlador(sController);
                 view.setVisible(true);
-                */
             }
         });
     }
