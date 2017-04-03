@@ -31,10 +31,12 @@ public class Main {
                 ThreadSocket threadSocket = new ThreadSocket();
                 //creem el model
                 GestioDades gestioDades = new GestioDades();
+
                 //creem el controlador
                 ServerController sController = new ServerController(view, gestioDades,  threadSocket);
                 //view.controlador(sController);
                 view.setVisible(true);
+
             }
         });
     }
