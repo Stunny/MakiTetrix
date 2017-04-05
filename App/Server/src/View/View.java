@@ -14,8 +14,10 @@ public class View extends JFrame{
     private JPanel leftPane;
     private JLabel topLabel;
     private JTextArea rightTextArea;
-    private JTextArea leftTextArea;
+    private JList leftList;
     private JButton borrar;
+    private DefaultListModel model;
+
 
     public View() {
         //creem els components principals
@@ -43,12 +45,13 @@ public class View extends JFrame{
 
         //afegim els components al panell inferior
         rightTextArea = new JTextArea();
-        leftTextArea = new JTextArea();
+        model = new DefaultListModel();
+        leftList = new JList(model);
+
         rightTextArea.setEditable(false);
-        leftTextArea.setEditable(false);
         borrar = new JButton("Borrar");
         final JScrollPane rightScroll = new JScrollPane(rightTextArea);
-        final JScrollPane leftScroll = new JScrollPane(leftTextArea);
+        final JScrollPane leftScroll = new JScrollPane(leftList);
         rightPane.add(borrar, BorderLayout.SOUTH);
         rightPane.add(rightScroll, BorderLayout.CENTER);
         leftPane.add(leftScroll, BorderLayout.CENTER);
@@ -59,5 +62,21 @@ public class View extends JFrame{
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+    }
+
+    public DefaultListModel getModel() {
+        return model;
+    }
+
+    public void setModel(DefaultListModel model) {
+        this.model = model;
+    }
+
+    public JList getLeftList() {
+        return leftList;
+    }
+
+    public void setLeftList(JList leftList) {
+        this.leftList = leftList;
     }
 }
