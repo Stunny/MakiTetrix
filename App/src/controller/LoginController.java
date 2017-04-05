@@ -1,6 +1,6 @@
 package controller;
 
-import Vista.VInicioSesion;
+import Vista.LoginView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,16 +24,30 @@ public class LoginController implements ActionListener {
     /**
      * Login screen object to control
      */
-    private VInicioSesion view;
+    private LoginView view;
 
     /**
      *
-     * @param view
      */
-    public LoginController(VInicioSesion view){
+    private static LoginController loginController;
 
+    /**
+     *
+     * @return
+     */
+    public LoginController getInstance(LoginView view){
+       if(loginController == null){
+           loginController = new LoginController(view);
+       }
+       return loginController;
+    }
+
+    /**
+     * Creates a new instance of a login controller
+     * @param view an instance of a Login Screen
+     */
+    private LoginController(LoginView view){
         this.view = view;
-
     }
 
 
@@ -54,13 +68,16 @@ public class LoginController implements ActionListener {
      *
      */
     public void OnLogin(){
-
+        System.out.println(LOGIN_ACTION_LOG);
+        System.out.println(view.getUserName());
+        System.out.println(view.getPassword());
+        System.out.println();
     }
 
     /**
      *
      */
     public void OnRegister(){
-
+        System.out.println(LOGIN_ACTION_REG);
     }
 }
