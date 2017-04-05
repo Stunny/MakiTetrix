@@ -1,4 +1,5 @@
-import Vista.VInicioSesion;
+import Vista.LoginView;
+import controller.LoginController;
 
 import javax.swing.*;
 
@@ -7,13 +8,16 @@ import javax.swing.*;
  * Created by jorti on 30/03/2017.
  */
 
-public class LSTetrixMaki {
+public class Main {
     public static void main (String[] args){
         SwingUtilities.invokeLater(new Runnable (){
 
             @Override
             public void run(){
-                VInicioSesion vis = new VInicioSesion();
+                LoginView vis = new LoginView();
+                LoginController lc = new LoginController(vis);
+
+                vis.registerController(lc);
                 vis.setVisible(true);
             }
 
