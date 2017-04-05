@@ -1,7 +1,12 @@
 package View;
 
+import Controller.ServerController;
+
 import javax.swing.*;
+import javax.xml.bind.Marshaller;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Created by Admin on 20/03/2017.
@@ -17,6 +22,7 @@ public class View extends JFrame{
     private JList leftList;
     private JButton borrar;
     private DefaultListModel model;
+    private int indexSelectedUser;
 
 
     public View() {
@@ -64,19 +70,35 @@ public class View extends JFrame{
 
     }
 
+    public void controladorMouse(ServerController mController){
+        //leftList.addMouseListener(mController);
+
+    }
+
+    public void controladorBoto(ServerController sController){
+        leftList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList list = (JList)evt.getSource();
+                //han fet doble click
+                if (evt.getClickCount() == 2) {
+                    indexSelectedUser = list.locationToIndex(evt.getPoint());
+
+                }
+            }
+        });
+        borrar.addActionListener(sController);
+    }
+
     public DefaultListModel getModel() {
         return model;
     }
 
-    public void setModel(DefaultListModel model) {
-        this.model = model;
+    public int getIndexSelectedUser() {
+        return indexSelectedUser;
     }
 
     public JList getLeftList() {
         return leftList;
     }
 
-    public void setLeftList(JList leftList) {
-        this.leftList = leftList;
-    }
 }
