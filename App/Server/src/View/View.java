@@ -12,6 +12,8 @@ import java.awt.event.MouseEvent;
  * Created by Admin on 20/03/2017.
  */
 public class View extends JFrame{
+    public static final String ACTION_BORRAR = "Borrar";
+
     private JPanel principal;
     private JPanel north;
     private JPanel south;
@@ -56,6 +58,7 @@ public class View extends JFrame{
 
         rightTextArea.setEditable(false);
         borrar = new JButton("Borrar");
+        borrar.setActionCommand(ACTION_BORRAR);
         final JScrollPane rightScroll = new JScrollPane(rightTextArea);
         final JScrollPane leftScroll = new JScrollPane(leftList);
         rightPane.add(borrar, BorderLayout.SOUTH);
@@ -70,22 +73,10 @@ public class View extends JFrame{
 
     }
 
-    public void controladorMouse(ServerController mController){
-        //leftList.addMouseListener(mController);
 
-    }
 
     public void controladorBoto(ServerController sController){
-        leftList.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                JList list = (JList)evt.getSource();
-                //han fet doble click
-                if (evt.getClickCount() == 2) {
-                    indexSelectedUser = list.locationToIndex(evt.getPoint());
-
-                }
-            }
-        });
+        leftList.addMouseListener(sController);
         borrar.addActionListener(sController);
     }
 

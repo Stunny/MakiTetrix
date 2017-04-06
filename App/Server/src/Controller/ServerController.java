@@ -5,8 +5,7 @@ import Network.ThreadSocket;
 import View.View;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -16,7 +15,7 @@ import java.util.stream.Stream;
  * Created by Admin on 21/03/2017.
  */
 
-public class ServerController implements ActionListener{
+public class ServerController implements ActionListener, MouseListener {
     private static View view;
     private GestioDades gestioDades;
     private ThreadSocket ts;
@@ -49,7 +48,7 @@ public class ServerController implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println("Estic fent aquesta accio: " + e.getActionCommand());
-        if (e.getActionCommand().equals("Borrar")){
+        if (e.getActionCommand().equals(view.ACTION_BORRAR)){
             gestioDades.borraUsuari(usuaris[view.getLeftList().getSelectedIndex()]);
         }
     }
@@ -67,5 +66,34 @@ public class ServerController implements ActionListener{
             ts = new ThreadSocket();
             ts.start();
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        JList list = (JList)e.getSource();
+        //han fet doble click
+        if (e.getClickCount() == 2) {
+            System.out.println("Estic selecionant l'usuari amb l'index: " + list.getSelectedIndex());
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

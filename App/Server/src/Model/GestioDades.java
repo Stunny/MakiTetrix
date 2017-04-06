@@ -2,17 +2,15 @@ package Model;
 
 import Controller.ServerController;
 import java.io.DataInputStream;
-import java.sql.*;
 import java.util.ArrayList;
-import java.sql.Connection;
-import java.sql.DriverManager;
 
 /**
  * Created by Admin on 24/03/2017.
  */
 public class GestioDades {
-
-    public GestioDades() {
+    //tractament de dades --> info del server a la BBDD (Miquel)
+    public GestioDades(){
+        plenaUsuaris();
     }
 
     void conectar() {
@@ -29,6 +27,11 @@ public class GestioDades {
             var2.printStackTrace();
         }
 
+    public String[] plenaUsuaris(){
+        String[] usuaris = {"1", "2", "3", "4"};
+        //retornar la llista dels usuaris de la BBDD
+
+        return usuaris;
     }
 
     void addUser(User u) {
