@@ -40,13 +40,15 @@ public class ThreadServidorDedicat extends Thread {
         String [] aux = resposta.split("-");
         if(aux[0].equals("LU")){
             //la trama es el nom del usuari al fer el login
+            //int mirant si existeix i si contra guay
+            //1:ok, 2:usuari no existeix 3:contra no
 
         }else if (aux[0].equals("LP")){
             //la trama es la contrasenya del usuari al fer el login
 
         }else if(aux[0].equals("RE")){
             //la trama es el email del usuari al registrar-se
-
+            //1:ok 2:usuari existeix 3:contrasenya existeix 4:both
         }else if (aux[0].equals("RU")){
             //la trama es el nom del usuari al registrar-se
 
