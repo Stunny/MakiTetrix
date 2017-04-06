@@ -34,28 +34,23 @@ public class GestioDades {
     void addUser(User u) {
         try {
             // create a mysql database connection
-            String myDriver = "org.gjt.mm.mysql.Driver";
+            Class.forName("com.mysql.jdbc.Driver");
             Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "root", "");
-
 
             // the mysql insert statement
-            String query = " insert into users (first_name, last_name, date_created, is_admin, num_points)"
-                    + " values (?, ?, ?, ?, ?)";
+            String query = " insert into users (user, mail, password)" + " values (?, ?, ?)";
 
             // create the mysql insert preparedstatement
-            PreparedStatement preparedStmt = conn.prepareStatement(query);
-            preparedStmt.setString(1, "Barney");
-            preparedStmt.setString(2, "Rubble");
-            preparedStmt.setDate(3, startDate);
-            preparedStmt.setBoolean(4, false);
-            preparedStmt.setInt(5, 5000);
+            PreparedStatement preparedStmt = c.prepareStatement(query);
+            preparedStmt.setString(1, u.getUserName());
+            preparedStmt.setString(2, u.getEmail());
+            preparedStmt.setString(3, u.getPassword());
+
 
             // execute the preparedstatement
             preparedStmt.execute();
 
-            conn.close();
+            c.close();
         } catch (Exception e) {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
