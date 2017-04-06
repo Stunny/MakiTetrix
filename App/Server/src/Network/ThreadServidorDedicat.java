@@ -53,9 +53,6 @@ public class ThreadServidorDedicat extends Thread {
         }else if (aux[0].equals("RP")){
             //la trama es la contrasenya del usuari al registrar-se
 
-        }else if(aux[0].equals("RP2")){
-            //la trama es la confirmacio de la contrasenya al registrar-se
-
         }
     }
 }
