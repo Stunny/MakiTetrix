@@ -3,7 +3,7 @@ import java.sql.*;
 import Controller.ServerController;
 import java.io.DataInputStream;
 import java.util.ArrayList;
-
+import java.util.StringJoiner;
 
 
 public class GestioDades {
@@ -27,11 +27,46 @@ public class GestioDades {
         }
     }
 
-    public String[] plenaUsuaris(){
-        String[] usuaris = {"1", "2", "3", "4"};
-        //retornar la llista dels usuaris de la BBDD
+    public ArrayList<String> plenaUsuaris(){
+        ArrayList<String> usuaris = new ArrayList<String>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
+            Statement s = c.createStatement();
+            ResultSet r = s.executeQuery("select user from Login");
+            while (r.next()) {
+               usuaris.add(r.getString("user"));
+            }
+            c.close();
+
+        } catch (Exception var2) {
+            var2.printStackTrace();
+        }
 
         return usuaris;
+    }
+
+    public User mostraDades (String nom){
+        User u = new User();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
+            Statement s = c.createStatement();
+            ResultSet r = s.executeQuery("select * from Login");
+            while (r.next()) {
+                if(r.getString("user").equals(nom)){
+                    u.setUserName(r.getString("user"));
+                    u.setPassword(r.getString("password"));
+                    u.setEmail(r.getString("email"));
+                    return u;
+                }
+            }
+            c.close();
+
+        } catch (Exception var2) {
+            var2.printStackTrace();
+        }
+        return u;
     }
 
     void addUser(User u) {

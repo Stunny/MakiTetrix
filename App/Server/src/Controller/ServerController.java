@@ -1,11 +1,13 @@
 package Controller;
 
 import Model.GestioDades;
+import Model.User;
 import Network.ThreadSocket;
 import View.View;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -19,7 +21,7 @@ public class ServerController implements ActionListener, MouseListener {
     private static View view;
     private GestioDades gestioDades;
     private ThreadSocket ts;
-    private String[] usuaris;
+    private ArrayList<String> usuaris;
 
     public ServerController(View view, GestioDades gestioDades, ThreadSocket threadSocket) {
         this.view = view;
@@ -41,7 +43,7 @@ public class ServerController implements ActionListener, MouseListener {
                 flag = false;
             }
         }
-        gestioDades.mostraDades(usuaris[view.getLeftList().getSelectedIndex()]);
+        User u = gestioDades.mostraDades(usuaris.get(view.getLeftList().getSelectedIndex()));
         flag = true;
     }
 
@@ -54,9 +56,9 @@ public class ServerController implements ActionListener, MouseListener {
     }
 
     public void ompleUsuaris(){
-        String [] usuaris = gestioDades.plenaUsuaris();
-        for (int i = 0; i < usuaris.length; i++){
-            view.getModel().addElement(usuaris[i]);
+        ArrayList<String> usuaris = gestioDades.plenaUsuaris();
+        for (int i = 0; i < usuaris.size(); i++){
+            view.getModel().addElement(usuaris.get(i));
         }
     }
 
