@@ -18,7 +18,7 @@ public class GestioDades {
     }
 
     public String[] plenaUsuaris(){
-        String[] usuaris = {"1", "2", "3", "wazaaa"};
+        String[] usuaris = {"1", "2", "3", "4"};
         //retornar la llista dels usuaris de la BBDD
 
         return usuaris;

@@ -33,10 +33,8 @@ public class Main {
                 GestioDades gestioDades = new GestioDades();
                 //creem el controlador
                 ServerController sController = new ServerController(view, gestioDades,  threadSocket);
-                //MouseController mController = new MouseController();
 
                 view.controladorBoto(sController);
-                //view.controladorMouse(mController);
                 view.setVisible(true);
             }
         });
