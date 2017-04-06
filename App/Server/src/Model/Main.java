@@ -34,7 +34,10 @@ public class Main {
 
                 //creem el controlador
                 ServerController sController = new ServerController(view, gestioDades,  threadSocket);
-                //view.controlador(sController);
+                //MouseController mController = new MouseController();
+
+                view.controladorBoto(sController);
+                //view.controladorMouse(mController);
                 view.setVisible(true);
                 gestioDades.conectar();
             }

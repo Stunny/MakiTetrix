@@ -1,7 +1,12 @@
 package View;
 
+import Controller.ServerController;
+
 import javax.swing.*;
+import javax.xml.bind.Marshaller;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Created by Admin on 20/03/2017.
@@ -14,8 +19,11 @@ public class View extends JFrame{
     private JPanel leftPane;
     private JLabel topLabel;
     private JTextArea rightTextArea;
-    private JTextArea leftTextArea;
+    private JList leftList;
     private JButton borrar;
+    private DefaultListModel model;
+    private int indexSelectedUser;
+
 
     public View() {
         //creem els components principals
@@ -43,12 +51,13 @@ public class View extends JFrame{
 
         //afegim els components al panell inferior
         rightTextArea = new JTextArea();
-        leftTextArea = new JTextArea();
+        model = new DefaultListModel();
+        leftList = new JList(model);
+
         rightTextArea.setEditable(false);
-        leftTextArea.setEditable(false);
         borrar = new JButton("Borrar");
         final JScrollPane rightScroll = new JScrollPane(rightTextArea);
-        final JScrollPane leftScroll = new JScrollPane(leftTextArea);
+        final JScrollPane leftScroll = new JScrollPane(leftList);
         rightPane.add(borrar, BorderLayout.SOUTH);
         rightPane.add(rightScroll, BorderLayout.CENTER);
         leftPane.add(leftScroll, BorderLayout.CENTER);
@@ -60,4 +69,36 @@ public class View extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
+
+    public void controladorMouse(ServerController mController){
+        //leftList.addMouseListener(mController);
+
+    }
+
+    public void controladorBoto(ServerController sController){
+        leftList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList list = (JList)evt.getSource();
+                //han fet doble click
+                if (evt.getClickCount() == 2) {
+                    indexSelectedUser = list.locationToIndex(evt.getPoint());
+
+                }
+            }
+        });
+        borrar.addActionListener(sController);
+    }
+
+    public DefaultListModel getModel() {
+        return model;
+    }
+
+    public int getIndexSelectedUser() {
+        return indexSelectedUser;
+    }
+
+    public JList getLeftList() {
+        return leftList;
+    }
+
 }

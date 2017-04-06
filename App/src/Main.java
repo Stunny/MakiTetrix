@@ -15,7 +15,7 @@ public class Main {
             @Override
             public void run(){
                 LoginView vis = new LoginView();
-                LoginController lc = new LoginController(vis);
+                LoginController lc = LoginController.getInstance(vis);
 
                 vis.registerController(lc);
                 vis.setVisible(true);

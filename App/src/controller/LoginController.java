@@ -1,6 +1,7 @@
 package controller;
 
 import Vista.LoginView;
+import Vista.RegisterView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,7 +36,7 @@ public class LoginController implements ActionListener {
      *
      * @return
      */
-    public LoginController getInstance(LoginView view){
+    public static LoginController getInstance(LoginView view){
        if(loginController == null){
            loginController = new LoginController(view);
        }
@@ -77,7 +78,28 @@ public class LoginController implements ActionListener {
     /**
      *
      */
+    public void OnLoginSuccess(){
+
+    }
+
+    /**
+     *
+     */
+    public void OnLoginFailed(){
+
+    }
+
+    /**
+     *
+     */
     public void OnRegister(){
-        System.out.println(LOGIN_ACTION_REG);
+
+        view.setVisible(false);
+
+        RegisterView rv = new RegisterView();
+        RegisterController rc = RegisterController.getInstance(rv, view);
+        rv.registerController(rc);
+        rv.setVisible(true);
+
     }
 }

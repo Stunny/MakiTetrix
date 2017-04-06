@@ -24,7 +24,7 @@ public class LoginView extends JFrame{
      * Builds a new Login screen
      */
     public LoginView(){
-        setTitle("Main");
+        setTitle("MakiTetrix - Login");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(420,500);
