@@ -20,9 +20,9 @@ public class GestioDades {
             Class.forName("com.mysql.jdbc.Driver");
             Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
             Statement s = c.createStatement();
-            ResultSet r = s.executeQuery("select * from Login");
+            ResultSet r = s.executeQuery("select user from Login");
             while (r.next()) {
-                System.out.println(r.getString("mail"));
+                System.out.println(r.getString("user"));
             }
 
         } catch (Exception var2) {
