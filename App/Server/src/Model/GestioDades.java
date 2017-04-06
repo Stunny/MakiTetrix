@@ -4,6 +4,7 @@ import Controller.ServerController;
 import java.io.DataInputStream;
 import java.util.ArrayList;
 
+
 /**
  * Created by Admin on 24/03/2017.
  */
@@ -26,6 +27,7 @@ public class GestioDades {
         } catch (Exception var2) {
             var2.printStackTrace();
         }
+    }
 
     public String[] plenaUsuaris(){
         String[] usuaris = {"1", "2", "3", "4"};
@@ -59,5 +61,4 @@ public class GestioDades {
             System.err.println(e.getMessage());
         }
     }
-}
 }
