@@ -51,7 +51,7 @@ public class ServerController implements ActionListener, MouseListener {
     public void actionPerformed(ActionEvent e) {
         System.out.println("Estic fent aquesta accio: " + e.getActionCommand());
         if (e.getActionCommand().equals(view.ACTION_BORRAR)){
-            gestioDades.borraUsuari(usuaris[view.getLeftList().getSelectedIndex()]);
+           // gestioDades.borraUsuari(usuaris[view.getLeftList().getSelectedIndex()]);
         }
     }
 

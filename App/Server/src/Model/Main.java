@@ -34,10 +34,16 @@ public class Main {
 
                 //creem el controlador
                 ServerController sController = new ServerController(view, gestioDades,  threadSocket);
-
+                User u = new User();
+                u.setEmail("sansnosanz@gmail.com");
+                u.setPassword("Goddammit96");
+                u.setUserName("miquelet");
+                gestioDades.addUser(u);
+                gestioDades.busca("miq");
+                //printa el numero segons si es pot fer un adduser: 1:ok 2:usuari existeix 3:mail existeix 4:both
                 view.controladorBoto(sController);
                 view.setVisible(true);
-                gestioDades.conectar();
+
             }
         });
     }
