@@ -32,7 +32,7 @@ public class GestioDades {
         return usuaris;
     }
 
-    public  User mostraDades (String nom){
+    public User mostraDades (String nom){
         User u = new User();
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -175,5 +175,14 @@ public class GestioDades {
             System.err.println(e.getMessage());
         }
        return answer;
+    }
+
+    public int gestionaResposta() {
+        int error = 0;
+
+        //retornar el integer dels errors de login/registre
+        //nota @miquel: he canviat els numeros a retornar. no esta be si retorne el mateix numero per a dos errors diferents
+
+        return error;
     }
 }

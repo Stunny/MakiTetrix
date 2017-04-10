@@ -14,7 +14,6 @@ public class ThreadServidorDedicat extends Thread {
     private DataOutputStream doStream;
     private Socket sClient;
     private GestioDades gestioDades = new GestioDades();
-    private boolean flag = true;
 
     public ThreadServidorDedicat(Socket sClient){
         this.sClient = sClient;
@@ -27,9 +26,10 @@ public class ThreadServidorDedicat extends Thread {
             doStream = new DataOutputStream(sClient.getOutputStream());
             diStream = new DataInputStream(sClient.getInputStream());
             //llegiexo les trames del client i les analitzo
-            while (flag){
+            while (true){
                 String aux = diStream.readUTF();
                 tractaResposta(aux);
+                enviaResposta();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,20 +41,44 @@ public class ThreadServidorDedicat extends Thread {
         if(aux[0].equals("LU")){
             //la trama es el nom del usuari al fer el login
             //int mirant si existeix i si contra guay
-            //1:ok, 2:usuari/mail existeix 3:contra no
+            //0:ok, 1:usuari/mail no existeix 2:contra no
 
         }else if (aux[0].equals("LP")){
             //la trama es la contrasenya del usuari al fer el login
 
         }else if(aux[0].equals("RE")){
             //la trama es el email del usuari al registrar-se
-            //1:ok 2:usuari existeix 3:mail existeix 4:both
+            //0:ok 3:usuari existeix 4:mail existeix 5:both
         }else if (aux[0].equals("RU")){
             //la trama es el nom del usuari al registrar-se
 
         }else if (aux[0].equals("RP")){
             //la trama es la contrasenya del usuari al registrar-se
 
+        }
+    }
+
+    public void enviaResposta() throws IOException {
+        int error = gestioDades.gestionaResposta();
+        switch(error){
+            case 0:
+                doStream.writeUTF("OK");
+                break;
+            case 1:
+                doStream.writeUTF("KO-Usuari/email no existeix");
+                break;
+            case 2:
+                doStream.writeUTF("KO-La contrasenya no es correcta");
+                break;
+            case 3:
+                doStream.writeUTF("KO-L'usuari ja existeix");
+                break;
+            case 4:
+                doStream.writeUTF("KO-El email ja existeix");
+                break;
+            case 5:
+                doStream.writeUTF("KO-El email i l'usuari ja existeixen");
+                break;
         }
     }
 }

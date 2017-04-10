@@ -1,17 +1,15 @@
 package Controller;
 
 import Model.GestioDades;
-import Model.User;
 import Network.ThreadSocket;
 import View.View;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
-import java.util.stream.Stream;
 
 /**
  * Created by Admin on 21/03/2017.
@@ -29,22 +27,7 @@ public class ServerController implements ActionListener, MouseListener {
         this.ts = threadSocket;
         usuaris = gestioDades.plenaUsuaris();
         ompleUsuaris();
-        //usuariSeleccionat();
         startThread();
-    }
-
-    private void usuariSeleccionat() {
-        boolean flag = true;
-        int aux = view.getIndexSelectedUser();
-
-        while (flag){
-            if (aux != view.getIndexSelectedUser()){
-
-                flag = false;
-            }
-        }
-        User u = gestioDades.mostraDades(usuaris.get(view.getLeftList().getSelectedIndex()));
-        flag = true;
     }
 
     @Override
