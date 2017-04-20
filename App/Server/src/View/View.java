@@ -25,6 +25,9 @@ public class View extends JFrame{
     private JButton borrar;
     private DefaultListModel model;
     private int indexSelectedUser;
+    private JPanel topPane;
+    private JTextField buscador;
+    private JButton busca;
 
 
     public View() {
@@ -47,9 +50,15 @@ public class View extends JFrame{
         setContentPane(principal);
 
         //afegim els components al panell superior
+        topPane = new JPanel(new BorderLayout());
         topLabel = new JLabel("ADMINISTRADOR");
         topLabel.setFont (topLabel.getFont ().deriveFont (40.0f));
-        north.add(topLabel);
+        buscador = new JTextField();
+        busca = new JButton("Busca Usuari");
+        topPane.add(topLabel, BorderLayout.NORTH);
+        topPane.add(buscador, BorderLayout.CENTER);
+        topPane.add(busca, BorderLayout.SOUTH);
+        north.add(topPane);
 
         //afegim els components al panell inferior
         rightTextArea = new JTextArea();
@@ -73,11 +82,10 @@ public class View extends JFrame{
 
     }
 
-
-
     public void controladorBoto(ServerController sController){
         leftList.addMouseListener(sController);
         borrar.addActionListener(sController);
+        busca.addActionListener(sController);
     }
 
     public DefaultListModel getModel() {
@@ -92,4 +100,7 @@ public class View extends JFrame{
         return leftList;
     }
 
+    public JTextField getBuscador() {
+        return buscador;
+    }
 }
