@@ -43,7 +43,7 @@ public class GestioDades {
                 if(r.getString("user").equals(nom)){
                     u.setUserName(r.getString("user"));
                     u.setPassword(r.getString("password"));
-                    u.setEmail(r.getString("email"));
+                    u.setEmail(r.getString("mail"));
                     return u;
                 }
             }
