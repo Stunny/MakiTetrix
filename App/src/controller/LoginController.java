@@ -2,6 +2,8 @@ package controller;
 
 import Vista.LoginView;
 import Vista.RegisterView;
+import model.User;
+import network.UserAccessRepository;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +28,7 @@ public class LoginController implements ActionListener {
      * Login screen object to control
      */
     private LoginView view;
+    private UserAccessRepository uar;
 
     /**
      *
@@ -36,9 +39,9 @@ public class LoginController implements ActionListener {
      *
      * @return
      */
-    public static LoginController getInstance(LoginView view){
+    public static LoginController getInstance(LoginView view, UserAccessRepository uar){
        if(loginController == null){
-           loginController = new LoginController(view);
+           loginController = new LoginController(view, uar);
        }
        return loginController;
     }
@@ -47,7 +50,8 @@ public class LoginController implements ActionListener {
      * Creates a new instance of a login controller
      * @param view an instance of a Login Screen
      */
-    private LoginController(LoginView view){
+    private LoginController(LoginView view, UserAccessRepository uar){
+        this.uar = uar;
         this.view = view;
     }
 
@@ -58,9 +62,11 @@ public class LoginController implements ActionListener {
         switch(e.getActionCommand()){
             case LOGIN_ACTION_LOG:
                 OnLogin();
+
                 break;
             case LOGIN_ACTION_REG:
                 OnRegister();
+                System.out.println("Registro");
                 break;
         }
     }
@@ -69,24 +75,36 @@ public class LoginController implements ActionListener {
      *
      */
     public void OnLogin(){
-        System.out.println(LOGIN_ACTION_LOG);
-        System.out.println(view.getUserName());
-        System.out.println(view.getPassword());
-        System.out.println();
+        User loginuser;
+        if (view.getUserName().equals(view.LOG_EMPTY_UNAME)){
+            OnLoginFailed();
+            return;
+        } else if (view.getUserName().indexOf("@") == -1){
+            loginuser = new User ();
+            loginuser.setUserName(view.getUserName());
+            loginuser.setPassword(view.getPassword());
+        } else {
+            loginuser = new User();
+            loginuser.setEmail(view.getUserName());
+            loginuser.setPassword(view.getPassword());
+        }
+        if (uar.login(loginuser)){
+            OnLoginSuccess();
+        } else {
+            OnLoginFailed();
+        }
     }
 
     /**
      *
      */
     public void OnLoginSuccess(){
-
     }
 
     /**
      *
      */
     public void OnLoginFailed(){
-
     }
 
     /**
