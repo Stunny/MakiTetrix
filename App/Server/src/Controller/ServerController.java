@@ -35,9 +35,15 @@ public class ServerController implements ActionListener, MouseListener {
         System.out.println("Estic fent aquesta accio: " + e.getActionCommand());
         if (e.getActionCommand().equals(view.ACTION_BORRAR)){
            // gestioDades.borraUsuari(usuaris[view.getLeftList().getSelectedIndex()]);
+        }else if (e.getActionCommand().equals("Busca Usuari")){
+            System.out.println("Vull buscar el usuari: " + view.getBuscador().getText());
+            //buscar usuari a la base de dades
         }
     }
 
+    /**
+     * Fills the view with the users' data
+     */
     public void ompleUsuaris(){
         ArrayList<String> usuaris = gestioDades.plenaUsuaris();
         for (int i = 0; i < usuaris.size(); i++){

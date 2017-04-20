@@ -121,8 +121,8 @@ public class GestioDades {
             return 1;
         }
     }
-    int loginUser(String nom, String contra){
 
+    int loginUser(String nom, String contra){
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
@@ -148,15 +148,16 @@ public class GestioDades {
         }
         return 2;
     }
+
     int addUser(User u) {
         int answer = checkExisteix(u);
         try {
             if (answer == 1) {
-            // create a mysql database connection
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
+                // create a mysql database connection
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
 
-            String query = " insert into Login (user, mail, password)" + " values (?, ?, ?)";
+                String query = " insert into Login (user, mail, password)" + " values (?, ?, ?)";
 
                 PreparedStatement preparedStmt = c.prepareStatement(query);
                 preparedStmt.setString(1, u.getUserName());
@@ -166,7 +167,6 @@ public class GestioDades {
 
                 c.close();
                 return answer;
-
             }else{
                 return answer;
             }

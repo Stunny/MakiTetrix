@@ -37,6 +37,10 @@ public class ThreadServidorDedicat extends Thread {
     }
 
     public void tractaResposta(String resposta){
+        String email;
+        String usuari;
+        String password;
+
         String [] aux = resposta.split("-");
         if(aux[0].equals("LU")){
             //la trama es el nom del usuari al fer el login
@@ -47,12 +51,15 @@ public class ThreadServidorDedicat extends Thread {
             //la trama es la contrasenya del usuari al fer el login
 
         }else if(aux[0].equals("RE")){
+            email = aux[0];
             //la trama es el email del usuari al registrar-se
             //0:ok 3:usuari existeix 4:mail existeix 5:both
         }else if (aux[0].equals("RU")){
+            usuari = aux[0];
             //la trama es el nom del usuari al registrar-se
 
         }else if (aux[0].equals("RP")){
+            password = aux[0];
             //la trama es la contrasenya del usuari al registrar-se
 
         }
