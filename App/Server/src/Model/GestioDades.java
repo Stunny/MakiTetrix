@@ -33,7 +33,7 @@ public class GestioDades {
     }
 
     public User mostraDades (String nom){
-        User u = new User();
+        User u = new User(null, null, null);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
@@ -100,7 +100,6 @@ public class GestioDades {
                 }
             }
 
-
             c.close();
         } catch (Exception e) {
             System.err.println("Got an exception!");
@@ -122,7 +121,7 @@ public class GestioDades {
         }
     }
 
-    int loginUser(String nom, String contra){
+    public int loginUser(String nom, String contra){
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
@@ -149,7 +148,7 @@ public class GestioDades {
         return 2;
     }
 
-    int addUser(User u) {
+    public int addUser(User u) {
         int answer = checkExisteix(u);
         try {
             if (answer == 1) {

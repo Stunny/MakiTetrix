@@ -36,7 +36,7 @@ public class ServerController implements ActionListener, MouseListener {
         if (e.getActionCommand().equals(view.ACTION_BORRAR)){
            // gestioDades.borraUsuari(usuaris[view.getLeftList().getSelectedIndex()]);
         }else if (e.getActionCommand().equals("Busca Usuari")){
-            System.out.println("Vull buscar el usuari: " + view.getBuscador().getText());
+            gestioDades.busca(view.getBuscador().getText());
             //buscar usuari a la base de dades
         }
     }
@@ -64,7 +64,7 @@ public class ServerController implements ActionListener, MouseListener {
         JList list = (JList)e.getSource();
         //han fet doble click
         if (e.getClickCount() == 2) {
-            System.out.println("Estic selecionant l'usuari amb l'index: " + list.getSelectedIndex());
+            gestioDades.mostraDades(list.getSelectedValue().toString());
         }
     }
 
