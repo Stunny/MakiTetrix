@@ -1,3 +1,4 @@
+import Vista.GameView;
 import Vista.LoginView;
 import controller.LoginController;
 
@@ -14,10 +15,12 @@ public class Main {
 
             @Override
             public void run(){
-                LoginView vis = new LoginView();
-                LoginController lc = LoginController.getInstance(vis);
+                GameView vis = new GameView();
+              //  LoginView vis = new LoginView();
+               // LoginController lc = LoginController.getInstance(vis);
 
-                vis.registerController(lc);
+               // vis.registerController(lc);
+               // vis.setVisible(true);
                 vis.setVisible(true);
             }
 
