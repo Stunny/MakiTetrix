@@ -99,12 +99,14 @@ public class LoginController implements ActionListener {
      *
      */
     public void OnLoginSuccess(){
+        //Cargar Menú del usuario
     }
 
     /**
      *
      */
     public void OnLoginFailed(){
+        view.setLoginError();
     }
 
     /**
