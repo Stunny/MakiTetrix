@@ -43,7 +43,7 @@ public class GestioDades {
                 if(r.getString("user").equals(nom)){
                     u.setUserName(r.getString("user"));
                     u.setPassword(r.getString("password"));
-                    u.setEmail(r.getString("email"));
+                    u.setEmail(r.getString("mail"));
                     return u;
                 }
             }
@@ -176,12 +176,26 @@ public class GestioDades {
        return answer;
     }
 
-    public int gestionaResposta() {
-        int error = 0;
+    public int gestionaLogin(String missatge) {
+        int error = 10;
 
         //retornar el integer dels errors de login/registre
-        //nota @miquel: he canviat els numeros a retornar. no esta be si retorne el mateix numero per a dos errors diferents
 
         return error;
     }
+
+    public int gestionaRegistre(String missatge) {
+        int error = 10;
+
+        //retornar el integer dels errors de login/registre
+
+        if (error == 0){
+            //extreure el usuari, password i email i crear instancia de usuari i afegirlo, si error == 0
+            //User u = new User(usuari, password, email);
+            //addUser(u);
+        }
+
+        return error;
+    }
+
 }

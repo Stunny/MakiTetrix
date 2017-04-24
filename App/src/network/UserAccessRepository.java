@@ -26,4 +26,18 @@ public interface UserAccessRepository {
      */
     boolean logout();
 
+    /**
+     * Checks if the username is available for use
+     * @param userName Desired username by the user
+     * @return true if available
+     */
+    boolean checkUserName(String userName);
+
+    /**
+     * Checks if email is available for use
+     * @param userEmail Registering user's email
+     * @return true if not previously registered
+     */
+    boolean checkEmail(String userEmail);
+
 }
