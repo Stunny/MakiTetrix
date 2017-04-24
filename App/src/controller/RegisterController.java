@@ -81,7 +81,7 @@ public class RegisterController implements ActionListener {
      */
     private void OnRegisterFailed() {
         //Utilizar JOptionPane
-        JOptionPane.showConfirmDialog(view, "ERROR DE REGISTRE");
+        JOptionPane.showMessageDialog(view,"User Register Error");
     }
 
     /**

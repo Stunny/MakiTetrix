@@ -23,11 +23,14 @@ public class RegisterView extends JFrame {
     private JPanel inputPanel;
     private JPanel formPanel;
 
-
+    private LoginView parentView;
     /**
      * Builds a new RegisterView
      */
-    public RegisterView() {
+    public RegisterView(LoginView parentView) {
+
+        this.parentView = parentView;
+
         configFrame();
     }
 
@@ -37,7 +40,7 @@ public class RegisterView extends JFrame {
     public void registerController(RegisterController controller) {
 
         jbRegister.setActionCommand(RegisterController.ACTION_REG);
-        jbRegister.addActionListener(RegisterController.getInstance(this, null));
+        jbRegister.addActionListener(RegisterController.getInstance(this, parentView));
 
     }
 
@@ -68,7 +71,8 @@ public class RegisterView extends JFrame {
 
     public static void main(String[] args) {
 
-        RegisterView rv = new RegisterView();
+        LoginView lv = new LoginView();
+        RegisterView rv = new RegisterView(lv);
         rv.setContentPane(rv.formPanel);
         rv.pack();
         rv.setVisible(true);
