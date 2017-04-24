@@ -19,15 +19,18 @@ public class GameView extends JFrame{
         centre.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         getContentPane().add(centre);
         setSize(550,1260);
-         caselles = new JPanel[25][10];
+        caselles = new JPanel[25][10];
 
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 10; j++) {
                 JPanel p = new JPanel();
+                p.setBackground(Color.yellow);
                 caselles[i][j] = p;
                 caselles[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                centre.add(p);
             }
         }
+        getContentPane().add(centre);
 
     }
 
@@ -36,6 +39,8 @@ public class GameView extends JFrame{
      * @param controller
      */
     public void registerController(RegisterController controller){
+
+
 
     }
 
