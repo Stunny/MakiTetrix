@@ -1,8 +1,6 @@
 package Network;
 
 import Model.GestioDades;
-import Model.User;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -16,9 +14,8 @@ public class ThreadServidorDedicat extends Thread {
     private DataOutputStream doStream;
     private Socket sClient;
     private GestioDades gestioDades = new GestioDades();
-    private String usuari;
-    private String password;
-    private String email;
+    private int L;
+    private int R;
 
     public ThreadServidorDedicat(Socket sClient){
         this.sClient = sClient;
@@ -34,43 +31,37 @@ public class ThreadServidorDedicat extends Thread {
             while (true){
                 String aux = diStream.readUTF();
                 tractaResposta(aux);
-                enviaResposta();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void tractaResposta(String resposta){
+    /**
+     * Analyses the message recieved from the client
+     * @param resposta
+     */
+    public void tractaResposta(String resposta) throws IOException {
+
         String [] aux = resposta.split("-");
-        if(aux[0].equals("LU")){
-            //la trama es el nom del usuari al fer el login
-            //int mirant si existeix i si contra guay
+        if(aux[0].equals("L")){
+            L = gestioDades.gestionaLogin(aux[1]);
+            enviaResposta(L);
             //0:ok, 1:usuari/mail no existeix 2:contra no
 
-        }else if (aux[0].equals("LP")){
-            //la trama es la contrasenya del usuari al fer el login
-
-        }else if(aux[0].equals("RE")){
-            email = aux[0];
-            //la trama es el email del usuari al registrar-se
-            //0:ok 3:usuari existeix 4:mail existeix 5:both
-        }else if (aux[0].equals("RU")){
-            usuari = aux[0];
-            //la trama es el nom del usuari al registrar-se
-
-        }else if (aux[0].equals("RP")){
-            password = aux[0];
-            //la trama es la contrasenya del usuari al registrar-se
+        }else if (aux[0].equals("R")){
+            R = gestioDades.gestionaRegistre(aux[1]);
+            enviaResposta(R);
+            //0:ok, 3:usuari existeix 4:mail existeix 5:both
         }
 
-        //afegim el usuari nou a la base de dades
-        User u = new User(usuari, password, email);
-        gestioDades.addUser(u);
     }
 
-    public void enviaResposta() throws IOException {
-        int error = gestioDades.gestionaResposta();
+    /**
+     * Returns server's answer to client
+     * @throws IOException
+     */
+    public void enviaResposta(int error) throws IOException {
         switch(error){
             case 0:
                 doStream.writeUTF("OK");
