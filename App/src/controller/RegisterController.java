@@ -6,6 +6,7 @@ import model.User;
 import model.utils.UserDataChecker;
 import network.UserAccessRepository;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -49,9 +50,9 @@ public class RegisterController implements ActionListener {
      * @param parent
      * @return
      */
-    public static RegisterController getInstance(RegisterView view, LoginView parent, UserAccessRepository uar){
+    public static RegisterController getInstance(RegisterView view, LoginView parent/*, UserAccessRepository uar*/){
         if(rc == null)
-            rc = new RegisterController(view, parent, uar);
+            rc = new RegisterController(view, parent/*, uar*/);
         return rc;
     }
 
@@ -59,10 +60,10 @@ public class RegisterController implements ActionListener {
      *
      * @param view
      */
-    private RegisterController(RegisterView view, LoginView parent, UserAccessRepository uar){
+    private RegisterController(RegisterView view, LoginView parent/*, UserAccessRepository uar*/){
         this.view = view;
         this.parent = parent;
-        accessRepo = uar;
+        //accessRepo = uar;
     }
 
     /**
@@ -79,7 +80,8 @@ public class RegisterController implements ActionListener {
      *
      */
     private void OnRegisterFailed() {
-        //TODO: mensaje de error de registro segun el error
+        //Utilizar JOptionPane
+        JOptionPane.showConfirmDialog(view, "ERROR DE REGISTRE");
     }
 
     /**
@@ -116,7 +118,8 @@ public class RegisterController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals(ACTION_REG)){
-            OnRegisterDone();
+            System.out.println("Registreme");
+            OnRegisterFailed();
         }
     }
 }
