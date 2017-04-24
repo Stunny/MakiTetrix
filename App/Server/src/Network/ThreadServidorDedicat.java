@@ -1,6 +1,8 @@
 package Network;
 
 import Model.GestioDades;
+import Model.User;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -14,6 +16,9 @@ public class ThreadServidorDedicat extends Thread {
     private DataOutputStream doStream;
     private Socket sClient;
     private GestioDades gestioDades = new GestioDades();
+    private String usuari;
+    private String password;
+    private String email;
 
     public ThreadServidorDedicat(Socket sClient){
         this.sClient = sClient;
@@ -47,15 +52,21 @@ public class ThreadServidorDedicat extends Thread {
             //la trama es la contrasenya del usuari al fer el login
 
         }else if(aux[0].equals("RE")){
+            email = aux[0];
             //la trama es el email del usuari al registrar-se
             //0:ok 3:usuari existeix 4:mail existeix 5:both
         }else if (aux[0].equals("RU")){
+            usuari = aux[0];
             //la trama es el nom del usuari al registrar-se
 
         }else if (aux[0].equals("RP")){
+            password = aux[0];
             //la trama es la contrasenya del usuari al registrar-se
-
         }
+
+        //afegim el usuari nou a la base de dades
+        User u = new User(usuari, password, email);
+        gestioDades.addUser(u);
     }
 
     public void enviaResposta() throws IOException {
