@@ -1,8 +1,6 @@
 package Network;
 
 import Model.GestioDades;
-import Model.User;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -16,9 +14,6 @@ public class ThreadServidorDedicat extends Thread {
     private DataOutputStream doStream;
     private Socket sClient;
     private GestioDades gestioDades = new GestioDades();
-    private String usuari;
-    private String password;
-    private String email;
     private int L;
     private int R;
 
@@ -60,9 +55,6 @@ public class ThreadServidorDedicat extends Thread {
             //0:ok, 3:usuari existeix 4:mail existeix 5:both
         }
 
-        //afegim el usuari nou a la base de dades
-        User u = new User(usuari, password, email);
-        gestioDades.addUser(u);
     }
 
     /**
