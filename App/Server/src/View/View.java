@@ -3,16 +3,14 @@ package View;
 import Controller.ServerController;
 
 import javax.swing.*;
-import javax.xml.bind.Marshaller;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
  * Created by Admin on 20/03/2017.
  */
 public class View extends JFrame{
     public static final String ACTION_BORRAR = "Borrar";
+    public static final String ACTION_SEARCH = "Busca";
 
     private JPanel principal;
     private JPanel north;
@@ -24,7 +22,6 @@ public class View extends JFrame{
     private JList leftList;
     private JButton borrar;
     private DefaultListModel model;
-    private int indexSelectedUser;
     private JPanel topPane;
     private JTextField buscador;
     private JButton busca;
@@ -55,6 +52,7 @@ public class View extends JFrame{
         topLabel.setFont (topLabel.getFont ().deriveFont (40.0f));
         buscador = new JTextField();
         busca = new JButton("Busca Usuari");
+        busca.setActionCommand(ACTION_SEARCH);
         topPane.add(topLabel, BorderLayout.NORTH);
         topPane.add(buscador, BorderLayout.CENTER);
         topPane.add(busca, BorderLayout.SOUTH);
@@ -90,10 +88,6 @@ public class View extends JFrame{
 
     public DefaultListModel getModel() {
         return model;
-    }
-
-    public int getIndexSelectedUser() {
-        return indexSelectedUser;
     }
 
     public JList getLeftList() {

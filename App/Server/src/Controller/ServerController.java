@@ -32,10 +32,9 @@ public class ServerController implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Estic fent aquesta accio: " + e.getActionCommand());
         if (e.getActionCommand().equals(view.ACTION_BORRAR)){
            // gestioDades.borraUsuari(usuaris[view.getLeftList().getSelectedIndex()]);
-        }else if (e.getActionCommand().equals("Busca Usuari")){
+        }else if (e.getActionCommand().equals(view.ACTION_SEARCH)){
             gestioDades.busca(view.getBuscador().getText());
             //buscar usuari a la base de dades
         }
