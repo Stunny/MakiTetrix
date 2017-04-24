@@ -24,11 +24,12 @@ public class MainController implements ActionListener {
      *
      */
     private MainController(){
-
+        //TODO: definir funcionalidades del controlador principal del cliente
+        //TODO: implementar contructor
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        //TODO: implementar metodo de actionperformed
     }
 }
