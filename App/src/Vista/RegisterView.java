@@ -79,4 +79,7 @@ public class RegisterView extends JFrame {
 
     }
 
+    public JPanel getFormPanel() {
+        return formPanel;
+    }
 }

@@ -60,7 +60,7 @@ public class RegisterController implements ActionListener {
      *
      * @param view
      */
-    private RegisterController(RegisterView view, LoginView parent/*, UserAccessRepository uar*/){
+    public RegisterController(RegisterView view, LoginView parent/*, UserAccessRepository uar*/){
         this.view = view;
         this.parent = parent;
         //accessRepo = uar;
