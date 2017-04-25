@@ -24,10 +24,10 @@ public class LoginView extends JFrame{
      * Builds a new Login screen
      */
     public LoginView(){
-        setTitle("MakiTetrix - Login");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setSize(420,500);
+        setTitle("MakiTetrix - Login");
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         JPanel jpGrid = new JPanel (new GridLayout(6,1));
 
@@ -115,7 +115,7 @@ public class LoginView extends JFrame{
         //TODO: hacer que debajo de los campos de texto aparezca un mensaje en rojo que diga "Nombre de usuario o contraseña incorrectos"
         String[] options = { "OK" };
         JOptionPane.showOptionDialog(this, "Nombre de usuario o contraseña incorrecto",
-                "ERROR AL INICIAR SESSIÓn", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
+                "ERROR AL INICIAR SESSIÓN", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
                 null, options, options[0]);
         jtfUserName.setText("");
         jpfPassword.setText("");

@@ -88,10 +88,6 @@ public class RegisterController implements ActionListener {
      *
      */
     public void OnRegisterDone(){
-        userName = view.getUserName();
-        userEmail = view.getUserEmail();
-        userPass = view.getUserPassword();
-        confirmPass = view.getConfirmPassword();
 
         if(credentialsOK()){
             OnRegisterSuccess();
@@ -105,11 +101,30 @@ public class RegisterController implements ActionListener {
      * @return
      */
     private boolean credentialsOK() {
+        userName = view.getUserName();
+        userEmail = view.getUserEmail();
+        userPass = view.getUserPassword();
+        confirmPass = view.getConfirmPassword();
 
         UserDataChecker udc = new UserDataChecker();
 
-        if(!userPass.equals(confirmPass)) return false;
-        if(!userEmail.matches(EMAIL_REGEX)) return false;
+        if(!userPass.equals(confirmPass) || userPass.equals("") || confirmPass.equals("")){
+            view.setPassMatchError();
+            view.getJpfPassword().setText("");
+            view.getJpfConfirmPassword().setText("");
+            return false;
+        }
+
+        if(!userEmail.matches(EMAIL_REGEX) || userEmail.equals("")){
+            view.setEmailMatchError();
+            view.getJtfEmail().setText("");
+            return false;
+        }
+
+
+        System.out.println("access repo:" + accessRepo);
+        //accesRepo = null. no puede cumplir la condicion del if y peta
+        System.out.println("userEmail: " + userEmail);
         if(!accessRepo.checkEmail(userEmail)) return false;
 
         return accessRepo.checkUserName(userName);
@@ -119,7 +134,11 @@ public class RegisterController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals(ACTION_REG)){
             System.out.println("Registreme");
-            OnRegisterFailed();
+            if(credentialsOK()){
+                System.out.println("todo OK");
+            }else{
+                System.out.println("fail");
+            }
         }
     }
 }
