@@ -15,13 +15,18 @@ public class GameView extends JFrame{
     private JLabel nivel;
     private JLabel puntuacion;
     private JPanel siguientePieza;
+    private JLabel observador;
 
     public GameView(){
+
+        setTitle("MakiTetrix - Game");
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setSize(432,800);
 
         //Pantalla principal del juego
         centre = new JPanel(new GridLayout(25,10));
         centre.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-        setSize(800,1260);
         caselles = new JPanel[25][10];
 
         for (int i = 0; i < 25; i++) {
@@ -33,7 +38,6 @@ public class GameView extends JFrame{
                 centre.add(p);
             }
         }
-        getContentPane().add(centre, BorderLayout.CENTER);
 
         //Información necesaria en la parte de arriba del nivel
 
@@ -62,7 +66,31 @@ public class GameView extends JFrame{
         }
         east.add(siguientePieza);
 
-        getContentPane().add(east,BorderLayout.EAST);
+        //Se unen el panel del juego como el de proxima pieza
+        JPanel auxmid = new JPanel (new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.ipadx = 144;
+        c.ipady = 384;
+        c.gridx = 0;
+        c.gridy = 0;
+        auxmid.add(centre,c);
+        c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.PAGE_START;
+        c.ipadx = 50;
+        c.ipady = 72;
+        c.gridx = 2;
+        c.gridy = 0;
+        auxmid.add(east,c);
+
+        getContentPane().add(auxmid,BorderLayout.CENTER);
+
+        //Creación panel de abajo para que se vean tus observadores
+
+        JPanel observadores = new JPanel (new FlowLayout());
+        observador = new JLabel ("Observador 1");
+        observadores.add(observador);
+
+        getContentPane().add(observadores,BorderLayout.SOUTH);
 
     }
 
