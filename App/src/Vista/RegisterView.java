@@ -54,16 +54,9 @@ public class RegisterView extends JFrame {
         setLayout(new BorderLayout());
     }
 
-    public void setPassMatchError(){
+    public void displayError(String errorMessage){
         String[] options = { "OK" };
-        JOptionPane.showOptionDialog(this, "Las contraseñas deben coincidir y no deben estar vacias!",
-                "ERROR AL REGISTRARSE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
-                null, options, options[0]);
-    }
-
-    public void setEmailMatchError() {
-        String[] options = { "OK" };
-        JOptionPane.showOptionDialog(this, "El email es incorrecto o esta vacio!",
+        JOptionPane.showOptionDialog(this, errorMessage,
                 "ERROR AL REGISTRARSE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
                 null, options, options[0]);
     }
@@ -98,5 +91,9 @@ public class RegisterView extends JFrame {
 
     public JPasswordField getJpfConfirmPassword() {
         return jpfConfirmPassword;
+    }
+
+    public JCheckBox getJcbAcceptTerms() {
+        return jcbAcceptTerms;
     }
 }

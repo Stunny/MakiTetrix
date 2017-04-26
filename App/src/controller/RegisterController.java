@@ -108,32 +108,36 @@ public class RegisterController implements ActionListener {
 
         UserDataChecker udc = new UserDataChecker();
 
-        if(!userPass.equals(confirmPass) || userPass.equals("") || confirmPass.equals("")){
-            view.setPassMatchError();
+        if (userName.equals("")){
+            view.displayError("El nombre de usuario no puede estar vacio!");
+            return false;
+        }else if(!userEmail.matches(EMAIL_REGEX) || userEmail.equals("")){
+            view.displayError("El email es incorrecto o esta vacio!");
+            view.getJtfEmail().setText("");
+            return false;
+        }else if(!userPass.equals(confirmPass) || userPass.equals("") || confirmPass.equals("")){
+            view.displayError("Las contraseñas deben coincidir y no deben estar vacias!");
             view.getJpfPassword().setText("");
             view.getJpfConfirmPassword().setText("");
             return false;
-        }
-
-        if(!userEmail.matches(EMAIL_REGEX) || userEmail.equals("")){
-            view.setEmailMatchError();
-            view.getJtfEmail().setText("");
+        }else if(!view.getJcbAcceptTerms().isSelected()){
+            view.displayError("Se deben aceptar los Terminos y Condiciones");
             return false;
         }
 
-
-        System.out.println("access repo:" + accessRepo);
-        //accesRepo = null. no puede cumplir la condicion del if y peta
-        System.out.println("userEmail: " + userEmail);
-        if(!accessRepo.checkEmail(userEmail)) return false;
-
+        return true;
+        /*
+        accesRepo = null. no puede cumplir la condicion del if y peta
+        else if(!accessRepo.checkEmail(userEmail)){
+            return false;
+        }
         return accessRepo.checkUserName(userName);
+        */
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals(ACTION_REG)){
-            System.out.println("Registreme");
             if(credentialsOK()){
                 System.out.println("todo OK");
             }else{
