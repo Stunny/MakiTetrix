@@ -39,6 +39,11 @@ public class RegisterController implements ActionListener {
      */
     private static RegisterController rc;
 
+    /**
+     *
+     */
+    private UserAccessRepository uar;
+
     private String userName;
     private String userPass;
     private String confirmPass;
@@ -108,13 +113,18 @@ public class RegisterController implements ActionListener {
 
         UserDataChecker udc = new UserDataChecker();
 
-        if (userName.equals("")){
+        if (userName.equals("")) {
             view.displayError("El nombre de usuario no puede estar vacio!");
             return false;
-        }else if(!userEmail.matches(EMAIL_REGEX) || userEmail.equals("")){
+        }else if (!udc.checkUserName(userName)){
+            view.displayError("El nombre de usuario debe de tener 4 o mas caracteres!");
+            return false;
+        }else if(!userEmail.matches(EMAIL_REGEX) || userEmail.equals("")) {
             view.displayError("El email es incorrecto o esta vacio!");
             view.getJtfEmail().setText("");
             return false;
+        //}else if {
+            //view.displayError("");
         }else if(!userPass.equals(confirmPass) || userPass.equals("") || confirmPass.equals("")){
             view.displayError("Las contraseñas deben coincidir y no deben estar vacias!");
             view.getJpfPassword().setText("");
@@ -139,9 +149,15 @@ public class RegisterController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals(ACTION_REG)){
             if(credentialsOK()){
-                System.out.println("todo OK");
-            }else{
-                System.out.println("fail");
+                User registerUser = new User();
+
+                registerUser.setUserName(userName);
+                registerUser.setEmail(userEmail);
+                registerUser.setPassword(userPass);
+
+                uar.register(registerUser);
+                //Cargar Menú del usuario
+                System.out.println("Cargar menu del usuario");
             }
         }
     }
