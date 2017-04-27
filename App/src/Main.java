@@ -18,8 +18,8 @@ public class Main {
                // LoginController loginController = new LoginController(loginView, null);
                 //loginView.registerController(loginController);
                 //loginView.setVisible(true);
-                GameView game = new GameView();
-                game.setVisible(true);
+                GameView gv = new GameView();
+                gv.setVisible(true);
             }
 
         });
