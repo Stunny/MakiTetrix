@@ -15,13 +15,13 @@ public class Main {
 
             @Override
             public void run(){
-               // LoginView loginView = new LoginView();
-                //nota: quizas el segundo parametro, la UserAccessRepository, no deba de ser null
-               // LoginController loginController = new LoginController(loginView, null);
-               // loginView.registerController(loginController);
-               // loginView.setVisible(true);
-                GameView game = new GameView();
-                game.setVisible(true);
+                LoginView loginView = new LoginView();
+               // nota: quizas el segundo parametro, la UserAccessRepository, no deba de ser null
+                LoginController loginController = new LoginController(loginView, null);
+                loginView.registerController(loginController);
+                loginView.setVisible(true);
+                //GameView game = new GameView();
+                //game.setVisible(true);
             }
 
         });
