@@ -32,7 +32,6 @@ public class GameView extends JFrame{
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 10; j++) {
                 JPanel p = new JPanel();
-                p.setBackground(Color.yellow);
                 caselles[i][j] = p;
                 caselles[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 centre.add(p);

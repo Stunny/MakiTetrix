@@ -4,7 +4,7 @@ import controller.LoginController;
 
 import javax.swing.*;
 
-/**
+/*
  * Clase principal de la aplicacion cliente
  * Created by jorti on 30/03/2017.
  */
