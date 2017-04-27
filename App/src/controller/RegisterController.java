@@ -20,7 +20,7 @@ public class RegisterController implements ActionListener {
 
     public static final String ACTION_REG = "REGISTER";
 
-    private static final String EMAIL_REGEX = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
+    //private static final String EMAIL_REGEX = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
     /**
      *
@@ -113,20 +113,19 @@ public class RegisterController implements ActionListener {
 
         UserDataChecker udc = new UserDataChecker();
 
-        if (userName.equals("")) {
-            view.displayError("El nombre de usuario no puede estar vacio!");
-            return false;
-        }else if (!udc.checkUserName(userName)){
+        if (!udc.checkUserName(userName)){
             view.displayError("El nombre de usuario debe de tener 4 o mas caracteres!");
+            view.getJtfUsername().setText("");
             return false;
-        }else if(!userEmail.matches(EMAIL_REGEX) || userEmail.equals("")) {
+        }else if(!udc.checkEMail(userEmail)){
             view.displayError("El email es incorrecto o esta vacio!");
             view.getJtfEmail().setText("");
             return false;
-        //}else if {
-            //view.displayError("");
+        }else if(!udc.checkPassword(userPass)){
+            view.displayError("La contraseña debe tener 8 caracteres, una mayuscula, una minuscula, un digito y un caracter especial (#?!@$%^&*-)");
+            return false;
         }else if(!userPass.equals(confirmPass) || userPass.equals("") || confirmPass.equals("")){
-            view.displayError("Las contraseñas deben coincidir y no deben estar vacias!");
+            view.displayError("Las contraseñas deben coincidir");
             view.getJpfPassword().setText("");
             view.getJpfConfirmPassword().setText("");
             return false;
