@@ -1,16 +1,48 @@
 package model;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 /**
  * Created by miquelator on 24/4/17.
  */
 public class Pieza {
-    private int x;
-    private int y;
+    int x;
+    int y;
     private int tipo;
-    private int[][] matriz;
+    private ArrayList<int[]> matriz;
 
     public Pieza (int tipo){
-        this.
+        this.tipo = tipo;
+        this.matriz = new ArrayList<int []>();
+
+        }
+
+    public ArrayList<int []>  getMatriz (){
+        return this.matriz;
     }
+    public int  getX (){
+        return x;
+    }
+    public int  getY (){
+        return y;
+    }
+
+    public void  setPos (int x, int y){
+        this.x = x;
+        this.y = y;
+
+    }
+
+    public void  setCasilla (int x, int y){
+        int[] aux = new int [2];
+        aux[0] = x;
+        aux[1] = y;
+        this.matriz.add(aux);
+
+    }
+
+
+
 
 }

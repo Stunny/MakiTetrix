@@ -1,7 +1,10 @@
 package Vista;
 
+import model.Pieza;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Ventana principal del juego.
@@ -24,6 +27,8 @@ public class GameView extends JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(432,800);
 
+        getContentPane().setLayout(new BorderLayout());
+
         //Pantalla principal del juego
         centre = new JPanel(new GridLayout(25,10));
         centre.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
@@ -37,6 +42,18 @@ public class GameView extends JFrame{
                 centre.add(p);
             }
         }
+
+
+       Pieza pi = new Pieza(1);
+       pi.setPos(3,3);
+       pi.setCasilla(1,1);
+       pi.setCasilla(1,2);
+        pi.setCasilla(0,2);
+       pi.setCasilla(1,3);
+       printaPieza(pi);
+
+
+
 
         //Información necesaria en la parte de arriba del nivel
 
@@ -91,6 +108,15 @@ public class GameView extends JFrame{
 
         getContentPane().add(observadores,BorderLayout.SOUTH);
 
+    }
+    void printaPieza(Pieza p){
+        ArrayList<int[]> m = p.getMatriz();
+        int x = p.getX();
+        int y = p.getY();
+        for (int i = 0; i < m.size(); i++){
+            //System.out.println("casella a :");
+            caselles [m.get(i)[0]+x] [m.get(i)[1]+y].setBackground(Color.blue);
+        }
     }
 
 }
