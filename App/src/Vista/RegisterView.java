@@ -96,4 +96,8 @@ public class RegisterView extends JFrame {
     public JCheckBox getJcbAcceptTerms() {
         return jcbAcceptTerms;
     }
+
+    public JTextField getJtfUsername() {
+        return jtfUsername;
+    }
 }
