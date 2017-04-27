@@ -39,6 +39,11 @@ public class RegisterController implements ActionListener {
      */
     private static RegisterController rc;
 
+    /**
+     *
+     */
+    private UserAccessRepository uar;
+
     private String userName;
     private String userPass;
     private String confirmPass;
@@ -60,7 +65,7 @@ public class RegisterController implements ActionListener {
      *
      * @param view
      */
-    private RegisterController(RegisterView view, LoginView parent/*, UserAccessRepository uar*/){
+    public RegisterController(RegisterView view, LoginView parent/*, UserAccessRepository uar*/){
         this.view = view;
         this.parent = parent;
         //accessRepo = uar;
@@ -88,10 +93,6 @@ public class RegisterController implements ActionListener {
      *
      */
     public void OnRegisterDone(){
-        userName = view.getUserName();
-        userEmail = view.getUserEmail();
-        userPass = view.getUserPassword();
-        confirmPass = view.getConfirmPassword();
 
         if(credentialsOK()){
             OnRegisterSuccess();
@@ -105,21 +106,59 @@ public class RegisterController implements ActionListener {
      * @return
      */
     private boolean credentialsOK() {
+        userName = view.getUserName();
+        userEmail = view.getUserEmail();
+        userPass = view.getUserPassword();
+        confirmPass = view.getConfirmPassword();
 
         UserDataChecker udc = new UserDataChecker();
 
-        if(!userPass.equals(confirmPass)) return false;
-        if(!userEmail.matches(EMAIL_REGEX)) return false;
-        if(!accessRepo.checkEmail(userEmail)) return false;
+        if (userName.equals("")) {
+            view.displayError("El nombre de usuario no puede estar vacio!");
+            return false;
+        }else if (!udc.checkUserName(userName)){
+            view.displayError("El nombre de usuario debe de tener 4 o mas caracteres!");
+            return false;
+        }else if(!userEmail.matches(EMAIL_REGEX) || userEmail.equals("")) {
+            view.displayError("El email es incorrecto o esta vacio!");
+            view.getJtfEmail().setText("");
+            return false;
+        //}else if {
+            //view.displayError("");
+        }else if(!userPass.equals(confirmPass) || userPass.equals("") || confirmPass.equals("")){
+            view.displayError("Las contraseñas deben coincidir y no deben estar vacias!");
+            view.getJpfPassword().setText("");
+            view.getJpfConfirmPassword().setText("");
+            return false;
+        }else if(!view.getJcbAcceptTerms().isSelected()){
+            view.displayError("Se deben aceptar los Terminos y Condiciones");
+            return false;
+        }
 
+        return true;
+        /*
+        accesRepo = null. no puede cumplir la condicion del if y peta
+        else if(!accessRepo.checkEmail(userEmail)){
+            return false;
+        }
         return accessRepo.checkUserName(userName);
+        */
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals(ACTION_REG)){
-            System.out.println("Registreme");
-            OnRegisterFailed();
+            if(credentialsOK()){
+                User registerUser = new User();
+
+                registerUser.setUserName(userName);
+                registerUser.setEmail(userEmail);
+                registerUser.setPassword(userPass);
+
+                uar.register(registerUser);
+                //Cargar Menú del usuario
+                System.out.println("Cargar menu del usuario");
+            }
         }
     }
 }

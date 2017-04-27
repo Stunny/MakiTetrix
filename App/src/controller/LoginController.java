@@ -5,6 +5,7 @@ import Vista.RegisterView;
 import model.User;
 import network.UserAccessRepository;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -50,7 +51,7 @@ public class LoginController implements ActionListener {
      * Creates a new instance of a login controller
      * @param view an instance of a Login Screen
      */
-    private LoginController(LoginView view, UserAccessRepository uar){
+    public LoginController(LoginView view, UserAccessRepository uar){
         this.uar = uar;
         this.view = view;
     }
@@ -66,7 +67,6 @@ public class LoginController implements ActionListener {
                 break;
             case LOGIN_ACTION_REG:
                 OnRegister();
-                System.out.println("Registro");
                 break;
         }
     }
@@ -113,11 +113,15 @@ public class LoginController implements ActionListener {
      *
      */
     public void OnRegister(){
-
+        JPanel formPanel;
         view.setVisible(false);
 
-        RegisterView rv = new RegisterView(view);
-        RegisterController rc = RegisterController.getInstance(rv, view);
+        LoginView lv = new LoginView();
+        RegisterView rv = new RegisterView(lv);
+        formPanel = rv.getFormPanel();
+        rv.setContentPane(formPanel);
+        rv.pack();
+        RegisterController rc = new RegisterController(rv, null);
         rv.registerController(rc);
         rv.setVisible(true);
 

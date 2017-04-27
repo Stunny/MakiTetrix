@@ -13,7 +13,7 @@ public class UserDataChecker {
      * @param user_name cadena de caracteres que se recibe desde la vista y contiene el nombre de usuario
      * @return true: si 'user_name' es un nombre de usuario valido -- false: si 'user_name' no es un nombre de usuario valido
      */
-    private boolean checkUserName(String user_name) {
+    public boolean checkUserName(String user_name) {
         if (user_name.length() < 4) return false;
         return true;
     }

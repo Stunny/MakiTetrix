@@ -45,12 +45,20 @@ public class RegisterView extends JFrame {
     }
 
     private void configFrame() {
-        setTitle("MakiTetrix - Register");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setSize(420, 500);
+        setTitle("MakiTetrix - Register");
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         setResizable(false);
         setLayout(new BorderLayout());
+    }
+
+    public void displayError(String errorMessage){
+        String[] options = { "OK" };
+        JOptionPane.showOptionDialog(this, errorMessage,
+                "ERROR AL REGISTRARSE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
+                null, options, options[0]);
     }
 
     public String getUserName(){
@@ -69,14 +77,23 @@ public class RegisterView extends JFrame {
         return new String(jpfConfirmPassword.getPassword());
     }
 
-    public static void main(String[] args) {
-
-        LoginView lv = new LoginView();
-        RegisterView rv = new RegisterView(lv);
-        rv.setContentPane(rv.formPanel);
-        rv.pack();
-        rv.setVisible(true);
-
+    public JPanel getFormPanel() {
+        return formPanel;
     }
 
+    public JTextField getJtfEmail() {
+        return jtfEmail;
+    }
+
+    public JPasswordField getJpfPassword() {
+        return jpfPassword;
+    }
+
+    public JPasswordField getJpfConfirmPassword() {
+        return jpfConfirmPassword;
+    }
+
+    public JCheckBox getJcbAcceptTerms() {
+        return jcbAcceptTerms;
+    }
 }
