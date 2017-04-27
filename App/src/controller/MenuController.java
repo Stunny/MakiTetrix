@@ -6,24 +6,24 @@ import java.awt.event.ActionListener;
 /**
  * Created by avoge on 04/04/2017.
  */
-public class MainController implements ActionListener {
+public class MenuController implements ActionListener {
 
-    private static MainController mc;
+    private static MenuController mc;
 
     /**
      *
      * @return
      */
-    public MainController getInstance(){
+    public MenuController getInstance(){
         if(mc == null)
-            mc = new MainController();
+            mc = new MenuController();
         return mc;
     }
 
     /**
      *
      */
-    private MainController(){
+    private MenuController(){
         //TODO: definir funcionalidades del controlador principal del cliente
         //TODO: implementar contructor
     }

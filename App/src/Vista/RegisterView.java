@@ -23,11 +23,14 @@ public class RegisterView extends JFrame {
     private JPanel inputPanel;
     private JPanel formPanel;
 
-
+    private LoginView parentView;
     /**
      * Builds a new RegisterView
      */
-    public RegisterView() {
+    public RegisterView(LoginView parentView) {
+
+        this.parentView = parentView;
+
         configFrame();
     }
 
@@ -37,17 +40,25 @@ public class RegisterView extends JFrame {
     public void registerController(RegisterController controller) {
 
         jbRegister.setActionCommand(RegisterController.ACTION_REG);
-        jbRegister.addActionListener(RegisterController.getInstance(this, null));
+        jbRegister.addActionListener(RegisterController.getInstance(this, parentView));
 
     }
 
     private void configFrame() {
-        setTitle("MakiTetrix - Register");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setSize(420, 500);
+        setTitle("MakiTetrix - Register");
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         setResizable(false);
         setLayout(new BorderLayout());
+    }
+
+    public void displayError(String errorMessage){
+        String[] options = { "OK" };
+        JOptionPane.showOptionDialog(this, errorMessage,
+                "ERROR AL REGISTRARSE", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
+                null, options, options[0]);
     }
 
     public String getUserName(){
@@ -66,13 +77,27 @@ public class RegisterView extends JFrame {
         return new String(jpfConfirmPassword.getPassword());
     }
 
-    public static void main(String[] args) {
-
-        RegisterView rv = new RegisterView();
-        rv.setContentPane(rv.formPanel);
-        rv.pack();
-        rv.setVisible(true);
-
+    public JPanel getFormPanel() {
+        return formPanel;
     }
 
+    public JTextField getJtfEmail() {
+        return jtfEmail;
+    }
+
+    public JPasswordField getJpfPassword() {
+        return jpfPassword;
+    }
+
+    public JPasswordField getJpfConfirmPassword() {
+        return jpfConfirmPassword;
+    }
+
+    public JCheckBox getJcbAcceptTerms() {
+        return jcbAcceptTerms;
+    }
+
+    public JTextField getJtfUsername() {
+        return jtfUsername;
+    }
 }

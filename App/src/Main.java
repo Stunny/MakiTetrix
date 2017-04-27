@@ -1,10 +1,8 @@
 import Vista.GameView;
-import Vista.LoginView;
-import controller.LoginController;
 
 import javax.swing.*;
 
-/**
+/*
  * Clase principal de la aplicacion cliente
  * Created by jorti on 30/03/2017.
  */
@@ -15,13 +13,13 @@ public class Main {
 
             @Override
             public void run(){
-                GameView vis = new GameView();
-              //  LoginView vis = new LoginView();
-               // LoginController lc = LoginController.getInstance(vis);
-
-               // vis.registerController(lc);
-               // vis.setVisible(true);
-                vis.setVisible(true);
+               // LoginView loginView = new LoginView();
+               // nota: quizas el segundo parametro, la UserAccessRepository, no deba de ser null
+               // LoginController loginController = new LoginController(loginView, null);
+                //loginView.registerController(loginController);
+                //loginView.setVisible(true);
+                GameView gv = new GameView();
+                gv.setVisible(true);
             }
 
         });
