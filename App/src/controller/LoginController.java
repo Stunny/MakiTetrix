@@ -1,6 +1,7 @@
 package controller;
 
 import Vista.LoginView;
+import Vista.MenuView;
 import Vista.RegisterView;
 import model.User;
 import network.UserAccessRepository;
@@ -99,7 +100,9 @@ public class LoginController implements ActionListener {
      *
      */
     public void OnLoginSuccess(){
-        //Cargar Menú del usuario
+        MenuView menuView = new MenuView();
+        view.setVisible(false);
+        menuView.setVisible(true);
     }
 
     /**

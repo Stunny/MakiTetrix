@@ -1,6 +1,7 @@
 package controller;
 
 import Vista.LoginView;
+import Vista.MenuView;
 import Vista.RegisterView;
 import model.User;
 import model.utils.UserDataChecker;
@@ -121,9 +122,12 @@ public class RegisterController implements ActionListener {
             view.displayError("El email es incorrecto o esta vacio!");
             view.getJtfEmail().setText("");
             return false;
+            /*
         }else if(!udc.checkPassword(userPass)){
             view.displayError("La contraseña debe tener 8 caracteres, una mayuscula, una minuscula, un digito y un caracter especial (#?!@$%^&*-)");
+            System.out.println("User pass: " + userPass);
             return false;
+            */
         }else if(!userPass.equals(confirmPass) || userPass.equals("") || confirmPass.equals("")){
             view.displayError("Las contraseñas deben coincidir");
             view.getJpfPassword().setText("");
@@ -155,8 +159,10 @@ public class RegisterController implements ActionListener {
                 registerUser.setPassword(userPass);
 
                 uar.register(registerUser);
-                //Cargar Menú del usuario
-                System.out.println("Cargar menu del usuario");
+
+                MenuView menuView = new MenuView();
+                view.setVisible(false);
+                menuView.setVisible(true);
             }
         }
     }

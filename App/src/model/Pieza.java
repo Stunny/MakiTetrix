@@ -10,7 +10,7 @@ public class Pieza {
     private int[][] matriz;
 
     public Pieza (int tipo){
-        this.
+        //this.
     }
 
 }
