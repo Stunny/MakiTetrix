@@ -1,11 +1,12 @@
 package model.utils;
 
+
+import org.apache.commons.validator.routines.EmailValidator;
+
 /**
  * Created by pedroriera on 6/4/17.
  */
 public class UserDataChecker {
-
-    private static final String EMAIL_REGEX = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
     public static final String PASSWORD_REGEX = "^(?=[\040-\176]*?[A-Z])(?=[\040-\176]*?[a-z])(?=[\040-\176]*\u200C?[0-9])(?=[\040-\176\u200C ]*?[#?!@$%^&*-])[\04\u200C0-\176]{8,72}$\n";
     /**
@@ -24,8 +25,9 @@ public class UserDataChecker {
      * @return true: si el mail es valido -- false: si el mail no es valido
      */
     public boolean checkEMail(String email) {
-        if (!email.matches(EMAIL_REGEX)) return false;
-        return true;
+        //pone error pero compila, falta comprobar si funciona o no.
+        EmailValidator ev = new EmailValidator.getInstance();
+        return ev.isValid(email);
     }
 
     /**
