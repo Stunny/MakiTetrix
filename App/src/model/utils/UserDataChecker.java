@@ -26,7 +26,7 @@ public class UserDataChecker {
      */
     public boolean checkEMail(String email) {
         //pone error pero compila, falta comprobar si funciona o no.
-        EmailValidator ev = new EmailValidator.getInstance();
+        EmailValidator ev = EmailValidator.getInstance();
         return ev.isValid(email);
     }
 
