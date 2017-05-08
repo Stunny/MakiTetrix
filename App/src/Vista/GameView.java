@@ -45,7 +45,7 @@ public class GameView extends JFrame{
         pi.setPos(3,3);
         printaPieza(pi);
 
-
+//iiii
         //Información necesaria en la parte de arriba del nivel
 
         temps = new JLabel ("XX:XX");
