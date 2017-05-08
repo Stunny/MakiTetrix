@@ -1,4 +1,6 @@
 import Vista.GameView;
+import Vista.LoginView;
+import controller.LoginController;
 
 import javax.swing.*;
 
@@ -13,13 +15,13 @@ public class Main {
 
             @Override
             public void run(){
-               // LoginView loginView = new LoginView();
+                LoginView loginView = new LoginView();
                // nota: quizas el segundo parametro, la UserAccessRepository, no deba de ser null
-               // LoginController loginController = new LoginController(loginView, null);
-                //loginView.registerController(loginController);
-                //loginView.setVisible(true);
-                GameView gv = new GameView();
-                gv.setVisible(true);
+                LoginController loginController = new LoginController(loginView, null);
+                loginView.registerController(loginController);
+                loginView.setVisible(true);
+                //GameView gv = new GameView();
+                //gv.setVisible(true);
             }
 
         });

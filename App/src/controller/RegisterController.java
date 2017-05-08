@@ -122,12 +122,6 @@ public class RegisterController implements ActionListener {
             view.displayError("El email es incorrecto o esta vacio!");
             view.getJtfEmail().setText("");
             return false;
-            /*
-        }else if(!udc.checkPassword(userPass)){
-            view.displayError("La contraseña debe tener 8 caracteres, una mayuscula, una minuscula, un digito y un caracter especial (#?!@$%^&*-)");
-            System.out.println("User pass: " + userPass);
-            return false;
-            */
         }else if(!userPass.equals(confirmPass) || userPass.equals("") || confirmPass.equals("")){
             view.displayError("Las contraseñas deben coincidir");
             view.getJpfPassword().setText("");
