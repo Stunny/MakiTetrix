@@ -22,7 +22,7 @@ public class Main {
               //  loginView.setVisible(true);
                 GameView game = new GameView();
                 game.setVisible(true);
-                game.printCasella();
+
             }
 
         });

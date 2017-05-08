@@ -16,7 +16,62 @@ public class Pieza {
         this.tipo = tipo;
         this.matriz = new ArrayList<int []>();
 
+        switch (tipo){
+            case 0:
+
+                setCasilla(1,1);
+                setCasilla(2,1);
+                setCasilla(2,2);
+                setCasilla(1,2);
+                break;
+
+            case 1:
+                setCasilla(0,1);
+                setCasilla(1,1);
+                setCasilla(2,1);
+                setCasilla(3,1);
+                break;
+
+            case 2:
+                setCasilla(1,1);
+                setCasilla(1,2);
+                setCasilla(2,0);
+                setCasilla(2,1);
+                break;
+
+            case 3:
+                setCasilla(1,0);
+                setCasilla(1,1);
+                setCasilla(2,1);
+                setCasilla(2,2);
+                break;
+
+            case 4:
+                setCasilla(0,1);
+                setCasilla(1,1);
+                setCasilla(2,1);
+                setCasilla(2,2);
+                break;
+
+            case 5:
+                setCasilla(0,2);
+                setCasilla(1,2);
+                setCasilla(2,2);
+                setCasilla(2,1);
+                break;
+
+            case 6:
+
+                setCasilla(1,1);
+                setCasilla(2,1);
+                setCasilla(2,0);
+                setCasilla(3,1);
+                break;
         }
+
+        }
+
+
 
     public ArrayList<int []>  getMatriz (){
         return this.matriz;
