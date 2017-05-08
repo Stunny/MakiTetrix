@@ -1,6 +1,14 @@
 package model.utils;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
+
+import org.apache.commons.crypto.cipher.CryptoCipher;
+import org.apache.commons.crypto.cipher.CryptoCipherFactory;
+import org.apache.commons.crypto.utils.Utils;
 
 /**
  * Created by pedroriera on 6/4/17.
@@ -61,4 +69,19 @@ public class Encrypter {
 
     }
 
+    private byte[] encyptBytes(byte[] input) {
+        final SecretKeySpec key = new SecretKeySpec(getUTF8Bytes("1234567890123456"), "AES");
+        final IvParameterSpec iv = new IvParameterSpec(getUTF8Bytes("1234567890123456"));
+
+        Properties properties = new Properties();
+        properties.setProperty(CryptoCipherFactory.CLASSES_KEY, CryptoCipherFactory.CipherProvider.OPENSSL.getClassName());
+
+        final String transform = "AES/CBC/PKCS5Padding";
+        CryptoCipher encipher = Utils.getCipherInstance(transform, properties);
+
+    }
+
+    private static byte[] getUTF8Bytes(String input) {
+        return input.getBytes(StandardCharsets.UTF_8);
+    }
 }
