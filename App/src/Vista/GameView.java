@@ -18,26 +18,12 @@ public class GameView extends JFrame{
     private JLabel observador;
 
     public GameView(){
-
+        //Datos de la ventana
         setTitle("MakiTetrix - Game");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(432,800);
-
-        //Pantalla principal del juego
-        centre = new JPanel(new GridLayout(25,10));
-        centre.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-        caselles = new JPanel[25][10];
-
-        for (int i = 0; i < 25; i++) {
-            for (int j = 0; j < 10; j++) {
-                JPanel p = new JPanel();
-                p.setBackground(Color.yellow);
-                caselles[i][j] = p;
-                caselles[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                centre.add(p);
-            }
-        }
+        getContentPane().setLayout(new BorderLayout());
 
         //Información necesaria en la parte de arriba del nivel
 
@@ -52,38 +38,30 @@ public class GameView extends JFrame{
 
         getContentPane().add(north, BorderLayout.NORTH);
 
-        //En la parte de arriba irá la siguiente figura, en la zona de abajo se verán la gente que te observa.
-        JPanel east = new JPanel(new GridLayout(2,1));
+        //Panel del juego centra, que incluye matriz del juego y siguiente pieza
 
-        siguientePieza = new JPanel(new GridLayout(4,4));
-        for (int i = 0; i < 4; i++){
-            for (int j = 0; j < 4; j++){
-                JPanel p = new JPanel();
-                p.setBackground(Color.blue);
-                p.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                siguientePieza.add(p);
+        centre = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        //c.anchor = GridBagConstraints.CENTER;
+        c.weightx = 0;
+
+        for (int i = 0; i < 10; i++){
+            for (int j = 0; j < 25; j++){
+                JPanel aux = new JPanel();
+                aux.setBackground(Color.ORANGE);
+                aux.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                c.fill = GridBagConstraints.BOTH;
+                c.weightx = c.weighty = 0.5;
+                c.gridx = i;
+                c.gridy = j;
+                centre.add(aux, c);
             }
         }
-        east.add(siguientePieza);
 
-        //Se unen el panel del juego como el de proxima pieza
-        JPanel auxmid = new JPanel (new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.ipadx = 144;
-        c.ipady = 384;
-        c.gridx = 0;
-        c.gridy = 0;
-        auxmid.add(centre,c);
-        c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.PAGE_START;
-        c.ipadx = 50;
-        c.ipady = 72;
-        c.gridx = 2;
-        c.gridy = 0;
-        auxmid.add(east,c);
+        GridBagConstraints c2 = new GridBagConstraints();
+        c2.fill = GridBagConstraints.BOTH;
 
-        getContentPane().add(auxmid,BorderLayout.CENTER);
-
+        getContentPane().add(centre, BorderLayout.CENTER);
         //Creación panel de abajo para que se vean tus observadores
 
         JPanel observadores = new JPanel (new FlowLayout());
@@ -92,6 +70,17 @@ public class GameView extends JFrame{
 
         getContentPane().add(observadores,BorderLayout.SOUTH);
 
+    }
+
+    public void printCasella () {
+        JPanel aux = new JPanel();
+        aux.setBackground(Color.PINK);
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = c.weighty = 0.5;
+        c.gridx = 0;
+        c.gridy = 0;
+        centre.add(aux,c);
     }
 
 }
