@@ -22,7 +22,7 @@ public class UserDataChecker {
 
     /**
      * Comprueba que el mail sea valido
-     * @param email
+     * @param email string que contiene el texto introducido en el campo mail
      * @return true: si el mail es valido -- false: si el mail no es valido
      */
     public boolean checkEMail(String email) {
@@ -33,7 +33,7 @@ public class UserDataChecker {
     /**
      * Comprueba que la contrasena contenga un minimo de 8 caracteres que sean caracteres ASCII,
      * una mayuscula, una minuscula, un digito y un caracter especial (#?!@$%^&*-)
-     * @param password
+     * @param password string que contiene el texto introducido en el campo password
      * @return true: si la contrasena es valida -- false: si la contrasena no es valida
      */
     public boolean checkPassword(String password) {
@@ -43,8 +43,8 @@ public class UserDataChecker {
 
     /**
      * Comprueba que el campo de repetir password coincida con el de password
-     * @param pass
-     * @param pass2
+     * @param pass String que contiene el texto introducido en el campo password
+     * @param pass2 String que contiene el texto introducido en el campo confirmar password
      * @return true: si pass == pass2 -- false: si pass != pass2
      */
     private boolean checkPassRepeat (String pass, String pass2) {
