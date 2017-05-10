@@ -1,6 +1,6 @@
 import Vista.GameView;
-import Vista.LoginView;
-import controller.LoginController;
+import controller.GameController;
+import model.Partida;
 
 import javax.swing.*;
 
@@ -22,6 +22,8 @@ public class Main {
               //  loginView.setVisible(true);
                 GameView game = new GameView();
                 game.setVisible(true);
+                Partida partida = new Partida();
+                GameController asdf = new GameController(game,partida);
 
             }
 

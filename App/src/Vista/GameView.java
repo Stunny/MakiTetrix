@@ -100,7 +100,7 @@ public class GameView extends JFrame{
         getContentPane().add(observadores,BorderLayout.SOUTH);
 
     }
-    void printaPieza(Pieza p){
+    public void printaPieza(Pieza p){
         ArrayList<int[]> m = p.getMatriz();
         int x = p.getX();
         int y = p.getY();
@@ -109,12 +109,4 @@ public class GameView extends JFrame{
             caselles [m.get(i)[0]+x] [m.get(i)[1]+y].setBackground(Color.blue);
         }
     }
-
-    public void printCasella (){
-        JPanel jp = new JPanel ();
-        jp.setBackground(Color.black);
-        jp.setBorder(BorderFactory.createLineBorder(Color.pink));
-        caselles[0][0] = jp;
-    }
-
 }
