@@ -4,8 +4,8 @@ package model;
  * Created by miquelator on 24/4/17.
  */
 public class Pieza {
-    private int poscionx;
-    private int posciony;
+    private int posicionx;
+    private int posiciony;
     private int tipo;
     private int[][] pieza;
 
@@ -14,7 +14,7 @@ public class Pieza {
 
         switch (tipo) {
             case 0:
-                this.pieza = new int[2][2];
+                this.pieza = new int[4][4];
                 for (int i = 0; i < pieza.length; i++){
                     for(int j = 0; j < pieza[0].length; j++){
                         pieza[i][j] = -1;
@@ -40,33 +40,33 @@ public class Pieza {
                 break;
 
             case 2:
-                this.pieza = new int[3][3];
+                this.pieza = new int[4][4];
                 for (int i = 0; i < pieza.length; i++){
                     for(int j = 0; j < pieza[0].length; j++){
                         pieza[i][j] = -1;
                     }
                 }
+                setCasilla(0, 1);
+                setCasilla(0, 2);
+                setCasilla(1, 0);
                 setCasilla(1, 1);
-                setCasilla(1, 2);
-                setCasilla(2, 0);
-                setCasilla(2, 1);
                 break;
 
             case 3:
-                this.pieza = new int[3][3];
+                this.pieza = new int[4][4];
                 for (int i = 0; i < pieza.length; i++){
                     for(int j = 0; j < pieza[0].length; j++){
                         pieza[i][j] = -1;
                     }
                 }
-                setCasilla(1, 0);
+                setCasilla(0, 0);
+                setCasilla(0, 1);
                 setCasilla(1, 1);
-                setCasilla(2, 1);
-                setCasilla(2, 2);
+                setCasilla(1, 2);
                 break;
 
             case 4:
-                this.pieza = new int[3][3];
+                this.pieza = new int[4][4];
                 for (int i = 0; i < pieza.length; i++){
                     for(int j = 0; j < pieza[0].length; j++){
                         pieza[i][j] = -1;
@@ -79,7 +79,7 @@ public class Pieza {
                 break;
 
             case 5:
-                this.pieza = new int[3][3];
+                this.pieza = new int[4][4];
                 for (int i = 0; i < pieza.length; i++){
                     for(int j = 0; j < pieza[0].length; j++){
                         pieza[i][j] = -1;
@@ -92,7 +92,7 @@ public class Pieza {
                 break;
 
             case 6:
-                this.pieza = new int[3][3];
+                this.pieza = new int[4][4];
                 for (int i = 0; i < pieza.length; i++){
                     for(int j = 0; j < pieza[0].length; j++){
                         pieza[i][j] = -1;
@@ -111,7 +111,30 @@ public class Pieza {
     }
 
     public void setPosicion (int x, int y){
-        this.poscionx = x;
-        this.posciony = y;
+        this.posicionx = x;
+        this.posiciony = y;
+    }
+
+    public int[][] getPieza(){
+        return pieza;
+    }
+
+    public void rotateRight (){
+        for (int i = 0; i < pieza.length; i++){
+            for (int j = 0; j < pieza[0].length; j++){
+                pieza[i][j] = pieza[pieza.length-j][i];
+            }
+        }
+    }
+
+    public void rotateLeft (){
+
+    }
+
+    public int getPosicionx (){
+        return posicionx;
+    }
+    public int getPosiciony (){
+        return posiciony;
     }
 }

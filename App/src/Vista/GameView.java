@@ -1,8 +1,5 @@
 package Vista;
 
-import model.Partida;
-import model.Pieza;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,7 +14,7 @@ public class GameView extends JFrame{
     private JLabel temps;
     private JLabel nivel;
     private JLabel puntuacion;
-    private JPanel siguientePieza;
+    private JPanel[][] siguientePieza;
     private JLabel observador;
 
     public GameView(){
@@ -41,7 +38,6 @@ public class GameView extends JFrame{
                 centre.add(p);
             }
         }
-
         //Información necesaria en la parte de arriba del nivel
 
         temps = new JLabel ("XX:XX");
@@ -55,19 +51,20 @@ public class GameView extends JFrame{
 
         getContentPane().add(north, BorderLayout.NORTH);
 
-        //En la parte de arriba irá la siguiente figura, en la zona de abajo se verán la gente que te observa.
+        //Siguiente figura.
         JPanel east = new JPanel(new GridLayout(2,1));
-
-        siguientePieza = new JPanel(new GridLayout(4,4));
+        siguientePieza = new JPanel[4][4];
+        JPanel auxsiguientepieza = new JPanel(new GridLayout(4,4));
         for (int i = 0; i < 4; i++){
             for (int j = 0; j < 4; j++){
                 JPanel p = new JPanel();
                 p.setBackground(Color.blue);
-                p.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                siguientePieza.add(p);
+                siguientePieza[i][j] = p;
+                siguientePieza[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                auxsiguientepieza.add(p);
             }
         }
-        east.add(siguientePieza);
+        east.add(auxsiguientepieza);
 
         //Se unen el panel del juego como el de proxima pieza
         JPanel auxmid = new JPanel (new GridBagLayout());
@@ -96,10 +93,68 @@ public class GameView extends JFrame{
         getContentPane().add(observadores,BorderLayout.SOUTH);
 
     }
-    public void printarPantalla (Partida game){
-
+    public void printarPantalla (int[][] interfaz){
+        for (int i = 0; i < interfaz.length; i++){
+            for (int j = 0; j < interfaz[0].length; j++){
+                switch (interfaz[i][j]){
+                    case 0:
+                        caselles[i][j].setBackground(Color.YELLOW);
+                        break;
+                    case 1:
+                        caselles[i][j].setBackground(Color.CYAN);
+                        break;
+                    case 2:
+                        caselles[i][j].setBackground(Color.RED);
+                        break;
+                    case 3:
+                        caselles[i][j].setBackground(Color.GREEN);
+                        break;
+                    case 4:
+                        caselles[i][j].setBackground(Color.ORANGE);
+                        break;
+                    case 5:
+                        caselles[i][j].setBackground(Color.PINK);
+                        break;
+                    case 6:
+                        caselles[i][j].setBackground(Color.MAGENTA);
+                        break;
+                    default:
+                        caselles[i][j].setBackground(Color.white);
+                        break;
+                }
+            }
+        }
     }
-    public void printarNextPiece (Pieza piece){
-
+    public void printarNextPiece (int[][] nextpiece){
+        for (int i = 0; i < nextpiece.length; i++){
+            for (int j = 0; j < nextpiece[0].length;j++){
+                switch (nextpiece[i][j]){
+                    case 0:
+                        siguientePieza[i][j].setBackground(Color.YELLOW);
+                        break;
+                    case 1:
+                        siguientePieza[i][j].setBackground(Color.CYAN);
+                        break;
+                    case 2:
+                        siguientePieza[i][j].setBackground(Color.RED);
+                        break;
+                    case 3:
+                        siguientePieza[i][j].setBackground(Color.GREEN);
+                        break;
+                    case 4:
+                        siguientePieza[i][j].setBackground(Color.ORANGE);
+                        break;
+                    case 5:
+                        siguientePieza[i][j].setBackground(Color.PINK);
+                        break;
+                    case 6:
+                        siguientePieza[i][j].setBackground(Color.MAGENTA);
+                        break;
+                    default:
+                        siguientePieza[i][j].setBackground(Color.GRAY);
+                        break;
+                }
+            }
+        }
     }
 }

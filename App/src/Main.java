@@ -25,7 +25,7 @@ public class Main {
                 Partida partida = new Partida();
                 GameController asdf = new GameController(game,partida);
                 asdf.startGame();
-
+                asdf.playGame();
             }
 
         });
