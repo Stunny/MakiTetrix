@@ -18,6 +18,10 @@ public class GameController implements KeyListener {
         this.game = game;
         gv.addKeyListener(this);
     }
+
+    public void startGame (){
+        game.startGame();
+    }
     @Override
     public void keyPressed (KeyEvent e){
         switch (e.getKeyCode()){

@@ -24,6 +24,7 @@ public class Main {
                 game.setVisible(true);
                 Partida partida = new Partida();
                 GameController asdf = new GameController(game,partida);
+                asdf.startGame();
 
             }
 

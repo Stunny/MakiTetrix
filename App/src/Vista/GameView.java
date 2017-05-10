@@ -1,10 +1,10 @@
 package Vista;
 
+import model.Partida;
 import model.Pieza;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Ventana principal del juego.
@@ -41,11 +41,7 @@ public class GameView extends JFrame{
                 centre.add(p);
             }
         }
-        Pieza pi = new Pieza(4);
-        pi.setPos(3,3);
-        printaPieza(pi);
 
-//iiii
         //Información necesaria en la parte de arriba del nivel
 
         temps = new JLabel ("XX:XX");
@@ -100,13 +96,10 @@ public class GameView extends JFrame{
         getContentPane().add(observadores,BorderLayout.SOUTH);
 
     }
-    public void printaPieza(Pieza p){
-        ArrayList<int[]> m = p.getMatriz();
-        int x = p.getX();
-        int y = p.getY();
-        for (int i = 0; i < m.size(); i++){
-            //System.out.println("casella a :");
-            caselles [m.get(i)[0]+x] [m.get(i)[1]+y].setBackground(Color.blue);
-        }
+    public void printarPantalla (Partida game){
+
+    }
+    public void printarNextPiece (Pieza piece){
+
     }
 }

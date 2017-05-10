@@ -1,103 +1,117 @@
 package model;
 
-import java.awt.*;
-import java.util.ArrayList;
-
 /**
  * Created by miquelator on 24/4/17.
  */
 public class Pieza {
-    int x;
-    int y;
+    private int poscionx;
+    private int posciony;
     private int tipo;
-    private ArrayList<int[]> matriz;
+    private int[][] pieza;
 
-    public Pieza (int tipo){
+    public Pieza(int tipo) {
         this.tipo = tipo;
-        this.matriz = new ArrayList<int []>();
 
-        switch (tipo){
+        switch (tipo) {
             case 0:
-
-                setCasilla(1,1);
-                setCasilla(2,1);
-                setCasilla(2,2);
-                setCasilla(1,2);
+                this.pieza = new int[2][2];
+                for (int i = 0; i < pieza.length; i++){
+                    for(int j = 0; j < pieza[0].length; j++){
+                        pieza[i][j] = -1;
+                    }
+                }
+                setCasilla(0, 0);
+                setCasilla(0, 1);
+                setCasilla(1, 0);
+                setCasilla(1, 1);
                 break;
 
             case 1:
-                setCasilla(0,1);
-                setCasilla(1,1);
-                setCasilla(2,1);
-                setCasilla(3,1);
+                this.pieza = new int[4][4];
+                for (int i = 0; i < pieza.length; i++){
+                    for(int j = 0; j < pieza[0].length; j++){
+                        pieza[i][j] = -1;
+                    }
+                }
+                setCasilla(0, 1);
+                setCasilla(1, 1);
+                setCasilla(2, 1);
+                setCasilla(3, 1);
                 break;
 
             case 2:
-                setCasilla(1,1);
-                setCasilla(1,2);
-                setCasilla(2,0);
-                setCasilla(2,1);
+                this.pieza = new int[3][3];
+                for (int i = 0; i < pieza.length; i++){
+                    for(int j = 0; j < pieza[0].length; j++){
+                        pieza[i][j] = -1;
+                    }
+                }
+                setCasilla(1, 1);
+                setCasilla(1, 2);
+                setCasilla(2, 0);
+                setCasilla(2, 1);
                 break;
 
             case 3:
-                setCasilla(1,0);
-                setCasilla(1,1);
-                setCasilla(2,1);
-                setCasilla(2,2);
+                this.pieza = new int[3][3];
+                for (int i = 0; i < pieza.length; i++){
+                    for(int j = 0; j < pieza[0].length; j++){
+                        pieza[i][j] = -1;
+                    }
+                }
+                setCasilla(1, 0);
+                setCasilla(1, 1);
+                setCasilla(2, 1);
+                setCasilla(2, 2);
                 break;
 
             case 4:
-                setCasilla(0,1);
-                setCasilla(1,1);
-                setCasilla(2,1);
-                setCasilla(2,2);
+                this.pieza = new int[3][3];
+                for (int i = 0; i < pieza.length; i++){
+                    for(int j = 0; j < pieza[0].length; j++){
+                        pieza[i][j] = -1;
+                    }
+                }
+                setCasilla(0, 1);
+                setCasilla(1, 1);
+                setCasilla(2, 1);
+                setCasilla(2, 2);
                 break;
 
             case 5:
-                setCasilla(0,2);
-                setCasilla(1,2);
-                setCasilla(2,2);
-                setCasilla(2,1);
+                this.pieza = new int[3][3];
+                for (int i = 0; i < pieza.length; i++){
+                    for(int j = 0; j < pieza[0].length; j++){
+                        pieza[i][j] = -1;
+                    }
+                }
+                setCasilla(0, 1);
+                setCasilla(1, 1);
+                setCasilla(2, 1);
+                setCasilla(2, 0);
                 break;
 
             case 6:
-
-                setCasilla(1,1);
-                setCasilla(2,1);
-                setCasilla(2,0);
-                setCasilla(3,1);
+                this.pieza = new int[3][3];
+                for (int i = 0; i < pieza.length; i++){
+                    for(int j = 0; j < pieza[0].length; j++){
+                        pieza[i][j] = -1;
+                    }
+                }
+                setCasilla(0, 1);
+                setCasilla(1, 0);
+                setCasilla(1, 1);
+                setCasilla(1, 2);
                 break;
         }
-
-        }
-
-
-
-    public ArrayList<int []>  getMatriz (){
-        return this.matriz;
-    }
-    public int  getX (){
-        return x;
-    }
-    public int  getY (){
-        return y;
     }
 
-    public void  setPos (int x, int y){
-        this.x = x;
-        this.y = y;
-
+    private void setCasilla (int x, int y){
+        pieza[x][y] = tipo;
     }
 
-    public void  setCasilla (int x, int y){
-        int[] aux = new int [2];
-        aux[0] = x;
-        aux[1] = y;
-        this.matriz.add(aux);
-
+    public void setPosicion (int x, int y){
+        this.poscionx = x;
+        this.posciony = y;
     }
-
-
-
-
 }
