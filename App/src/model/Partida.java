@@ -37,43 +37,6 @@ public class Partida {
     }
 
     /**
-     * Genera un número aleatorio, del 0 al 6.
-     * @return el número aleatorio.
-     */
-    private int generateRandom (){
-        return new Random().nextInt(7);
-    }
-
-    /**
-     * Añade una nueva pieza a la interfaz del juego. La diferencia con #addPieceToMatrix(Pieza piece) es
-     * que la pieza que se añade en este caso se la situa en la posición inicial.
-     * @param piece
-     * @see #addPieceToMatrix(Pieza)
-     */
-    private void addNewPieceToMatrix (Pieza piece){
-        piece.setPosicion(0,4);
-        for (int i = 0; i < piece.getPieza().length; i++){
-            for (int j = 0; j < piece.getPieza()[0].length; j++){
-                interfaz[piece.getPosicionx()+i][piece.getPosiciony()+j] = piece.getPieza()[i][j];
-            }
-        }
-    }
-
-    /**
-     * Añade una pieza a la interfaz del juego. La diferencia con #addNewPieceToMatrix es que la posicion
-     * donde se coloca esta pieza viene dada por la información de la pieza.
-     * @param piece
-     * @see #addNewPieceToMatrix(Pieza)
-     */
-    private void addPieceToMatrix (Pieza piece) {
-        for (int i = 0; i < piece.getPieza().length; i++){
-            for (int j = 0; j < piece.getPieza()[0].length; j++){
-                interfaz[piece.getPosicionx()+i][piece.getPosiciony()+j] = piece.getPieza()[i][j];
-            }
-        }
-    }
-
-    /**
      * Hace descender la pieza una casilla hacía abajo.
      */
     public void downABox (){
@@ -124,6 +87,43 @@ public class Partida {
     }
 
     /**
+     * Genera un número aleatorio, del 0 al 6.
+     * @return el número aleatorio.
+     */
+    private int generateRandom (){
+        return new Random().nextInt(7);
+    }
+
+    /**
+     * Añade una nueva pieza a la interfaz del juego. La diferencia con #addPieceToMatrix(Pieza piece) es
+     * que la pieza que se añade en este caso se la situa en la posición inicial.
+     * @param piece
+     * @see #addPieceToMatrix(Pieza)
+     */
+    private void addNewPieceToMatrix (Pieza piece){
+        piece.setPosicion(0,4);
+        for (int i = 0; i < piece.getPieza().length; i++){
+            for (int j = 0; j < piece.getPieza()[0].length; j++){
+                interfaz[piece.getPosicionx()+i][piece.getPosiciony()+j] = piece.getPieza()[i][j];
+            }
+        }
+    }
+
+    /**
+     * Añade una pieza a la interfaz del juego. La diferencia con #addNewPieceToMatrix es que la posicion
+     * donde se coloca esta pieza viene dada por la información de la pieza.
+     * @param piece
+     * @see #addNewPieceToMatrix(Pieza)
+     */
+    private void addPieceToMatrix (Pieza piece) {
+        for (int i = 0; i < piece.getPieza().length; i++){
+            for (int j = 0; j < piece.getPieza()[0].length; j++){
+                interfaz[piece.getPosicionx()+i][piece.getPosiciony()+j] = piece.getPieza()[i][j];
+            }
+        }
+    }
+
+    /**
      * Borra una pieza de la matriz interfaz.
      * @param piece
      */
@@ -134,6 +134,7 @@ public class Partida {
             }
         }
     }
+
 
     //Setter & Getters
 
