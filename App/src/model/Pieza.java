@@ -8,9 +8,12 @@ public class Pieza {
     private int posiciony;
     private int tipo;
     private int[][] pieza;
+    private boolean parada;
 
     public Pieza(int tipo) {
         this.tipo = tipo;
+        this.parada = false;
+
 
         switch (tipo) {
             case 0:
@@ -113,6 +116,7 @@ public class Pieza {
     public void setPosicion (int x, int y){
         this.posicionx = x;
         this.posiciony = y;
+
     }
 
     public int[][] getPieza(){
@@ -139,6 +143,9 @@ public class Pieza {
         pieza = aux;
     }
 
+    public boolean getParada (){
+        return parada;
+    }
     public int getPosicionx (){
         return posicionx;
     }

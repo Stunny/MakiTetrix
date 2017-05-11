@@ -34,7 +34,8 @@ public class Partida {
     }
 
     private int generateRandom (){
-        return new Random().nextInt(7);
+        return 1;
+                //new Random().nextInt(7);
     }
 
     private void addNewPieceToMatrix (Pieza piece){
@@ -62,29 +63,37 @@ public class Partida {
     }
 
     public void leftBox (){
-        clearPiece(actualpiece);
-        actualpiece.setPosicion(actualpiece.getPosicionx(),actualpiece.getPosiciony()-1);
-        addPieceToMatrix(actualpiece);
+        if (!actualpiece.getParada()) {
+            clearPiece(actualpiece);
+            actualpiece.setPosicion(actualpiece.getPosicionx(), actualpiece.getPosiciony() - 1);
+            addPieceToMatrix(actualpiece);
+        }
 
     }
 
     public void rigthBox (){
-        clearPiece(actualpiece);
-        actualpiece.setPosicion(actualpiece.getPosicionx()+1,actualpiece.getPosiciony()+1);
-        addPieceToMatrix(actualpiece);
-
+        if (!actualpiece.getParada()) {
+            clearPiece(actualpiece);
+            actualpiece.setPosicion(actualpiece.getPosicionx() + 1, actualpiece.getPosiciony() + 1);
+            addPieceToMatrix(actualpiece);
+        }
     }
 
     public void rotateRigth () {
-        clearPiece(actualpiece);
-        actualpiece.rotateRight();
-        addPieceToMatrix(actualpiece);
+        if (!actualpiece.getParada()) {
+            clearPiece(actualpiece);
+            actualpiece.rotateRight();
+            addPieceToMatrix(actualpiece);
+        }
     }
 
     public void rotateLeft () {
-        clearPiece(actualpiece);
-        actualpiece.rotateLeft();
-        addPieceToMatrix(actualpiece);
+        if (!actualpiece.getParada()) {
+
+            clearPiece(actualpiece);
+            actualpiece.rotateLeft();
+            addPieceToMatrix(actualpiece);
+        }
     }
 
     private void clearPiece (Pieza piece){
