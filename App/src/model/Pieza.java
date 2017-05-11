@@ -8,6 +8,7 @@ public class Pieza {
     private int posiciony;
     private int tipo;
     private int[][] pieza;
+    private boolean stop;
 
     public Pieza(int tipo) {
         this.tipo = tipo;
@@ -153,4 +154,5 @@ public class Pieza {
     public int getPosiciony (){
         return posiciony;
     }
+    public boolean getStop () { return stop; }
 }
