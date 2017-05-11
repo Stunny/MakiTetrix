@@ -8,11 +8,9 @@ public class Pieza {
     private int posiciony;
     private int tipo;
     private int[][] pieza;
-    private boolean parada;
 
     public Pieza(int tipo) {
         this.tipo = tipo;
-        this.parada = false;
 
 
         switch (tipo) {
@@ -109,20 +107,9 @@ public class Pieza {
         }
     }
 
-    private void setCasilla (int x, int y){
-        pieza[x][y] = tipo;
-    }
-
-    public void setPosicion (int x, int y){
-        this.posicionx = x;
-        this.posiciony = y;
-
-    }
-
-    public int[][] getPieza(){
-        return pieza;
-    }
-
+    /**
+     *  Hace la trapuesta de la matriz. Para que roté la matriz hacía la derecha.
+     */
     public void rotateRight (){
         int[][] aux = new int[pieza.length][pieza[0].length];
         for (int i = 0; i < pieza.length; i++){
@@ -132,6 +119,10 @@ public class Pieza {
         }
         pieza = aux;
     }
+
+    /**
+     *  Permite rotar la matriz hacía la izquierda, haciendo la trspuesta de esta.
+     */
 
     public void rotateLeft (){
         int[][] aux = new int[pieza.length][pieza[0].length];
@@ -143,8 +134,18 @@ public class Pieza {
         pieza = aux;
     }
 
-    public boolean getParada (){
-        return parada;
+    //Getters & Setters
+
+    private void setCasilla (int x, int y){
+        pieza[x][y] = tipo;
+    }
+    public void setPosicion (int x, int y){
+        this.posicionx = x;
+        this.posiciony = y;
+
+    }
+    public int[][] getPieza(){
+        return pieza;
     }
     public int getPosicionx (){
         return posicionx;
