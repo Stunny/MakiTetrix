@@ -107,21 +107,24 @@ public class GestioDades {
         }
        // System.out.println("nomrepe ="+nomrepe+" mailrepe ="+mailrepe);
         if(nomrepe||mailrepe){
-            if (nomrepe&&mailrepe){
-                return 4;
+            if (nomrepe && mailrepe){
+                return 5;
             }else{
                 if (nomrepe){
-                    return 2;
-                }else{
                     return 3;
+                }else{
+                    return 4;
                 }
             }
         }else{
-            return 1;
+            return 0;
         }
     }
 
     public int loginUser(String nom, String contra){
+        boolean ok = false;
+        boolean passko = false;
+        boolean userko = false;
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
@@ -132,11 +135,13 @@ public class GestioDades {
             while (r.next()) {
                 if(r.getString("user").equals(nom)||r.getString("mail").equals(nom)){
                     if(r.getString("password").equals(contra)){
-                        return 1;
+                        ok = true;
                     }
                     else {
-                        return 3;
+                        passko = true;
                     }
+                }else {
+                    userko = true;
                 }
             }
 
@@ -145,7 +150,15 @@ public class GestioDades {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
         }
-        return 2;
+
+        if(ok){
+            return 0;
+        }else if(passko) {
+            return 2;
+        }else{
+            return 1;
+        }
+
     }
 
     public int addUser(User u) {
@@ -177,25 +190,24 @@ public class GestioDades {
     }
 
     public int gestionaLogin(String missatge) {
-        int error = 10;
-
-        //retornar el integer dels errors de login/registre
-
+        //0:ok, 1:usuari/mail no existeix 2:contra no
+        String [] dades = missatge.split("--");
+        String usuari_password = dades[0];
+        String email = dades[1];
+        int error = loginUser(usuari_password, email);
         return error;
     }
 
     public int gestionaRegistre(String missatge) {
-        int error = 10;
+        //0:ok, 3:usuari existeix 4:mail existeix 5:both
+        String [] dades = missatge.split("--");
+        String usuari = dades[0];
+        String password = dades[1];
+        String email = dades[2];
 
-        //retornar el integer dels errors de login/registre
-
-        if (error == 0){
-            //extreure el usuari, password i email i crear instancia de usuari i afegirlo, si error == 0
-            //User u = new User(usuari, password, email);
-            //addUser(u);
-        }
-
+        //extreure el usuari, password i email i crear instancia de usuari i afegirlo
+        User u = new User(usuari, password, email);
+        int error = addUser(u);
         return error;
     }
-
 }
