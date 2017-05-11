@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Random;
-
 /**
  * Created by miquelator on 27/4/17.
  */
@@ -63,37 +61,29 @@ public class Partida {
     }
 
     public void leftBox (){
-        if (!actualpiece.getParada()) {
-            clearPiece(actualpiece);
-            actualpiece.setPosicion(actualpiece.getPosicionx(), actualpiece.getPosiciony() - 1);
-            addPieceToMatrix(actualpiece);
-        }
+        clearPiece(actualpiece);
+        actualpiece.setPosicion(actualpiece.getPosicionx(),actualpiece.getPosiciony()-1);
+        addPieceToMatrix(actualpiece);
 
     }
 
     public void rigthBox (){
-        if (!actualpiece.getParada()) {
-            clearPiece(actualpiece);
-            actualpiece.setPosicion(actualpiece.getPosicionx() + 1, actualpiece.getPosiciony() + 1);
-            addPieceToMatrix(actualpiece);
-        }
+        clearPiece(actualpiece);
+        actualpiece.setPosicion(actualpiece.getPosicionx(),actualpiece.getPosiciony()+1);
+        addPieceToMatrix(actualpiece);
+
     }
 
     public void rotateRigth () {
-        if (!actualpiece.getParada()) {
-            clearPiece(actualpiece);
-            actualpiece.rotateRight();
-            addPieceToMatrix(actualpiece);
-        }
+        clearPiece(actualpiece);
+        actualpiece.rotateRight();
+        addPieceToMatrix(actualpiece);
     }
 
     public void rotateLeft () {
-        if (!actualpiece.getParada()) {
-
-            clearPiece(actualpiece);
-            actualpiece.rotateLeft();
-            addPieceToMatrix(actualpiece);
-        }
+        clearPiece(actualpiece);
+        actualpiece.rotateLeft();
+        addPieceToMatrix(actualpiece);
     }
 
     private void clearPiece (Pieza piece){
