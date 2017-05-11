@@ -14,7 +14,7 @@ public class Pieza {
 
         switch (tipo) {
             case 0:
-                this.pieza = new int[4][4];
+                this.pieza = new int[2][2];
                 for (int i = 0; i < pieza.length; i++){
                     for(int j = 0; j < pieza[0].length; j++){
                         pieza[i][j] = -1;
@@ -40,7 +40,7 @@ public class Pieza {
                 break;
 
             case 2:
-                this.pieza = new int[4][4];
+                this.pieza = new int[3][3];
                 for (int i = 0; i < pieza.length; i++){
                     for(int j = 0; j < pieza[0].length; j++){
                         pieza[i][j] = -1;
@@ -53,7 +53,7 @@ public class Pieza {
                 break;
 
             case 3:
-                this.pieza = new int[4][4];
+                this.pieza = new int[3][3];
                 for (int i = 0; i < pieza.length; i++){
                     for(int j = 0; j < pieza[0].length; j++){
                         pieza[i][j] = -1;
@@ -66,7 +66,7 @@ public class Pieza {
                 break;
 
             case 4:
-                this.pieza = new int[4][4];
+                this.pieza = new int[3][3];
                 for (int i = 0; i < pieza.length; i++){
                     for(int j = 0; j < pieza[0].length; j++){
                         pieza[i][j] = -1;
@@ -79,7 +79,7 @@ public class Pieza {
                 break;
 
             case 5:
-                this.pieza = new int[4][4];
+                this.pieza = new int[3][3];
                 for (int i = 0; i < pieza.length; i++){
                     for(int j = 0; j < pieza[0].length; j++){
                         pieza[i][j] = -1;
@@ -92,7 +92,7 @@ public class Pieza {
                 break;
 
             case 6:
-                this.pieza = new int[4][4];
+                this.pieza = new int[3][3];
                 for (int i = 0; i < pieza.length; i++){
                     for(int j = 0; j < pieza[0].length; j++){
                         pieza[i][j] = -1;
@@ -120,6 +120,7 @@ public class Pieza {
     }
 
     public void rotateRight (){
+        System.out.println(pieza.length);
         for (int i = 0; i < pieza.length; i++){
             for (int j = 0; j < pieza[0].length; j++){
                 pieza[i][j] = pieza[pieza.length-j][i];

@@ -126,33 +126,37 @@ public class GameView extends JFrame{
         }
     }
     public void printarNextPiece (int[][] nextpiece){
-        for (int i = 0; i < nextpiece.length; i++){
-            for (int j = 0; j < nextpiece[0].length;j++){
-                switch (nextpiece[i][j]){
-                    case 0:
-                        siguientePieza[i][j].setBackground(Color.YELLOW);
-                        break;
-                    case 1:
-                        siguientePieza[i][j].setBackground(Color.CYAN);
-                        break;
-                    case 2:
-                        siguientePieza[i][j].setBackground(Color.RED);
-                        break;
-                    case 3:
-                        siguientePieza[i][j].setBackground(Color.GREEN);
-                        break;
-                    case 4:
-                        siguientePieza[i][j].setBackground(Color.ORANGE);
-                        break;
-                    case 5:
-                        siguientePieza[i][j].setBackground(Color.PINK);
-                        break;
-                    case 6:
-                        siguientePieza[i][j].setBackground(Color.MAGENTA);
-                        break;
-                    default:
-                        siguientePieza[i][j].setBackground(Color.GRAY);
-                        break;
+        for (int i = 0; i < siguientePieza.length; i++){
+            for (int j = 0; j < siguientePieza[0].length;j++){
+                try {
+                    switch (nextpiece[i][j]) {
+                        case 0:
+                            siguientePieza[i][j].setBackground(Color.YELLOW);
+                            break;
+                        case 1:
+                            siguientePieza[i][j].setBackground(Color.CYAN);
+                            break;
+                        case 2:
+                            siguientePieza[i][j].setBackground(Color.RED);
+                            break;
+                        case 3:
+                            siguientePieza[i][j].setBackground(Color.GREEN);
+                            break;
+                        case 4:
+                            siguientePieza[i][j].setBackground(Color.ORANGE);
+                            break;
+                        case 5:
+                            siguientePieza[i][j].setBackground(Color.PINK);
+                            break;
+                        case 6:
+                            siguientePieza[i][j].setBackground(Color.MAGENTA);
+                            break;
+                        default:
+                            siguientePieza[i][j].setBackground(Color.GRAY);
+                            break;
+                    }
+                } catch (ArrayIndexOutOfBoundsException aioobe){
+                    siguientePieza[i][j].setBackground(Color.GRAY);
                 }
             }
         }
