@@ -45,9 +45,10 @@ public class Partida {
     }
 
     /**
-     * Añadé una nueva pieza a la interfaz del juego. La diferencia con #addPieceToMatrix(Pieza piece) es
-     * que la pieza que se añadé en este caso se la situa en la posición inicial.
+     * Añade una nueva pieza a la interfaz del juego. La diferencia con #addPieceToMatrix(Pieza piece) es
+     * que la pieza que se añade en este caso se la situa en la posición inicial.
      * @param piece
+     * @see #addPieceToMatrix(Pieza)
      */
     private void addNewPieceToMatrix (Pieza piece){
         piece.setPosicion(0,4);
@@ -62,6 +63,7 @@ public class Partida {
      * Añade una pieza a la interfaz del juego. La diferencia con #addNewPieceToMatrix es que la posicion
      * donde se coloca esta pieza viene dada por la información de la pieza.
      * @param piece
+     * @see #addNewPieceToMatrix(Pieza)
      */
     private void addPieceToMatrix (Pieza piece) {
         for (int i = 0; i < piece.getPieza().length; i++){
