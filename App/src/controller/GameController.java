@@ -50,7 +50,7 @@ public class GameController implements KeyListener {
                 break;
             case 81:
                 System.out.println("Rotar izquierda");
-                //game.rotateLeft();
+                game.rotateLeft();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 69:

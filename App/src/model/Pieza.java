@@ -120,16 +120,23 @@ public class Pieza {
     }
 
     public void rotateRight (){
-        System.out.println(pieza.length);
+        int[][] aux = new int[pieza.length][pieza[0].length];
         for (int i = 0; i < pieza.length; i++){
-            for (int j = 0; j < pieza[0].length; j++){
-                pieza[i][j] = pieza[pieza.length-j][i];
+            for (int j = 0; j < pieza[i].length; j++){
+                aux[i][j] = pieza[pieza.length-j-1][i];
             }
         }
+        pieza = aux;
     }
 
     public void rotateLeft (){
-
+        int[][] aux = new int[pieza.length][pieza[0].length];
+        for (int i = 0; i < pieza.length; i++){
+            for (int j = 0; j < pieza[i].length; j++){
+                aux[i][j] = pieza[j][pieza.length-i-1];
+            }
+        }
+        pieza = aux;
     }
 
     public int getPosicionx (){

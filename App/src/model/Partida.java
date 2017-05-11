@@ -82,7 +82,9 @@ public class Partida {
     }
 
     public void rotateLeft () {
-
+        clearPiece(actualpiece);
+        actualpiece.rotateLeft();
+        addPieceToMatrix(actualpiece);
     }
 
     private void clearPiece (Pieza piece){
