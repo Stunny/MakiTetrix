@@ -18,11 +18,13 @@ public class Partida {
     private final static int MOVE_DOWN = 2;
     private final static int ROTATE_RIGHT = 3;
     private final static int ROTATE_LEFT = 4;
+    private final static int END = 5;
 
     private int[][] interfaz;
     private Pieza actuallpiece;
     private Pieza nextpiece;
     private int floortime;
+    private boolean end;
 
     private Timer master;
 
@@ -35,6 +37,7 @@ public class Partida {
                 interfaz[i][j] = -1;
             }
         }
+        end = false;
     }
 
     //Public Methods
@@ -134,13 +137,17 @@ public class Partida {
 
     }
 
+    public void checkEnd (){
+        if (collision(nextpiece, END)){
+            end = true;
+        }
+    }
 
     public void chargeNextPiece () {
         actuallpiece = nextpiece.clone();
         nextpiece = new Pieza(generateRandom());
         floortime = 2;
     }
-
 
     //Private Methods
 
@@ -516,6 +523,8 @@ public class Partida {
                 return checkRotateLeft(piece);
             case ROTATE_RIGHT:
                 return checkRotateRight(piece);
+            case END:
+                return checkInitPos(piece);
         }
         return false;
     }
@@ -1957,6 +1966,68 @@ public class Partida {
         return false;
     }
 
+    private boolean checkInitPos (Pieza piece){
+        switch (piece.getTipo()){
+            case 0:
+                if (interfaz[piece.getPosx()][piece.getPosy()] != VOID_VALUE ||
+                        interfaz[piece.getPosx()][piece.getPosy()+1] != VOID_VALUE ||
+                        interfaz[piece.getPosx()+1][piece.getPosy()] != VOID_VALUE ||
+                        interfaz[piece.getPosx()+1][piece.getPosy()+1] != VOID_VALUE){
+                    return true;
+                }
+                break;
+            case 1:
+                if (interfaz[piece.getPosx()-1][piece.getPosy()] != VOID_VALUE ||
+                        interfaz[piece.getPosx()][piece.getPosy()] != VOID_VALUE ||
+                        interfaz[piece.getPosx()+1][piece.getPosy()] != VOID_VALUE ||
+                        interfaz[piece.getPosx()+2][piece.getPosy()] != VOID_VALUE){
+                    return true;
+                }
+                break;
+            case 2:
+                if (interfaz[piece.getPosx()-1][piece.getPosy()-1] != VOID_VALUE ||
+                        interfaz[piece.getPosx()-1][piece.getPosy()] != VOID_VALUE ||
+                        interfaz[piece.getPosx()][piece.getPosy()] != VOID_VALUE ||
+                        interfaz[piece.getPosx()][piece.getPosy()+1] != VOID_VALUE){
+                    return true;
+                }
+                break;
+            case 3:
+                if (interfaz[piece.getPosx()][piece.getPosy()-1] != VOID_VALUE ||
+                        interfaz[piece.getPosx()-1][piece.getPosy()] != VOID_VALUE ||
+                        interfaz[piece.getPosx()+1][piece.getPosy()] != VOID_VALUE ||
+                        interfaz[piece.getPosx()-1][piece.getPosy()+1] != VOID_VALUE){
+                    return true;
+                }
+                break;
+            case 4:
+                if (interfaz[piece.getPosx()][piece.getPosy()-1] != VOID_VALUE ||
+                        interfaz[piece.getPosx()][piece.getPosy()] != VOID_VALUE ||
+                        interfaz[piece.getPosx()][piece.getPosy()+1] != VOID_VALUE ||
+                        interfaz[piece.getPosx()-1][piece.getPosy()+1] != VOID_VALUE){
+                    return true;
+                }
+                break;
+            case 5:
+                if (interfaz[piece.getPosx()-1][piece.getPosy()-1] != VOID_VALUE ||
+                        interfaz[piece.getPosx()][piece.getPosy()-1] != VOID_VALUE ||
+                        interfaz[piece.getPosx()][piece.getPosy()] != VOID_VALUE ||
+                        interfaz[piece.getPosx()][piece.getPosy()+1] != VOID_VALUE){
+                    return true;
+                }
+                break;
+            case 6:
+                if (interfaz[piece.getPosx()][piece.getPosy()-1] != VOID_VALUE ||
+                        interfaz[piece.getPosx()-1][piece.getPosy()] != VOID_VALUE ||
+                        interfaz[piece.getPosx()][piece.getPosy()] != VOID_VALUE ||
+                        interfaz[piece.getPosx()][piece.getPosy()+1] != VOID_VALUE){
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
+
     private boolean hadCompleteLine (int linea){
         for (int i = 0; i < MAXY; i++){
             if (interfaz[linea][i] == VOID_VALUE){
@@ -1965,7 +2036,6 @@ public class Partida {
         }
         return true;
     }
-
 
     private int generateRandom (){
         return new Random().nextInt(7);
@@ -1979,6 +2049,9 @@ public class Partida {
 
     public int getFloortime () {return floortime;}
     public Pieza getNextpiece () {return nextpiece;}
+    public boolean isEnded(){
+        return end;
+    }
 
     public void setMasterTimer(Timer t){
         master = t;

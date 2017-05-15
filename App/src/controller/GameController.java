@@ -34,27 +34,27 @@ public class GameController implements KeyListener {
     public void keyPressed (KeyEvent e){
         switch (e.getKeyCode()){
             case 65:
-                System.out.println("leeeft");
+                //System.out.println("leeeft");
                 game.goLeft();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 83:
-                System.out.println("s");
+                //System.out.println("s");
                 game.subeVelocidad();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 68:
-                System.out.println("d");
+                //System.out.println("d");
                 game.goRight();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 81:
-                System.out.println("q");
+                //System.out.println("q");
                 game.rotateLeft();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 69:
-                System.out.println("e");
+                //System.out.println("e");
                 game.rotateRight();
                 gv.printarPantalla(game.getInterfaz());
                 break;

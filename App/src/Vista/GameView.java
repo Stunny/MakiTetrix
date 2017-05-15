@@ -94,6 +94,7 @@ public class GameView extends JFrame{
         getContentPane().add(observadores,BorderLayout.SOUTH);
 
     }
+
     public void printarPantalla (int[][] interfaz){
         for (int i = 0; i < interfaz.length; i++){
             for (int j = 0; j < interfaz[0].length; j++){
@@ -126,6 +127,7 @@ public class GameView extends JFrame{
             }
         }
     }
+
     public void printarNextPiece (Pieza piece){
         Pieza aux = piece.clone();
         int[][] nextpiece = new int[4][4];
@@ -217,4 +219,5 @@ public class GameView extends JFrame{
         }
 
     }
+
 }
