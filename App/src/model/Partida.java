@@ -24,6 +24,8 @@ public class Partida {
     private Pieza nextpiece;
     private int floortime;
 
+    private Timer master;
+
     //Constructor
 
     public Partida(){
@@ -131,6 +133,7 @@ public class Partida {
        }
 
     }
+
 
     public void chargeNextPiece () {
         actuallpiece = nextpiece.clone();
@@ -1963,6 +1966,7 @@ public class Partida {
         return true;
     }
 
+
     private int generateRandom (){
         return new Random().nextInt(7);
     }
@@ -1972,6 +1976,17 @@ public class Partida {
     public int[][] getInterfaz (){
         return interfaz;
     }
+
     public int getFloortime () {return floortime;}
     public Pieza getNextpiece () {return nextpiece;}
+
+    public void setMasterTimer(Timer t){
+        master = t;
+    }
+    public void reduceVelocidad(){
+        master.setVelocidad(1000);
+    }
+    public void subeVelocidad(){
+        master.setVelocidad(300);
+    }
 }

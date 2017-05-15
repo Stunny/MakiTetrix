@@ -34,22 +34,27 @@ public class GameController implements KeyListener {
     public void keyPressed (KeyEvent e){
         switch (e.getKeyCode()){
             case 65:
+                System.out.println("leeeft");
                 game.goLeft();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 83:
-                game.goDown();
+                System.out.println("s");
+                game.subeVelocidad();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 68:
+                System.out.println("d");
                 game.goRight();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 81:
+                System.out.println("q");
                 game.rotateLeft();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 69:
+                System.out.println("e");
                 game.rotateRight();
                 gv.printarPantalla(game.getInterfaz());
                 break;
@@ -58,9 +63,13 @@ public class GameController implements KeyListener {
                 break;
         }
     }
+
+
     @Override()
     public void keyReleased(KeyEvent e){
-
+        if (e.getKeyCode()==83){
+            game.reduceVelocidad();
+        }
     }
     @Override
     public void keyTyped (KeyEvent e){

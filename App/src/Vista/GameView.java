@@ -10,7 +10,6 @@ import java.awt.*;
  * Created by jorti on 31/03/2017.
  */
 public class GameView extends JFrame{
-
     private JPanel[][]caselles;
     private JPanel centre;
     private JLabel temps;

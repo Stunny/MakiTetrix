@@ -13,10 +13,15 @@ public class Timer extends Thread {
 
     public Timer (Partida game, GameView gv){
         this.game = game;
-        velocidad = 3000;
+        game.setMasterTimer(this);
         running = false;
         this.gv = gv;
+        this.velocidad = 700;
     }
+    public void setVelocidad(int v){
+        velocidad = v;
+    }
+
 
     public void run() {
         running = true;
@@ -37,9 +42,6 @@ public class Timer extends Thread {
         }
     }
 
-    public void subirVelocidad (){
-        velocidad = velocidad - 75;
-    }
 
 
 }
