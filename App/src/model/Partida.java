@@ -4,6 +4,14 @@ import java.util.Random;
 
 /**
  * Created by jorti on 14/05/2017.
+ *
+ * Esta clase gestiona toda la información de la partida.
+ * Por lo que se encarga de printar las pieces, comprovar
+ * las colisiones, la puntuación, etc.
+ *
+ * @see Pieza
+ * @see Timer
+ * @see controller.GameController
  */
 public class Partida {
 
@@ -21,7 +29,7 @@ public class Partida {
     private final static int END = 5;
 
     private int[][] interfaz;
-    private Pieza actuallpiece;
+    private Pieza actualpiece;
     private Pieza nextpiece;
     private int floortime;
     private boolean end;
@@ -42,72 +50,127 @@ public class Partida {
 
     //Public Methods
 
+    /**
+     * Genera una nueva partida, asigando los valor de las nuevas
+     * piezas.
+     * @see Pieza
+     * @see #generateRandom()
+     */
     public void newGame (){
         floortime = 2;
-        actuallpiece = new Pieza(generateRandom());
+        actualpiece = new Pieza(generateRandom());
         nextpiece = new Pieza(generateRandom());
-        updateInterfaz(actuallpiece);
+        updateInterfaz(actualpiece);
     }
 
+    /**
+     * Permite girar una pieza hacia la derecha.
+     *
+     * @see Pieza
+     * @see #collision(Pieza, int)
+     * @see #clear(Pieza)
+     * @see #updateInterfaz(Pieza)
+     */
     public void rotateRight (){
-        if (!(collision(actuallpiece, ROTATE_RIGHT))) {
-            clear(actuallpiece);
-            actuallpiece.rotateRight();
-            updateInterfaz(actuallpiece);
+        if (!(collision(actualpiece, ROTATE_RIGHT))) {
+            clear(actualpiece);
+            actualpiece.rotateRight();
+            updateInterfaz(actualpiece);
             return;
         }
-        updateInterfaz(actuallpiece);
+        updateInterfaz(actualpiece);
 
     }
 
+    /**
+     * Permite girar una pieza hacia la izquierda.
+     *
+     * @see Pieza
+     * @see #collision(Pieza, int)
+     * @see #clear(Pieza)
+     * @see #updateInterfaz(Pieza)
+     */
     public void rotateLeft () {
-        if (!(collision(actuallpiece, ROTATE_LEFT))) {
-            clear(actuallpiece);
-            actuallpiece.rotateLeft();
-            updateInterfaz(actuallpiece);
+        if (!(collision(actualpiece, ROTATE_LEFT))) {
+            clear(actualpiece);
+            actualpiece.rotateLeft();
+            updateInterfaz(actualpiece);
             return;
         }
-        updateInterfaz(actuallpiece);
+        updateInterfaz(actualpiece);
     }
 
+    /**
+     * Mueva la pieza una posicion hacia la derecha.
+     *
+     * @see #collision(Pieza, int)
+     * @see #clear(Pieza)
+     * @see #updateInterfaz(Pieza)
+     */
     public void goRight (){
-        if (!(collision(actuallpiece, MOVE_RIGHT))) {
-            clear(actuallpiece);
-            actuallpiece.setPosy(actuallpiece.getPosy() + 1);
-            updateInterfaz(actuallpiece);
+        if (!(collision(actualpiece, MOVE_RIGHT))) {
+            clear(actualpiece);
+            actualpiece.setPosy(actualpiece.getPosy() + 1);
+            updateInterfaz(actualpiece);
             return;
         }
-        updateInterfaz(actuallpiece);
+        updateInterfaz(actualpiece);
     }
 
+    /**
+     * Mueva la pieza una posicion hacia la izquierda.
+     *
+     * @see #collision(Pieza, int)
+     * @see #clear(Pieza)
+     * @see #updateInterfaz(Pieza)
+     */
     public void goLeft (){
-        if (!(collision(actuallpiece, MOVE_LEFT))){
-            clear(actuallpiece);
-            actuallpiece.setPosy(actuallpiece.getPosy() - 1);
-            updateInterfaz(actuallpiece);
+        if (!(collision(actualpiece, MOVE_LEFT))){
+            clear(actualpiece);
+            actualpiece.setPosy(actualpiece.getPosy() - 1);
+            updateInterfaz(actualpiece);
             return;
         }
-        updateInterfaz(actuallpiece);
+        updateInterfaz(actualpiece);
     }
 
+    /**
+     * Mueva la pieza una posicion hacia la abajo.
+     *
+     * @see #collision(Pieza, int)
+     * @see #clear(Pieza)
+     * @see #updateInterfaz(Pieza)
+     */
     public void goDown (){
-        if (!(collision(actuallpiece, MOVE_DOWN))) {
-            clear(actuallpiece);
-            actuallpiece.setPosx(actuallpiece.getPosx() + 1);
-            updateInterfaz(actuallpiece);
+        if (!(collision(actualpiece, MOVE_DOWN))) {
+            clear(actualpiece);
+            actualpiece.setPosx(actualpiece.getPosx() + 1);
+            updateInterfaz(actualpiece);
             return;
         }
-        updateInterfaz(actuallpiece);
+        updateInterfaz(actualpiece);
     }
 
+    /**
+     * Comprueba si la pieza actual esta tocando alguna
+     * cosa por la parte de abajo.
+     *
+     * @see #collision(Pieza, int)
+     */
     public boolean hadFloor (){
-        if (collision(actuallpiece, MOVE_DOWN)){
+        if (collision(actualpiece, MOVE_DOWN)){
             floortime--;
             return true;
         }
         return false;
     }
 
+    /**
+     * Mira si hay alguna fila completa. La elimina del
+     * interfaz y la baja su fila superior.
+     *
+     * @see #hadCompleteLine(int)
+     */
     public void checkLine (){
         int lines = 0;
         boolean haveline = false;
@@ -137,20 +200,38 @@ public class Partida {
 
     }
 
+    /**
+     * Comprueba si la posicion de salia esta ocupada.
+     *
+     * @see #collision(Pieza, int)
+     */
     public void checkEnd (){
         if (collision(nextpiece, END)){
             end = true;
         }
     }
 
+    /**
+     * Pone como pieza actual la siguiente, y genera
+     * una nueva nextpiece. Además de reiniciar el tiempo
+     * de suelo.
+     *
+     * @see Pieza
+     * @see #generateRandom()
+     */
     public void chargeNextPiece () {
-        actuallpiece = nextpiece.clone();
+        actualpiece = nextpiece.clone();
         nextpiece = new Pieza(generateRandom());
         floortime = 2;
     }
 
     //Private Methods
 
+    /**
+     * Actualiza la interfaz para introducir una pieza.
+     *
+     * @param piece     Pieza a introduccir en la interfaz.
+     */
     private void updateInterfaz (Pieza piece){
         switch (piece.getTipo()){
             case 0:
@@ -331,6 +412,11 @@ public class Partida {
         }
     }
 
+    /**
+     * Elimina una pieza de la interfaz.
+     *
+     * @param piece     Pieza a eliminar de la interfaz.
+     */
     private void clear(Pieza piece){
         switch (piece.getTipo()){
             case 0:
@@ -511,6 +597,23 @@ public class Partida {
         }
     }
 
+    /**
+     * Comprueba si hay alguna colisio, tanto por
+     * los laterales como por dejaba y también si ya no se
+     * pueden generar nuevas piezas.
+     *
+     * @see #checkRotateRight(Pieza)
+     * @see #checkRotateLeft(Pieza)
+     * @see #checkRight(Pieza)
+     * @see #checkLeft(Pieza)
+     * @see #checkDown(Pieza)
+     * @see #checkEnd()
+     *
+     * @param piece     Pieza que va a colisionar.
+     * @param move      Movimiento que va hacer la pieza.
+     * @return          Devuelve cierto si la pieza va a colisionar y por
+     *                  lo tanto no puede hacer el movimiento que queria hacer.
+     */
     private boolean collision (Pieza piece, int move){
         switch (move){
             case MOVE_RIGHT:
@@ -529,6 +632,14 @@ public class Partida {
         return false;
     }
 
+    /**
+     * Comprueba todas las posibles combinaciones para que no haya
+     * una colision por la zona de la derecha.
+     *
+     * @param piece     Pieza que podría colisionar.
+     * @return          Devuelve cierto si la pieza colisionará al
+     *                  ir a la derecha.
+     */
     private boolean checkRight (Pieza piece){
         switch (piece.getTipo()){
             case 0:
@@ -821,6 +932,14 @@ public class Partida {
         return false;
     }
 
+    /**
+     * Comprueba todas las posibles combinaciones para que no haya
+     * una colision por la zona de la izquierda.
+     *
+     * @param piece     Pieza que podría colisionar.
+     * @return          Devuelve cierto si la pieza colisionará al
+     *                  ir a la izquierda.
+     */
     private boolean checkLeft (Pieza piece) {
         switch (piece.getTipo()) {
             case 0:
@@ -1113,6 +1232,13 @@ public class Partida {
         return false;
     }
 
+    /**
+     * Comprueba todas las posibles combinaciones para que no haya
+     * una colision por la parte de abajo.
+     *
+     * @param piece     Pieza que podría colisionar.
+     * @return          Devuelve cierto si la pieza colisionará al bajar.
+     */
     private boolean checkDown (Pieza piece) {
         switch (piece.getTipo()) {
             case 0:
@@ -1405,6 +1531,13 @@ public class Partida {
         return false;
     }
 
+    /**
+     * Comprueba todas las posibles rotaciones hacia la derecha
+     * para si hay colisiones al rotar la pieza.
+     *
+     * @param piece     Pieza que podría colisionar.
+     * @return          Devuelve cierto si la pieza colisionará al rotar.
+     */
     private boolean checkRotateRight (Pieza piece){
         Pieza rotatedpiece = piece.clone();
         rotatedpiece.rotateRight();
@@ -1685,6 +1818,13 @@ public class Partida {
         return false;
     }
 
+    /**
+     * Comprueba todas las posibles rotaciones hacia la izquierda
+     * para si hay colisiones al rotar la pieza.
+     *
+     * @param piece     Pieza que podría colisionar.
+     * @return          Devuelve cierto si la pieza colisionará al rotar.
+     */
     private boolean checkRotateLeft (Pieza piece){
         Pieza rotatedpiece = piece.clone();
         rotatedpiece.rotateLeft();
@@ -1966,6 +2106,13 @@ public class Partida {
         return false;
     }
 
+    /**
+     * Mira si la próxima pieza se sobreescribirá en alguna anterior.
+     *
+     * @param piece     Pieza que podría estar por encima de alguna anterior.
+     * @return          Devuelve cierto si en alguna posicion de salida hay
+     *                  alguna pieza situada.
+     */
     private boolean checkInitPos (Pieza piece){
         switch (piece.getTipo()){
             case 0:
@@ -2028,6 +2175,13 @@ public class Partida {
         return false;
     }
 
+    /**
+     * Comprueba si una linea de la interfaz esta completa. Es decir que
+     * ninguno de sus valores es igual a VOID_VALUE.
+     *
+     * @param linea     Linea a comprovar si esta completa.
+     * @return          Devuelve cierto si la linea esta completa.
+     */
     private boolean hadCompleteLine (int linea){
         for (int i = 0; i < MAXY; i++){
             if (interfaz[linea][i] == VOID_VALUE){
@@ -2037,6 +2191,11 @@ public class Partida {
         return true;
     }
 
+    /**
+     * Genera un número aleatoria del 0 al 6.
+     *
+     * @return Devuelve el número generado.
+     */
     private int generateRandom (){
         return new Random().nextInt(7);
     }
