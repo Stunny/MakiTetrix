@@ -19,7 +19,6 @@ public class Timer extends Thread {
         this.velocidad = 700;
     }
     public void setVelocidad(int v){
-
         velocidad = v;
     }
 
