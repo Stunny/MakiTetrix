@@ -1,5 +1,7 @@
 package Vista;
 
+import model.Pieza;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -125,9 +127,63 @@ public class GameView extends JFrame{
             }
         }
     }
-    public void printarNextPiece (int[][] nextpiece){
+    public void printarNextPiece (Pieza piece){
+        Pieza aux = piece.clone();
+        int[][] nextpiece = new int[4][4];
+        for (int i = 0; i < nextpiece.length; i++){
+            for (int j = 0; j < nextpiece[i].length; j++){
+                nextpiece[i][j] = -1;
+            }
+        }
+        aux.setPosx(1);
+        aux.setPosy(1);
+        switch (aux.getTipo()){
+            case 0:
+                nextpiece[aux.getPosx()][aux.getPosy()] = aux.getTipo();
+                nextpiece[aux.getPosx()][aux.getPosy()+1] = aux.getTipo();
+                nextpiece[aux.getPosx()+1][aux.getPosy()] = aux.getTipo();
+                nextpiece[aux.getPosx()+1][aux.getPosy()+1] = aux.getTipo();
+                break;
+            case 1:
+                nextpiece[aux.getPosx()-1][aux.getPosy()] = aux.getTipo();
+                nextpiece[aux.getPosx()][aux.getPosy()] = aux.getTipo();
+                nextpiece[aux.getPosx()+1][aux.getPosy()] = aux.getTipo();
+                nextpiece[aux.getPosx()+2][aux.getPosy()] = aux.getTipo();
+                break;
+            case 2:
+                nextpiece[aux.getPosx()-1][aux.getPosy()-1] = aux.getTipo();
+                nextpiece[aux.getPosx()-1][aux.getPosy()] = aux.getTipo();
+                nextpiece[aux.getPosx()][aux.getPosy()] = aux.getTipo();
+                nextpiece[aux.getPosx()][aux.getPosy()+1] = aux.getTipo();
+                break;
+            case 3:
+                nextpiece[aux.getPosx()][aux.getPosy()-1] = aux.getTipo();
+                nextpiece[aux.getPosx()-1][aux.getPosy()] = aux.getTipo();
+                nextpiece[aux.getPosx()][aux.getPosy()] = aux.getTipo();
+                nextpiece[aux.getPosx()-1][aux.getPosy()+1] = aux.getTipo();
+                break;
+            case 4:
+                nextpiece[aux.getPosx()][aux.getPosy()-1] = aux.getTipo();
+                nextpiece[aux.getPosx()][aux.getPosy()] = aux.getTipo();
+                nextpiece[aux.getPosx()][aux.getPosy()+1] = aux.getTipo();
+                nextpiece[aux.getPosx()-1][aux.getPosy()+1] = aux.getTipo();
+                break;
+            case 5:
+                nextpiece[aux.getPosx()-1][aux.getPosy()-1] = aux.getTipo();
+                nextpiece[aux.getPosx()][aux.getPosy()-1] = aux.getTipo();
+                nextpiece[aux.getPosx()][aux.getPosy()] = aux.getTipo();
+                nextpiece[aux.getPosx()][aux.getPosy()+1] = aux.getTipo();
+                break;
+            case 6:
+                nextpiece[aux.getPosx()][aux.getPosy()-1] = aux.getTipo();
+                nextpiece[aux.getPosx()-1][aux.getPosy()] = aux.getTipo();
+                nextpiece[aux.getPosx()][aux.getPosy()] = aux.getTipo();
+                nextpiece[aux.getPosx()][aux.getPosy()+1] = aux.getTipo();
+                break;
+        }
+
         for (int i = 0; i < siguientePieza.length; i++){
-            for (int j = 0; j < siguientePieza[0].length;j++){
+            for (int j = 0; j < siguientePieza[i].length;j++){
                 try {
                     switch (nextpiece[i][j]) {
                         case 0:
@@ -160,5 +216,6 @@ public class GameView extends JFrame{
                 }
             }
         }
+
     }
 }

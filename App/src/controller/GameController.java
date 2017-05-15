@@ -21,7 +21,7 @@ public class GameController implements KeyListener {
     }
 
     public void startGame (){
-        game.startGame();
+        game.newGame();
         gv.printarPantalla(game.getInterfaz());
         gv.printarNextPiece(game.getNextpiece());
     }
@@ -34,28 +34,23 @@ public class GameController implements KeyListener {
     public void keyPressed (KeyEvent e){
         switch (e.getKeyCode()){
             case 65:
-                System.out.println("Izquierda");
-                game.leftBox();
+                game.goLeft();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 83:
-                System.out.println("Abajo");
-                game.downABox();
+                game.goDown();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 68:
-                System.out.println("Derecha");
-                game.rigthBox();
+                game.goRight();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 81:
-                System.out.println("Rotar izquierda");
                 game.rotateLeft();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 69:
-                System.out.println("Rotar derecha");
-                game.rotateRigth();
+                game.rotateRight();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             default:

@@ -9,24 +9,26 @@ public class Timer extends Thread {
     private int velocidad;
     private Partida game;
     private boolean running;
-    private int tiempo;
     private GameView gv;
 
     public Timer (Partida game, GameView gv){
         this.game = game;
-        velocidad = 1000;
+        velocidad = 3000;
         running = false;
-        tiempo = 0;
         this.gv = gv;
     }
 
     public void run() {
         running = true;
         while (running){
-            tiempo++;
-            game.downABox();
-            System.out.println(tiempo);
+            game.goDown();
             gv.printarPantalla(game.getInterfaz());
+            if (game.hadFloor() && game.getFloortime() == 0){
+                game.checkLine();
+                gv.printarPantalla(game.getInterfaz());
+                game.chargeNextPiece();
+                gv.printarNextPiece(game.getNextpiece());
+            }
             try {
                 Thread.sleep(velocidad);
             } catch (InterruptedException ie){
@@ -36,7 +38,7 @@ public class Timer extends Thread {
     }
 
     public void subirVelocidad (){
-        velocidad = velocidad - 50;
+        velocidad = velocidad - 75;
     }
 
 

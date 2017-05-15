@@ -1,158 +1,90 @@
 package model;
 
 /**
- * Created by miquelator on 24/4/17.
+ * Created by jorti on 14/05/2017.
  */
 public class Pieza {
-    private int posicionx;
-    private int posiciony;
+    private int posx;
+    private int posy;
     private int tipo;
-    private int[][] pieza;
-    private boolean stop;
+    private int posicion;
 
-    public Pieza(int tipo) {
+    //Constructors
+
+    public Pieza(int tipo){
         this.tipo = tipo;
-
-
-        switch (tipo) {
+        switch (this.tipo){
             case 0:
-                this.pieza = new int[2][2];
-                for (int i = 0; i < pieza.length; i++){
-                    for(int j = 0; j < pieza[0].length; j++){
-                        pieza[i][j] = -1;
-                    }
-                }
-                setCasilla(0, 0);
-                setCasilla(0, 1);
-                setCasilla(1, 0);
-                setCasilla(1, 1);
+                posx = 0;
+                posy = 4;
                 break;
-
             case 1:
-                this.pieza = new int[4][4];
-                for (int i = 0; i < pieza.length; i++){
-                    for(int j = 0; j < pieza[0].length; j++){
-                        pieza[i][j] = -1;
-                    }
-                }
-                setCasilla(0, 1);
-                setCasilla(1, 1);
-                setCasilla(2, 1);
-                setCasilla(3, 1);
+                posx = 1;
+                posy = 4;
                 break;
-
             case 2:
-                this.pieza = new int[3][3];
-                for (int i = 0; i < pieza.length; i++){
-                    for(int j = 0; j < pieza[0].length; j++){
-                        pieza[i][j] = -1;
-                    }
-                }
-                setCasilla(0, 1);
-                setCasilla(0, 2);
-                setCasilla(1, 0);
-                setCasilla(1, 1);
+                posx = 1;
+                posy = 4;
                 break;
-
             case 3:
-                this.pieza = new int[3][3];
-                for (int i = 0; i < pieza.length; i++){
-                    for(int j = 0; j < pieza[0].length; j++){
-                        pieza[i][j] = -1;
-                    }
-                }
-                setCasilla(0, 0);
-                setCasilla(0, 1);
-                setCasilla(1, 1);
-                setCasilla(1, 2);
+                posx = 1;
+                posy = 4;
                 break;
-
             case 4:
-                this.pieza = new int[3][3];
-                for (int i = 0; i < pieza.length; i++){
-                    for(int j = 0; j < pieza[0].length; j++){
-                        pieza[i][j] = -1;
-                    }
-                }
-                setCasilla(0, 1);
-                setCasilla(1, 1);
-                setCasilla(2, 1);
-                setCasilla(2, 2);
+                posx = 1;
+                posy = 4;
                 break;
-
             case 5:
-                this.pieza = new int[3][3];
-                for (int i = 0; i < pieza.length; i++){
-                    for(int j = 0; j < pieza[0].length; j++){
-                        pieza[i][j] = -1;
-                    }
-                }
-                setCasilla(0, 1);
-                setCasilla(1, 1);
-                setCasilla(2, 1);
-                setCasilla(2, 0);
-                break;
-
+                posx = 1;
+                posy = 4;
             case 6:
-                this.pieza = new int[3][3];
-                for (int i = 0; i < pieza.length; i++){
-                    for(int j = 0; j < pieza[0].length; j++){
-                        pieza[i][j] = -1;
-                    }
-                }
-                setCasilla(0, 1);
-                setCasilla(1, 0);
-                setCasilla(1, 1);
-                setCasilla(1, 2);
-                break;
+                posx = 1;
+                posy = 4;
         }
+        posicion = 0;
     }
 
-    /**
-     *  Hace la trapuesta de la matriz. Para que roté la matriz hacía la derecha.
-     */
+    //Public Methods
+
     public void rotateRight (){
-        int[][] aux = new int[pieza.length][pieza[0].length];
-        for (int i = 0; i < pieza.length; i++){
-            for (int j = 0; j < pieza[i].length; j++){
-                aux[i][j] = pieza[pieza.length-j-1][i];
-            }
+        if (posicion == 3){
+            posicion = 0;
+            return;
         }
-        pieza = aux;
+        posicion++;
     }
-
-    /**
-     *  Permite rotar la matriz hacía la izquierda, haciendo la trspuesta de esta.
-     */
 
     public void rotateLeft (){
-        int[][] aux = new int[pieza.length][pieza[0].length];
-        for (int i = 0; i < pieza.length; i++){
-            for (int j = 0; j < pieza[i].length; j++){
-                aux[i][j] = pieza[j][pieza.length-i-1];
-            }
+        if (posicion == 0){
+            posicion = 3;
+            return;
         }
-        pieza = aux;
+        posicion--;
     }
 
-    //Getters & Setters
+    // Getters && Setters
 
-    private void setCasilla (int x, int y){
-        pieza[x][y] = tipo;
-    }
-    public void setPosicion (int x, int y){
-        this.posicionx = x;
-        this.posiciony = y;
+    public int getTipo (){return tipo;}
 
+    public void setPosx (int posx) {this.posx = posx;}
+
+    public void setPosy (int posy) {this.posy = posy;}
+
+    public void setPosicion(int posicion){this.posicion = posicion;}
+
+    public int getPosx () {return posx;}
+
+    public int getPosy() {return posy;}
+
+    public int getPosicion (){return posicion;}
+
+
+    @Override
+    public Pieza clone (){
+        Pieza aux = new Pieza (this.tipo);
+        aux.setPosicion(this.posicion);
+        aux.setPosy(this.posy);
+        aux.setPosx(this.posx);
+        return aux;
     }
-    public int[][] getPieza(){
-        return pieza;
-    }
-    public int getPosicionx (){
-        return posicionx;
-    }
-    public int getPosiciony (){
-        return posiciony;
-    }
-    public boolean getStop () { return stop; }
 }
