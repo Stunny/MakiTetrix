@@ -40,4 +40,6 @@ public interface UserAccessRepository {
      */
     boolean checkEmail(String userEmail);
 
+
+    String response();
 }

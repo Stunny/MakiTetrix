@@ -191,7 +191,7 @@ public class GestioDades {
 
     public int gestionaLogin(String missatge) {
         //0:ok, 1:usuari/mail no existeix 2:contra no
-        String [] dades = missatge.split("--");
+        String [] dades = missatge.split("#");
         String usuari_password = dades[0];
         String email = dades[1];
         int error = loginUser(usuari_password, email);
@@ -200,11 +200,10 @@ public class GestioDades {
 
     public int gestionaRegistre(String missatge) {
         //0:ok, 3:usuari existeix 4:mail existeix 5:both
-        String [] dades = missatge.split("--");
+        String [] dades = missatge.split("#");
         String usuari = dades[0];
         String password = dades[1];
         String email = dades[2];
-
         //extreure el usuari, password i email i crear instancia de usuari i afegirlo
         User u = new User(usuari, password, email);
         int error = addUser(u);

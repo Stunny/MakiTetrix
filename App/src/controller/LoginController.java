@@ -102,10 +102,12 @@ public class LoginController implements ActionListener {
         } else {
             User loginUser = new User(view.getUserName(), null, view.getPassword());
             startThread(loginUser);
+            //despues del thread, la ejecucion en el thread principal siguie, y uar.login(loginUser) es null
+            // porque el thread aun no le ha asignado nada. hay que esperar a que tenga valor
 
             if (uar.login(loginUser)){
                 OnLoginSuccess();
-            } else {
+            }else{
                 OnLoginFailed();
             }
         }
@@ -124,7 +126,7 @@ public class LoginController implements ActionListener {
      *
      */
     public void OnLoginFailed(){
-        view.setLoginError();
+        view.setLoginError(uar.response());
     }
 
     /**

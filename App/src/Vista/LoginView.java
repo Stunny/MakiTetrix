@@ -111,10 +111,10 @@ public class LoginView extends JFrame{
     /**
      * Sets the login error message below the credential fields.
      */
-    public void setLoginError(){
+    public void setLoginError(String errorMessage){
         //TODO: hacer que debajo de los campos de texto aparezca un mensaje en rojo que diga "Nombre de usuario o contraseña incorrectos"
         String[] options = { "OK" };
-        JOptionPane.showOptionDialog(this, "Nombre de usuario o contraseña incorrecto",
+        JOptionPane.showOptionDialog(this, errorMessage,
                 "ERROR AL INICIAR SESSIÓN", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
                 null, options, options[0]);
         jtfUserName.setText("");

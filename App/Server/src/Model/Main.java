@@ -14,17 +14,6 @@ public class Main {
             @Override
             public void run() {
 
-                /* Averiguem quina direccio IP hem d'utilitzar
-                InetAddress iAddress = null;
-                try {
-                    iAddress = InetAddress.getLocalHost();
-                    String IP = iAddress.getHostAddress();
-                    System.out.println("Server IP address : " + IP);
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                }
-                */
-
                 //creem la vista
                 View view = new View();
                 //creem el socket

@@ -6,6 +6,8 @@ import model.Partida;
 import network.ThreadSocketClient;
 
 import javax.swing.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /*
  * Clase principal de la aplicacion cliente

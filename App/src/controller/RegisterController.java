@@ -147,14 +147,17 @@ public class RegisterController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals(ACTION_REG)){
             if(credentialsOK()){
-                System.out.println("faig un registre");
                 User registerUser = new User(userName, userEmail, userPass);
                 startThread(registerUser);
+                //despues del thread, la ejecucion en el thread principal siguie, y uar.registre(registerUser) es null
+                // porque el thread aun no le ha asignado nada. hay que esperar a que tenga valor
 
                 if (uar.register(registerUser)){
                     MenuView menuView = new MenuView();
                     view.setVisible(false);
                     menuView.setVisible(true);
+                }else{
+                    view.displayError(uar.response());
                 }
             }
         }
