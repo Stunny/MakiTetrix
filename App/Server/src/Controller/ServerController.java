@@ -1,7 +1,7 @@
 package Controller;
 
 import Model.GestioDades;
-import Network.ThreadSocket;
+import Network.ThreadSocketServer;
 import View.View;
 
 import javax.swing.*;
@@ -18,13 +18,13 @@ import java.util.ArrayList;
 public class ServerController implements ActionListener, MouseListener {
     private static View view;
     private GestioDades gestioDades;
-    private ThreadSocket ts;
+    private ThreadSocketServer ts;
     private ArrayList<String> usuaris;
 
-    public ServerController(View view, GestioDades gestioDades, ThreadSocket threadSocket) {
+    public ServerController(View view, GestioDades gestioDades, ThreadSocketServer threadSocketServer) {
         this.view = view;
         this.gestioDades = gestioDades;
-        this.ts = threadSocket;
+        this.ts = threadSocketServer;
         usuaris = gestioDades.plenaUsuaris();
         ompleUsuaris();
         startThread();
@@ -53,7 +53,7 @@ public class ServerController implements ActionListener, MouseListener {
     public void startThread() {
         if (ts == null || !ts.isAlive()) {
             //aqui comence thread
-            ts = new ThreadSocket();
+            ts = new ThreadSocketServer();
             ts.start();
         }
     }

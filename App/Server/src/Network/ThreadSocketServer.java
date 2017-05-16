@@ -7,7 +7,7 @@ import java.net.Socket;
 /**
  * Created by Admin on 21/03/2017.
  */
-public class ThreadSocket extends Thread{
+public class ThreadSocketServer extends Thread{
     private ServerSocket serverSocket;
     private ThreadServidorDedicat tsd;
 
