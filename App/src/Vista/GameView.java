@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Ventana principal del juego.
+ * Ventana del juego.
  * Created by jorti on 31/03/2017.
  */
 public class GameView extends JFrame{
@@ -41,9 +41,9 @@ public class GameView extends JFrame{
         }
         //Información necesaria en la parte de arriba del nivel
 
-        temps = new JLabel ("XX:XX");
-        nivel = new JLabel ("Nivel X");
-        puntuacion = new JLabel ("0000 - eres inútil");
+        temps = new JLabel ("00:00");
+        nivel = new JLabel ("Nivel: 1");
+        puntuacion = new JLabel ("Puntos: 0");
 
         JPanel north = new JPanel (new FlowLayout());
         north.add(temps);
@@ -229,6 +229,30 @@ public class GameView extends JFrame{
             }
         }
 
+    }
+
+    //Getters && Setters
+
+    public void setTemps (int time){
+        int min = time/60;
+        int seg = time%60;
+        if (min < 10 && seg < 10){
+            temps.setText("0"+min+":0"+seg);
+        } else if (min < 10 && seg >= 10){
+            temps.setText("0"+min+":"+seg);
+        } else if (min >= 10 && seg < 10){
+            temps.setText(min+":0"+seg);
+        } else if (min >= 10 && seg >= 10){
+            temps.setText(min + ":" + seg);
+        }
+    }
+
+    public void setNivel(int nivel){
+        this.nivel.setText("Nivel: "+nivel);
+    }
+
+    public void setPuntuacion (int puntuacion){
+        this.puntuacion.setText("Puntos: "+ puntuacion);
     }
 
 }

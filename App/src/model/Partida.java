@@ -10,7 +10,7 @@ import java.util.Random;
  * las colisiones, la puntuación, etc.
  *
  * @see Pieza
- * @see Timer
+ * @see PlayGame
  * @see controller.GameController
  */
 public class Partida {
@@ -33,8 +33,10 @@ public class Partida {
     private Pieza nextpiece;
     private int floortime;
     private boolean end;
-
-    private Timer master;
+    private int level;
+    private int lineas;
+    private int points;
+    private PlayGame master;
 
     //Constructor
 
@@ -46,6 +48,8 @@ public class Partida {
             }
         }
         end = false;
+        level = 1;
+        lineas = 0;
     }
 
     //Public Methods
@@ -60,6 +64,7 @@ public class Partida {
         floortime = 2;
         actualpiece = new Pieza(generateRandom());
         nextpiece = new Pieza(generateRandom());
+        end = false;
         updateInterfaz(actualpiece);
     }
 
@@ -167,7 +172,8 @@ public class Partida {
 
     /**
      * Mira si hay alguna fila completa. La elimina del
-     * interfaz y la baja su fila superior.
+     * interfaz y la baja su fila superior. Además de añadar
+     * las lineas encontradas al total y subir el level.
      *
      * @see #hadCompleteLine(int)
      */
@@ -179,12 +185,14 @@ public class Partida {
                lines++;
            }
        }
+       lineas = lineas + lines;
+        this.updatePoints(lines);
        while (lines > 0){
            for (int i = MAXX-1; i >= 0; i--){
                if (hadCompleteLine(i)){
                    haveline = true;
                }
-               if (haveline == true){
+               if (haveline){
                    try {
                        interfaz[i] = interfaz[i-1];
                    } catch (ArrayIndexOutOfBoundsException aioobe){
@@ -196,6 +204,10 @@ public class Partida {
            }
            haveline = false;
            lines--;
+       }
+       if (lineas == 10){
+           lineas = 0;
+           level++;
        }
 
     }
@@ -2091,11 +2103,10 @@ public class Partida {
                         }
                         break;
                     case 3:
-                        if (interfaz[rotatedpiece.getPosx() + 1][rotatedpiece.getPosy()] != VOID_VALUE) {
-                            return true;
-                        }
                         try {
-
+                            if (interfaz[rotatedpiece.getPosx() + 1][rotatedpiece.getPosy()] != VOID_VALUE) {
+                                return true;
+                            }
                         } catch (ArrayIndexOutOfBoundsException aioobe){
                             return true;
                         }
@@ -2192,6 +2203,28 @@ public class Partida {
     }
 
     /**
+     * Acatualiza la puntuación actual.
+     *
+     * @param lineas    Lineas que sean eliminado.
+     */
+    private void updatePoints (int lineas){
+        switch (lineas){
+            case 1:
+                points = points + (40*level);
+                break;
+            case 2:
+                points = points + (100*level);
+                break;
+            case 3:
+                points = points + (300*level);
+                break;
+            case 4:
+                points = points + (1200*level);
+                break;
+        }
+    }
+
+    /**
      * Genera un número aleatoria del 0 al 6.
      *
      * @return Devuelve el número generado.
@@ -2211,8 +2244,10 @@ public class Partida {
     public boolean isEnded(){
         return end;
     }
+    public int getLevel() {return level;}
+    public int getPoints() {return points;}
 
-    public void setMasterTimer(Timer t){
+    public void setMasterTimer(PlayGame t){
         master = t;
     }
     public void reduceVelocidad(){

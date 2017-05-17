@@ -1,13 +1,9 @@
 import Vista.GameView;
 import Vista.LoginView;
 import controller.GameController;
-import controller.LoginController;
 import model.Partida;
-import network.ThreadSocketClient;
 
 import javax.swing.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /*
  * Clase principal de la aplicacion cliente
@@ -22,15 +18,15 @@ public class Main {
             public void run(){
                 LoginView loginView = new LoginView();
                // nota: quizas el segundo parametro, la UserAccessRepository, no deba de ser null
-                LoginController loginController = new LoginController(loginView, null);
-                loginView.registerController(loginController);
-                loginView.setVisible(true);
-               // GameView game = new GameView();
-               // game.setVisible(true);
-               // Partida partida = new Partida();
-               // GameController asdf = new GameController(game,partida);
-               // asdf.startGame();
-               // asdf.playGame();
+               // LoginController loginController = new LoginController(loginView, null);
+                //loginView.registerController(loginController);
+                //loginView.setVisible(true);
+               GameView game = new GameView();
+               game.setVisible(true);
+               Partida partida = new Partida();
+               GameController asdf = new GameController(game,partida);
+               asdf.startGame();
+               asdf.playGame();
             }
 
         });
