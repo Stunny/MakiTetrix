@@ -149,15 +149,19 @@ public class RegisterController implements ActionListener {
             if(credentialsOK()){
                 User registerUser = new User(userName, userEmail, userPass);
                 startThread(registerUser);
-                //despues del thread, la ejecucion en el thread principal siguie, y uar.registre(registerUser) es null
-                // porque el thread aun no le ha asignado nada. hay que esperar a que tenga valor
 
-                if (uar.register(registerUser)){
+                try {
+                    tsc.join();
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (tsc.isAux()){
                     MenuView menuView = new MenuView();
                     view.setVisible(false);
                     menuView.setVisible(true);
                 }else{
-                    view.displayError(uar.response());
+                    view.displayError(tsc.getResponse());
                 }
             }
         }

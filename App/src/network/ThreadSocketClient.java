@@ -22,6 +22,7 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
     private DataOutputStream doStream;
     private User user;
     private String response;
+    private boolean aux;
 
     public ThreadSocketClient(User user){
         this.user = user;
@@ -29,7 +30,6 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
 
     @Override
     public void run() {
-
         // Averiguem quina direccio IP hem d'utilitzar
         InetAddress iAddress;
         try {
@@ -40,7 +40,6 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
             Socket sServidor = new Socket (String.valueOf(IP), 33333);
             doStream = new DataOutputStream(sServidor.getOutputStream());
             diStream = new DataInputStream(sServidor.getInputStream());
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,37 +56,38 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
             e.printStackTrace();
         }
 
+        aux = tractaResposta();
+
         System.out.println("resposta que arrive al client: " + response);
+    }
+
+    @Override
+    public boolean tractaResposta() {
+        System.out.println("response: " + response);
+
+        if (response.equals("OK")){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
     @Override
-    public boolean login(User user) {
+    public void login(User user) {
         try {
             doStream.writeUTF("L-" + user.getUserName() + "#" + user.getPassword());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        if (response.equals("OK")){
-            return true;
-        }else{
-            return false;
-        }
     }
 
     @Override
-    public boolean register(User user) {
+    public void register(User user) {
         try {
             doStream.writeUTF("R-" + user.getUserName() + "#" + user.getEmail() + "#" + user.getPassword());
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        if (response.equals("OK")){
-            return true;
-        }else{
-            return false;
         }
     }
 
@@ -117,4 +117,11 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
         }
     }
 
+    public String getResponse() {
+        return response;
+    }
+
+    public boolean isAux() {
+        return aux;
+    }
 }
