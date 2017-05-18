@@ -16,8 +16,9 @@ public class Timer extends Thread {
         game.setMasterTimer(this);
         running = false;
         this.gv = gv;
-        this.velocidad = 700;
+        this.velocidad = 1200;
     }
+
     public void setVelocidad(int v){
         velocidad = v;
     }
@@ -31,13 +32,19 @@ public class Timer extends Thread {
             if (game.hadFloor() && game.getFloortime() == 0){
                 game.checkLine();
                 gv.printarPantalla(game.getInterfaz());
-                game.chargeNextPiece();
-                gv.printarNextPiece(game.getNextpiece());
+                game.checkEnd();
+                if (!(game.isEnded())){
+                    game.chargeNextPiece();
+                    gv.printarNextPiece(game.getNextpiece());
+                } else {
+                    this.interrupt();
+                }
             }
             try {
                 Thread.sleep(velocidad);
             } catch (InterruptedException ie){
-                ie.printStackTrace();
+                System.out.println("Final del Juego");
+                //Hacer lo oportuno para acabar la partida.
             }
         }
     }

@@ -2,6 +2,21 @@ package model;
 
 /**
  * Created by jorti on 14/05/2017.
+ *
+ * Contiene la información de la pieza:
+ *      Posx, posy: posicion dentro de la interfaz.
+ *      Tipo: del 0 al 6 según el tipo de pieza que sea.
+ *          0: Cuadrado
+ *          1: Forma "I"
+ *          2: Forma "Z"
+ *          3: Forma "S"
+ *          4: Forma "L"
+ *          5: Forma "L" invertida
+ *          6: Forma "T"
+ *      Posicion: posicion de la rotacion el valor va de 0 a 3.
+ * La clase Partida se encarga de interpretar todos estos datos y
+ * representarlos en la matriz.
+ * @see Partida
  */
 public class Pieza {
     private int posx;
@@ -46,6 +61,10 @@ public class Pieza {
 
     //Public Methods
 
+    /**
+     * Suma uno a la posicion, refieriendose que va hacia la derecha.
+     * En caso de llegar a 3, su ultima posicion, vuelva al valor 0.
+     */
     public void rotateRight (){
         if (posicion == 3){
             posicion = 0;
@@ -54,6 +73,10 @@ public class Pieza {
         posicion++;
     }
 
+    /**
+     * Suma uno a la posicion, refieriendose que va hacia la derecha.
+     * En caso de llegar a 0, su ultima posicion, vuelva al valor 3.
+     */
     public void rotateLeft (){
         if (posicion == 0){
             posicion = 3;

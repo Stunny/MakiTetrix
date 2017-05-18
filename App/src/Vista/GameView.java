@@ -15,7 +15,7 @@ public class GameView extends JFrame{
     private JLabel temps;
     private JLabel nivel;
     private JLabel puntuacion;
-    private JPanel[][] siguientePieza;
+    private JPanel[][] siguientepieza;
     private JLabel observador;
 
     public GameView(){
@@ -54,14 +54,14 @@ public class GameView extends JFrame{
 
         //Siguiente figura.
         JPanel east = new JPanel(new GridLayout(2,1));
-        siguientePieza = new JPanel[4][4];
+        siguientepieza = new JPanel[4][4];
         JPanel auxsiguientepieza = new JPanel(new GridLayout(4,4));
         for (int i = 0; i < 4; i++){
             for (int j = 0; j < 4; j++){
                 JPanel p = new JPanel();
                 p.setBackground(Color.blue);
-                siguientePieza[i][j] = p;
-                siguientePieza[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                siguientepieza[i][j] = p;
+                siguientepieza[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 auxsiguientepieza.add(p);
             }
         }
@@ -94,6 +94,12 @@ public class GameView extends JFrame{
         getContentPane().add(observadores,BorderLayout.SOUTH);
 
     }
+
+    /**
+     * Printa la interfaz del juego en la array de JPanel caselles.
+     *
+     * @param interfaz      Valores que se recibin de la matriz.
+     */
     public void printarPantalla (int[][] interfaz){
         for (int i = 0; i < interfaz.length; i++){
             for (int j = 0; j < interfaz[0].length; j++){
@@ -126,6 +132,13 @@ public class GameView extends JFrame{
             }
         }
     }
+
+    /**
+     * Identifica la pieza, y la representa en la matriz de
+     * JPanles siguientepieza.
+     *
+     * @param piece     Pieza a representar.
+     */
     public void printarNextPiece (Pieza piece){
         Pieza aux = piece.clone();
         int[][] nextpiece = new int[4][4];
@@ -181,40 +194,41 @@ public class GameView extends JFrame{
                 break;
         }
 
-        for (int i = 0; i < siguientePieza.length; i++){
-            for (int j = 0; j < siguientePieza[i].length;j++){
+        for (int i = 0; i < siguientepieza.length; i++){
+            for (int j = 0; j < siguientepieza[i].length; j++){
                 try {
                     switch (nextpiece[i][j]) {
                         case 0:
-                            siguientePieza[i][j].setBackground(Color.YELLOW);
+                            siguientepieza[i][j].setBackground(Color.YELLOW);
                             break;
                         case 1:
-                            siguientePieza[i][j].setBackground(Color.CYAN);
+                            siguientepieza[i][j].setBackground(Color.CYAN);
                             break;
                         case 2:
-                            siguientePieza[i][j].setBackground(Color.RED);
+                            siguientepieza[i][j].setBackground(Color.RED);
                             break;
                         case 3:
-                            siguientePieza[i][j].setBackground(Color.GREEN);
+                            siguientepieza[i][j].setBackground(Color.GREEN);
                             break;
                         case 4:
-                            siguientePieza[i][j].setBackground(Color.ORANGE);
+                            siguientepieza[i][j].setBackground(Color.ORANGE);
                             break;
                         case 5:
-                            siguientePieza[i][j].setBackground(Color.PINK);
+                            siguientepieza[i][j].setBackground(Color.PINK);
                             break;
                         case 6:
-                            siguientePieza[i][j].setBackground(Color.MAGENTA);
+                            siguientepieza[i][j].setBackground(Color.MAGENTA);
                             break;
                         default:
-                            siguientePieza[i][j].setBackground(Color.GRAY);
+                            siguientepieza[i][j].setBackground(Color.GRAY);
                             break;
                     }
                 } catch (ArrayIndexOutOfBoundsException aioobe){
-                    siguientePieza[i][j].setBackground(Color.GRAY);
+                    siguientepieza[i][j].setBackground(Color.GRAY);
                 }
             }
         }
 
     }
+
 }
