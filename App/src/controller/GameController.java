@@ -2,6 +2,7 @@ package controller;
 
 import Vista.GameView;
 import model.Partida;
+import model.PlayGame;
 import model.Timer;
 
 import java.awt.event.KeyEvent;
@@ -27,7 +28,9 @@ public class GameController implements KeyListener {
     }
 
     public void playGame () {
-        Timer t = new Timer (game,gv);
+        PlayGame pg = new PlayGame(game,gv);
+        Timer t = new Timer(gv, game);
+        pg.start();
         t.start();
     }
     @Override

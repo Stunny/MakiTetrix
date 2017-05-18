@@ -4,11 +4,13 @@ import Vista.LoginView;
 import Vista.MenuView;
 import Vista.RegisterView;
 import model.User;
+import network.ThreadSocketClient;
 import network.UserAccessRepository;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 /**
  * View controller for the Login functionality
@@ -41,6 +43,8 @@ public class LoginController implements ActionListener {
      *
      * @return
      */
+    private ThreadSocketClient tsc;
+
     public static LoginController getInstance(LoginView view, UserAccessRepository uar){
        if(loginController == null){
            loginController = new LoginController(view, uar);
@@ -72,27 +76,44 @@ public class LoginController implements ActionListener {
         }
     }
 
+    public void startThread(User u){
+        if (tsc == null || !tsc.isAlive()) {
+            //aqui comence thread
+            tsc = new ThreadSocketClient(u);
+            tsc.start();
+        }
+    }
+
     /**
      *
      */
     public void OnLogin(){
-        User loginuser;
-        if (view.getUserName().equals(view.LOG_EMPTY_UNAME)){
+
+        if (view.getUserName().equals(view.LOG_EMPTY_UNAME) || view.getPassword().equals(view.LOG_EMPTY_PSSWD)){
             OnLoginFailed();
             return;
+            /*
+            quien ha hecho este if y para que??
         } else if (view.getUserName().indexOf("@") == -1){
-            loginuser = new User ();
-            loginuser.setUserName(view.getUserName());
-            loginuser.setPassword(view.getPassword());
+            loginUser = new User (null, null, null);
+            loginUser.setUserName(view.getUserName());
+            loginUser.setPassword(view.getPassword());
+        */
         } else {
-            loginuser = new User();
-            loginuser.setEmail(view.getUserName());
-            loginuser.setPassword(view.getPassword());
-        }
-        if (uar.login(loginuser)){
-            OnLoginSuccess();
-        } else {
-            OnLoginFailed();
+            User loginUser = new User(view.getUserName(), null, view.getPassword());
+            startThread(loginUser);
+
+            try {
+                tsc.join();
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+
+            if (tsc.isAux()){
+                OnLoginSuccess();
+            }else{
+                OnLoginFailed();
+            }
         }
     }
 
@@ -109,7 +130,8 @@ public class LoginController implements ActionListener {
      *
      */
     public void OnLoginFailed(){
-        view.setLoginError();
+        String[] aux = tsc.getResponse().split("-");
+        view.setLoginError(aux[1]);
     }
 
     /**

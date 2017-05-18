@@ -42,6 +42,7 @@ public class ThreadServidorDedicat extends Thread {
      * @param resposta
      */
     public void tractaResposta(String resposta) throws IOException {
+        System.out.println("Rebo en el server aixo: " + resposta);
 
         String [] aux = resposta.split("-");
         if(aux[0].equals("L")){

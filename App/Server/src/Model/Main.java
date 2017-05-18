@@ -2,7 +2,7 @@ package Model;
 
 import javax.swing.*;
 import Controller.ServerController;
-import Network.ThreadSocket;
+import Network.ThreadSocketServer;
 import View.*;
 
 /**
@@ -14,26 +14,15 @@ public class Main {
             @Override
             public void run() {
 
-                /* Averiguem quina direccio IP hem d'utilitzar
-                InetAddress iAddress = null;
-                try {
-                    iAddress = InetAddress.getLocalHost();
-                    String IP = iAddress.getHostAddress();
-                    System.out.println("Server IP address : " + IP);
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                }
-                */
-
                 //creem la vista
                 View view = new View();
                 //creem el socket
-                ThreadSocket threadSocket = new ThreadSocket();
+                ThreadSocketServer threadSocketServer = new ThreadSocketServer();
                 //creem el model
                 GestioDades gestioDades = new GestioDades();
 
                 //creem el controlador
-                ServerController sController = new ServerController(view, gestioDades,  threadSocket);
+                ServerController sController = new ServerController(view, gestioDades, threadSocketServer);
                 //printa el numero segons si es pot fer un adduser: 1:ok 2:usuari existeix 3:mail existeix 4:both
                 view.controladorBoto(sController);
                 view.setVisible(true);

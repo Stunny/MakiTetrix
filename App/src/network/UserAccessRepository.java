@@ -12,13 +12,13 @@ public interface UserAccessRepository {
      * Sends an existing user's credentials to the server
      * @return True if login success
      */
-    boolean login(User user);
+    void login(User user);
 
     /**
      * Sends a new user's credentials to the server.
      * @return True if register success
      */
-    boolean register(User user);
+    void register(User user);
 
     /**
      * Tells the server to close connection with the user.
@@ -40,4 +40,8 @@ public interface UserAccessRepository {
      */
     boolean checkEmail(String userEmail);
 
+
+    String response();
+
+    boolean tractaResposta();
 }
