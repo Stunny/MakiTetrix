@@ -43,7 +43,7 @@ public class GameController implements KeyListener {
                 break;
             case 83:
                 //System.out.println("s");
-                game.subeVelocidad();
+                game.goDown();
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 68:

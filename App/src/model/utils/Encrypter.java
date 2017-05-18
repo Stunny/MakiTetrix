@@ -14,36 +14,15 @@ import java.util.Properties;
  * Created by pedroriera on 6/4/17.
  */
 public class Encrypter {
-    /**
-     * Encripta los datos introducidos al hacer un login
-     * @param mail string que contiene el mail
-     * @param pass string que contiene el pass
-     */
-    public void encryptLogin(String mail, String pass) throws Exception {
-        encryptMail(mail);
-        encryptPass(pass);
-    }
-
-    /**
-     * Encripta los datos introducidos al hacer el registro (mail, userName y pass)
-     * @param mail string que contiene el mail
-     * @param pass string  que contine el pass
-     * @param user string que contiene el user
-     */
-    public void encryptSingUp(String mail, String pass, String user) throws Exception {
-        encryptMail(mail);
-        encryptPass(pass);
-        encryptUserName(user);
-    }
 
     /**
      * encripta el nombre de usuario
      * @param user string que contiene el nombre de usuario
      * @return contiene un array de bits con el nombre de usuario encriptado
      */
-    private byte[] encryptUserName(String user) throws Exception {
+    private String encryptUserName(String user) throws Exception {
         byte[] input = user.getBytes(StandardCharsets.UTF_8);
-        return encyptBytes(input);
+        return new String(encyptBytes(input), StandardCharsets.UTF_8);
 
     }
 
@@ -52,9 +31,9 @@ public class Encrypter {
      * @param mail string que contiene el mail
      * @return contiene un array de bits con el mail encriptado
      */
-    private byte[] encryptMail(String mail) throws Exception {
+    private String encryptMail(String mail) throws Exception {
         byte[] input = mail.getBytes(StandardCharsets.UTF_8);
-        return encyptBytes(input);
+        return new String(encyptBytes(input), StandardCharsets.UTF_8);
 
     }
 
@@ -63,9 +42,9 @@ public class Encrypter {
      * @param pass string que contiene la contrasena
      * @return contiene un array de bits con la contrasena encriptada
      */
-    private byte[] encryptPass(String pass) throws Exception {
+    private String encryptPass(String pass) throws Exception {
         byte[] input = pass.getBytes(StandardCharsets.UTF_8);
-        return encyptBytes(input);
+        return new String(encyptBytes(input), StandardCharsets.UTF_8);
 
     }
 
