@@ -1,6 +1,9 @@
 package Network;
 
 import Model.GestioDades;
+import utils.GameDataManager;
+import utils.ObserveManager;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,12 +13,17 @@ import java.net.Socket;
  * Created by Admin on 24/03/2017.
  */
 public class ThreadServidorDedicat extends Thread {
+
     private DataInputStream diStream;
     private DataOutputStream doStream;
     private Socket sClient;
+
+    private int loginStatus;
+    private int registerStatus;
+
     private GestioDades gestioDades = new GestioDades();
-    private int L;
-    private int R;
+    private GameDataManager gdm;
+    private ObserveManager observeManager;
 
     public ThreadServidorDedicat(Socket sClient){
         this.sClient = sClient;
@@ -24,14 +32,15 @@ public class ThreadServidorDedicat extends Thread {
     @Override
     public void run(){
         try {
-            //creem les instancies necesaries per rebre i enviar dades
+
             doStream = new DataOutputStream(sClient.getOutputStream());
             diStream = new DataInputStream(sClient.getInputStream());
-            //llegiexo les trames del client i les analitzo
+
             while (true){
-                String aux = diStream.readUTF();
-                tractaResposta(aux);
+                String request = diStream.readUTF();
+                readRequest(request);
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,21 +48,45 @@ public class ThreadServidorDedicat extends Thread {
 
     /**
      * Analyses the message recieved from the client
-     * @param resposta
+     * @param request
      */
-    public void tractaResposta(String resposta) throws IOException {
-        System.out.println("Rebo en el server aixo: " + resposta);
+    public void readRequest(String request) throws IOException {
+        System.out.println("Rebo en el server aixo: " + request);
 
-        String [] aux = resposta.split("-");
-        if(aux[0].equals("L")){
-            L = gestioDades.gestionaLogin(aux[1]);
-            enviaResposta(L);
-            //0:ok, 1:usuari/mail no existeix 2:contra no
+        String [] reqData = request.split("-");
 
-        }else if (aux[0].equals("R")){
-            R = gestioDades.gestionaRegistre(aux[1]);
-            enviaResposta(R);
-            //0:ok, 3:usuari existeix 4:mail existeix 5:both
+        switch(reqData[0]){
+            case "L": //Login Request
+                loginStatus = gestioDades.gestionaLogin(reqData[1]);
+                enviaResposta(loginStatus);
+                break;
+
+            case "R": //Register Request
+                registerStatus = gestioDades.gestionaRegistre(reqData[1]);
+                enviaResposta(registerStatus);
+                break;
+
+            case "NG": //New Game Start Request
+                gdm = new GameDataManager();
+                break;
+
+            case "MV": //New Move on Game
+                // TODO: almacenar nuevo movimiento en el manager
+                break;
+
+            case "EoG": //End of Game: final de partida
+                // TODO: gdm.setFinishTime(reqData[1]);
+                // TODO: observeManager.notifyEndOfGame();
+                break;
+
+            case "OBSRequest":
+                // observeManager.beginObserve();
+                // TODO: enviar las diferentes partidas a escoger para observar
+                break;
+
+            case "OBSelect": //Selected user to observe
+                // TODO: establecer observador a la partida seleccionada
+                break;
         }
 
     }
@@ -74,7 +107,7 @@ public class ThreadServidorDedicat extends Thread {
                 doStream.writeUTF("KO-La contrasenya no es correcta");
                 break;
             case 3:
-                doStream.writeUTF("KO-L'usuari ja existeix");
+                doStream.writeUTF("KO-loginStatus'usuari ja existeix");
                 break;
             case 4:
                 doStream.writeUTF("KO-El email ja existeix");
