@@ -22,7 +22,8 @@ public class Encrypter {
      */
     private String encryptUserName(String user) throws Exception {
         byte[] input = user.getBytes(StandardCharsets.UTF_8);
-        return (String) encyptBytes(input);
+        String s = new String(encyptBytes(input), StandardCharsets.UTF_8);
+        return s;
 
     }
 
@@ -33,7 +34,8 @@ public class Encrypter {
      */
     private String encryptMail(String mail) throws Exception {
         byte[] input = mail.getBytes(StandardCharsets.UTF_8);
-        return (String) encyptBytes(input);
+        String s = new String(encyptBytes(input), StandardCharsets.UTF_8);
+        return s;
 
     }
 
@@ -44,7 +46,8 @@ public class Encrypter {
      */
     private String encryptPass(String pass) throws Exception {
         byte[] input = pass.getBytes(StandardCharsets.UTF_8);
-        return (String) encyptBytes(input);
+        String s = new String(encyptBytes(input), StandardCharsets.UTF_8);
+        return s;
 
     }
 
