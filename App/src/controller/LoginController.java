@@ -1,7 +1,6 @@
 package controller;
 
 import Vista.LoginView;
-import Vista.MenuView;
 import Vista.RegisterView;
 import model.User;
 import network.ThreadSocketClient;
@@ -10,7 +9,6 @@ import network.UserAccessRepository;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 /**
  * View controller for the Login functionality
@@ -121,9 +119,6 @@ public class LoginController implements ActionListener {
      *
      */
     public void OnLoginSuccess(){
-        MenuView menuView = new MenuView();
-        view.setVisible(false);
-        menuView.setVisible(true);
     }
 
     /**

@@ -1,5 +1,7 @@
 package Vista;
 
+import controller.MenuController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -66,17 +68,16 @@ public class MainMenuView extends JFrame{
         getContentPane().add(center, BorderLayout.CENTER);
     }
 
-    public void registerActions (/*Su Controlador*/){
-        teclas.addActionListener(/*Su Controlador*/);
+    public void registerActions (MenuController mc){
+        teclas.addActionListener(mc);
         teclas.setActionCommand("teclas");
-        jugarpartida.addActionListener(/*Su Controlador*/);
+        jugarpartida.addActionListener(mc);
         jugarpartida.setActionCommand("jugar");
-        verpartida.addActionListener(/*Su Controlador*/);
+        verpartida.addActionListener(mc);
         verpartida.setActionCommand("ver");
-        partidaanterior.addActionListener(/*Su Controlador*/);
+        partidaanterior.addActionListener(mc);
         partidaanterior.setActionCommand("anterior");
-        salir.addActionListener(/*Su Controlador*/);
+        salir.addActionListener(mc);
         salir.setActionCommand("salir");
     }
-
 }

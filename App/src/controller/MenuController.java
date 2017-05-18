@@ -1,5 +1,7 @@
 package controller;
 
+import Vista.MainMenuView;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -7,29 +9,31 @@ import java.awt.event.ActionListener;
  * Created by avoge on 04/04/2017.
  */
 public class MenuController implements ActionListener {
+    private MainMenuView mmv;
 
-    private static MenuController mc;
 
-    /**
-     *
-     * @return
-     */
-    public MenuController getInstance(){
-        if(mc == null)
-            mc = new MenuController();
-        return mc;
-    }
-
-    /**
-     *
-     */
-    private MenuController(){
-        //TODO: definir funcionalidades del controlador principal del cliente
-        //TODO: implementar contructor
+    public MenuController(MainMenuView mmv){
+        this.mmv = mmv;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //TODO: implementar metodo de actionperformed
+        switch (e.getActionCommand()){
+            case "teclas":
+                //Assignar Teclas
+                break;
+            case "jugar":
+                //Permite Jugar
+                break;
+            case "ver":
+                //Ver Partida
+                break;
+            case "anterior":
+                //Reproducir anterior
+                break;
+            case "salir":
+                //Salir
+                break;
+        }
     }
 }
