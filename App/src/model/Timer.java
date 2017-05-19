@@ -35,4 +35,8 @@ public class Timer extends Thread {
         }
     }
 
+    public int getTiempo (){
+        return tiempo;
+    }
+
 }

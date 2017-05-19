@@ -4,30 +4,51 @@ package model;
  * Created by avoge on 27/04/2017.
  */
 public class Move {
+    public static final int PIECE = 0;
+    public static final int MOVE = 1;
 
-    public static final int MOVE_RIGHT = 0;
-    public static final int MOVE_LEFT = 1;
-    public static final int MOVE_DOWN = 2;
-    public static final int ROTATE_RIGHT = 3;
-    public static final int ROTATE_LEFT = 4;
-
-    /**
-     * Time from last move in millis
-     */
-    private int timeFromLastMove;
-
-    /**
-     * Move to be performed
-     */
     private int move;
+    private Pieza piece;
+    private int time;
+    private int option;
 
-    public Move(int move){
+    //Constructores
+
+    public Move(int move, int time){
         this.move = move;
+        this.time = time;
+        option = MOVE;
+    }
+
+    public Move (Pieza piece) {
+        this.piece = piece;
+        option = PIECE;
+    }
+
+    //Getters && Setters
+
+    public Pieza getPiece (){
+        return piece;
+    }
+    public int getOption (){
+        return option;
+    }
+    public int getMove (){
+        return move;
+    }
+    public int getTime (){
+        return time;
     }
 
     @Override
-    public String toString(){
-        return "MOVE" + "-" + Integer.toString(timeFromLastMove) + "-" + Integer.toString(move);
+    public String toString (){
+        switch (option){
+            case MOVE:
+                return (option + "," + move + "," + time);
+            case PIECE:
+                return (option + "," + piece.toString());
+        }
+        return "";
     }
 
 }

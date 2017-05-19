@@ -59,6 +59,7 @@ public class Pieza {
         posicion = 0;
     }
 
+
     //Public Methods
 
     /**
@@ -109,5 +110,10 @@ public class Pieza {
         aux.setPosy(this.posy);
         aux.setPosx(this.posx);
         return aux;
+    }
+
+    @Override
+    public String toString(){
+        return String.valueOf(tipo);
     }
 }

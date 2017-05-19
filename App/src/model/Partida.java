@@ -1,5 +1,7 @@
 package model;
 
+import java.io.File;
+import java.util.Queue;
 import java.util.Random;
 
 /**
@@ -21,12 +23,12 @@ public class Partida {
     private final static int MAXY = 10;
     private final static int MAXX = 25;
     //Posibles movimientos
-    private final static int MOVE_RIGHT = 0;
-    private final static int MOVE_LEFT = 1;
-    private final static int MOVE_DOWN = 2;
-    private final static int ROTATE_RIGHT = 3;
-    private final static int ROTATE_LEFT = 4;
-    private final static int END = 5;
+    public final static int MOVE_RIGHT = 0;
+    public final static int MOVE_LEFT = 1;
+    public final static int MOVE_DOWN = 2;
+    public final static int ROTATE_RIGHT = 3;
+    public final static int ROTATE_LEFT = 4;
+    public final static int END = 5;
 
     private int[][] interfaz;
     private Pieza actualpiece;
@@ -37,6 +39,7 @@ public class Partida {
     private int lineas;
     private int points;
     private PlayGame master;
+    private Queue<Move> savegame;
 
     //Constructor
 
@@ -50,6 +53,21 @@ public class Partida {
         end = false;
         level = 1;
         lineas = 0;
+        floortime = 2;
+    }
+
+    public Partida (Queue<Move> savedgame){
+        this.savegame = savedgame;
+        interfaz = new int[MAXX][MAXY];
+        for (int i = 0; i < interfaz.length; i++){
+            for (int j = 0; j < interfaz[i].length; j++){
+                interfaz[i][j] = -1;
+            }
+        }
+        end = false;
+        level = 1;
+        lineas = 0;
+        floortime = 2;
     }
 
     //Public Methods
@@ -61,9 +79,17 @@ public class Partida {
      * @see #generateRandom()
      */
     public void newGame (){
-        floortime = 2;
         actualpiece = new Pieza(generateRandom());
+        savegame.add(new Move(actualpiece));
         nextpiece = new Pieza(generateRandom());
+        savegame.add(new Move (nextpiece));
+        end = false;
+        updateInterfaz(actualpiece);
+    }
+
+    public void newGame (Pieza actualpiece, Pieza nextpiece){
+        this.actualpiece = actualpiece.clone();
+        this.nextpiece = nextpiece.clone();
         end = false;
         updateInterfaz(actualpiece);
     }
@@ -76,7 +102,8 @@ public class Partida {
      * @see #clear(Pieza)
      * @see #updateInterfaz(Pieza)
      */
-    public void rotateRight (){
+    public void rotateRight (int time){
+        savegame.add(new Move(ROTATE_RIGHT, time));
         if (!(collision(actualpiece, ROTATE_RIGHT))) {
             clear(actualpiece);
             actualpiece.rotateRight();
@@ -95,7 +122,8 @@ public class Partida {
      * @see #clear(Pieza)
      * @see #updateInterfaz(Pieza)
      */
-    public void rotateLeft () {
+    public void rotateLeft (int time) {
+        savegame.add(new Move(ROTATE_LEFT, time));
         if (!(collision(actualpiece, ROTATE_LEFT))) {
             clear(actualpiece);
             actualpiece.rotateLeft();
@@ -112,7 +140,8 @@ public class Partida {
      * @see #clear(Pieza)
      * @see #updateInterfaz(Pieza)
      */
-    public void goRight (){
+    public void goRight (int time){
+        savegame.add(new Move(MOVE_RIGHT, time));
         if (!(collision(actualpiece, MOVE_RIGHT))) {
             clear(actualpiece);
             actualpiece.setPosy(actualpiece.getPosy() + 1);
@@ -129,7 +158,8 @@ public class Partida {
      * @see #clear(Pieza)
      * @see #updateInterfaz(Pieza)
      */
-    public void goLeft (){
+    public void goLeft (int time){
+        savegame.add(new Move(MOVE_LEFT, time));
         if (!(collision(actualpiece, MOVE_LEFT))){
             clear(actualpiece);
             actualpiece.setPosy(actualpiece.getPosy() - 1);
@@ -146,6 +176,17 @@ public class Partida {
      * @see #clear(Pieza)
      * @see #updateInterfaz(Pieza)
      */
+    public void goDown (int time){
+        savegame.add(new Move(MOVE_DOWN, time));
+        if (!(collision(actualpiece, MOVE_DOWN))) {
+            clear(actualpiece);
+            actualpiece.setPosx(actualpiece.getPosx() + 1);
+            updateInterfaz(actualpiece);
+            return;
+        }
+        updateInterfaz(actualpiece);
+    }
+
     public void goDown (){
         if (!(collision(actualpiece, MOVE_DOWN))) {
             clear(actualpiece);
@@ -236,6 +277,21 @@ public class Partida {
         nextpiece = new Pieza(generateRandom());
         floortime = 2;
     }
+
+    public void chargeNextPiece (Pieza piece) {
+        actualpiece = nextpiece.clone();
+        nextpiece = piece.clone();
+        floortime = 2;
+    }
+
+    /*public void saveGame () {
+        String nombre;
+        nombre =
+        File f = new File ();
+        while (!(savegame.isEmpty()){
+
+        }
+    */}
 
     //Private Methods
 

@@ -14,11 +14,13 @@ import java.awt.event.KeyListener;
 public class GameController implements KeyListener {
     private GameView gv;
     private Partida game;
+    private Timer t;
 
     public GameController (GameView gv, Partida game){
         this.gv = gv;
         this.game = game;
         gv.addKeyListener(this);
+        t = new Timer(gv,game);
     }
 
     public void startGame (){
@@ -28,8 +30,7 @@ public class GameController implements KeyListener {
     }
 
     public void playGame () {
-        PlayGame pg = new PlayGame(game,gv);
-        Timer t = new Timer(gv, game);
+        PlayGame pg = new PlayGame(game,this);
         pg.start();
         t.start();
     }
@@ -37,28 +38,23 @@ public class GameController implements KeyListener {
     public void keyPressed (KeyEvent e){
         switch (e.getKeyCode()){
             case 65:
-                //System.out.println("leeeft");
-                game.goLeft();
+                game.goLeft(t.getTiempo());
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 83:
-                //System.out.println("s");
-                game.goDown();
+                game.goDown(t.getTiempo());
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 68:
-                //System.out.println("d");
-                game.goRight();
+                game.goRight(t.getTiempo());
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 81:
-                //System.out.println("q");
-                game.rotateLeft();
+                game.rotateLeft(t.getTiempo());
                 gv.printarPantalla(game.getInterfaz());
                 break;
             case 69:
-                //System.out.println("e");
-                game.rotateRight();
+                game.rotateRight(t.getTiempo());
                 gv.printarPantalla(game.getInterfaz());
                 break;
             default:
@@ -71,11 +67,18 @@ public class GameController implements KeyListener {
     @Override()
     public void keyReleased(KeyEvent e){
         if (e.getKeyCode()==83){
-            game.reduceVelocidad();
         }
     }
     @Override
     public void keyTyped (KeyEvent e){
 
+    }
+
+    public Timer getTimer () {
+        return t;
+    }
+
+    public GameView getGV (){
+        return gv;
     }
 }
