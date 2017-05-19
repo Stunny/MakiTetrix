@@ -1,5 +1,7 @@
 import Vista.GameView;
+import Vista.LoginView;
 import controller.GameController;
+import controller.LoginController;
 import model.Partida;
 
 import javax.swing.*;
@@ -15,15 +17,16 @@ public class Main {
 
             @Override
             public void run(){
-                /* Parte del Login
+                /* Parte del Login*/
                 LoginView loginView = new LoginView();
                 // nota: quizas el segundo parametro, la UserAccessRepository, no deba de ser null
                 LoginController loginController = new LoginController(loginView, null);
                 loginView.registerController(loginController);
                 loginView.setVisible(true);
-                */
+
 
                 // Parte del Juego
+                /*
                 GameView game = new GameView();
                 game.setVisible(true);
                 Partida partida = new Partida();
@@ -31,7 +34,7 @@ public class Main {
                 asdf.startGame();
                 asdf.playGame();
                  //
-                /* Menu principal
+                 Menu principal
                 MainMenuView mmv = new MainMenuView();
                 MenuController mc = new MenuController(mmv);
                 mmv.registerActions(mc);

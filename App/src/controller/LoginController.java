@@ -98,6 +98,8 @@ public class LoginController implements ActionListener {
             loginUser.setPassword(view.getPassword());
         */
         } else {
+            //TODO: COMPROVAR SI EL USUARIO SE HA LOGUEADO CON EL USERNAME O EL EMAIL Y GENERAR DISTINTOS USER CON LOS
+            //TODO: CORRESPONDIENTES CAMPOS A NULL Y PASARSELOS AL THREAD
             User loginUser = new User(view.getUserName(), null, view.getPassword());
             startThread(loginUser);
 

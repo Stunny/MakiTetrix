@@ -1,11 +1,12 @@
 package utils;
 
+
 /**
  * Created by avoge on 18/05/2017.
  */
 public class GameDataManager {
 
-    private Partida game;
+  //  private Partida game;
 
     public GameDataManager(){
 
@@ -13,6 +14,6 @@ public class GameDataManager {
 
     }
 
-    public Partida getGame(){return game;}
+    //public Partida getGame(){return game;}
 
 }

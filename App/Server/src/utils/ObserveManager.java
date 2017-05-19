@@ -5,7 +5,7 @@ package utils;
  */
 public class ObserveManager {
 
-    private Partida game;
+    //private Partida game;
 
     public ObserveManager(){}
 

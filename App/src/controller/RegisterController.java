@@ -1,6 +1,7 @@
 package controller;
 
 import Vista.LoginView;
+import Vista.MainMenuView;
 import Vista.RegisterView;
 import model.User;
 import model.utils.UserDataChecker;
@@ -156,7 +157,11 @@ public class RegisterController implements ActionListener {
                 }
 
                 if (tsc.isAux()){
-
+                    MainMenuView mmv = new MainMenuView();
+                    MenuController mc = new MenuController(mmv);
+                    mmv.registerActions(mc);
+                    mmv.setVisible(true);
+                    view.setVisible(false);
                 }else{
                     view.displayError(tsc.getResponse());
                 }

@@ -1,6 +1,9 @@
 package network;
 
+import controller.RegisterController;
 import model.User;
+import model.utils.Encrypter;
+import model.utils.UserDataChecker;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -76,18 +79,50 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
     @Override
     public void login(User user) {
         try {
-            doStream.writeUTF("L-" + user.getUserName() + "#" + user.getPassword());
+            Encrypter encrypter = new Encrypter();
+            if (user.getEmail().isEmpty()){
+                //el usuario ha logueado usando el nombre de usuario
+                String nameAux = encrypter.encryptUserName(user.getUserName());
+                String passwordAux = encrypter.encryptPass(user.getPassword());
+
+                System.out.println("nom encriptat: " + nameAux);
+                System.out.println("pasword encriptat: " + passwordAux);
+
+                doStream.writeUTF("R-" + nameAux + "#" + passwordAux);
+            }else{
+                //el usuario ha logueado usando el email
+                String emailAux = encrypter.encryptMail(user.getEmail());
+                String passwordAux = encrypter.encryptPass(user.getPassword());
+
+                System.out.println("email encriptat: " + emailAux);
+                System.out.println("pasword encriptat: " + passwordAux);
+
+                doStream.writeUTF("R-" + emailAux + "#" + passwordAux);
+            }
         } catch (IOException e) {
             e.printStackTrace();
+        }catch (Exception a){
+            a.printStackTrace();
         }
     }
 
     @Override
     public void register(User user) {
         try {
-            doStream.writeUTF("R-" + user.getUserName() + "#" + user.getEmail() + "#" + user.getPassword());
+            Encrypter encrypter = new Encrypter();
+            String nameAux = encrypter.encryptUserName(user.getUserName());
+            String emailAux = encrypter.encryptMail(user.getEmail());
+            String passwordAux = encrypter.encryptPass(user.getPassword());
+
+            System.out.println("nom encriptat: " + nameAux);
+            System.out.println("email encriptat: " + emailAux);
+            System.out.println("pasword encriptat: " + passwordAux);
+
+            doStream.writeUTF("R-" + nameAux + "#" + emailAux + "#" + passwordAux);
         } catch (IOException e) {
             e.printStackTrace();
+        }catch (Exception a){
+            a.printStackTrace();
         }
     }
 
