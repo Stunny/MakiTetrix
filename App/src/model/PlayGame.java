@@ -12,20 +12,32 @@ public class PlayGame extends Thread {
     private Partida game;
     private boolean running;
     private GameController gc;
+    private Queue<Move> toplay;
 
     public PlayGame(Partida game, GameController gc){
         this.game = game;
-        game.setMasterTimer(this);
         running = false;
         this.gc = gc;
         this.velocidad = 1200;
     }
 
+    public void setToPlay (Queue<Move> toplay){
+        this.toplay = toplay;
+    }
+
     @Override
-    public void run() {
+    public void run (){
+        if (toplay == null){
+            game();
+        } else {
+            replay();
+        }
+    }
+
+    public void game() {
         running = true;
         while (running){
-            game.goDown();
+            game.goDown(gc.getTimer().getTiempo());
             gc.getGV().printarPantalla(game.getInterfaz());
             if (game.hadFloor() && game.getFloortime() == 0){
                 game.checkLine();
@@ -45,42 +57,40 @@ public class PlayGame extends Thread {
                 Thread.sleep(velocidad);
             } catch (InterruptedException ie){
                 System.out.println("Final del Juego");
-                //Hacer lo oportuno para acabar la partida.
+                game.saveGame();
             }
         }
     }
 
-    public void run (Queue<Move> toplay){
-        running = true;
+    public void replay (){
         int time = 0;
+        Pieza actual = toplay.peek().getPiece();
+        toplay.poll();
+        Pieza siguiente = toplay.peek().getPiece();
+        toplay.poll();
+        game.newGame(actual, siguiente);
         while ((!toplay.isEmpty())){
-            if (time == velocidad) {
-                game.goDown();
-                gc.getGV().printarPantalla(game.getInterfaz());
-                if (game.hadFloor() && game.getFloortime() == 0) {
-                    game.checkLine();
-                    gc.getGV().printarPantalla(game.getInterfaz());
-                    gc.getGV().setNivel(game.getLevel());
-                    gc.getGV().setPuntuacion(game.getPoints());
-                    game.checkEnd();
-                    if (!(game.isEnded())) {
-                        game.chargeNextPiece(toplay.peek().getPiece());
-                        gc.getGV().printarNextPiece(game.getNextpiece());
-                        gc.getGV().printarPantalla(game.getInterfaz());
-                    } else {
-                        this.interrupt();
-                    }
-                }
-                time = 0;
-            } else if (gc.getTimer().getTiempo() == toplay.peek().getTime()) {
-                //game.doMove();
-            }
+           switch (toplay.peek().getOption()){
+               case Move.PIECE:
+                   game.chargeNextPiece(toplay.peek().getPiece());
+                   gc.getGV().printarNextPiece(game.getNextpiece());
+                   gc.getGV().printarPantalla(game.getInterfaz());
+                   break;
+               case Move.MOVE:
+                   if (time <= toplay.peek().getTime()){
+                       System.out.println(toplay.peek().toString());
+                       game.doMove(toplay.peek().getMove());
+                       gc.getGV().printarPantalla(game.getInterfaz());
+                   }
+                   break;
+           }
+           toplay.poll();
             try {
-                Thread.sleep(1);
+                Thread.sleep(100);
                 time++;
             } catch (InterruptedException ie){
                 System.out.println("Final del Juego");
-                //Hacer lo oportuno para acabar la partida.
+                game.saveGame();
             }
         }
     }
@@ -88,5 +98,7 @@ public class PlayGame extends Thread {
     public void setVelocidad(int v){
         velocidad = v;
     }
+
+    public int getVelocidad (){ return velocidad;}
 
 }

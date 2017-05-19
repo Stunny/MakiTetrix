@@ -13,7 +13,7 @@ public class Timer extends Thread {
 
     public Timer (GameView gv, Partida game){
         tiempo = 0;
-        espera = 1000;
+        espera = 1;
         this.gv = gv;
         this.game = game;
     }
@@ -28,7 +28,7 @@ public class Timer extends Thread {
                 break;
             }
             tiempo++;
-            gv.setTemps(tiempo);
+            gv.setTemps(tiempo/1000);
             if (game.isEnded()){
                 this.interrupt();
             }

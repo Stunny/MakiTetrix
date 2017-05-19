@@ -1,8 +1,11 @@
 package model;
 
-import java.io.File;
-import java.util.Queue;
-import java.util.Random;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by jorti on 14/05/2017.
@@ -38,7 +41,6 @@ public class Partida {
     private int level;
     private int lineas;
     private int points;
-    private PlayGame master;
     private Queue<Move> savegame;
 
     //Constructor
@@ -54,6 +56,7 @@ public class Partida {
         level = 1;
         lineas = 0;
         floortime = 2;
+        savegame = new LinkedList<Move>();
     }
 
     public Partida (Queue<Move> savedgame){
@@ -114,6 +117,17 @@ public class Partida {
 
     }
 
+    public void rotateRight (){
+        if (!(collision(actualpiece, ROTATE_RIGHT))) {
+            clear(actualpiece);
+            actualpiece.rotateRight();
+            updateInterfaz(actualpiece);
+            return;
+        }
+        updateInterfaz(actualpiece);
+
+    }
+
     /**
      * Permite girar una pieza hacia la izquierda.
      *
@@ -124,6 +138,16 @@ public class Partida {
      */
     public void rotateLeft (int time) {
         savegame.add(new Move(ROTATE_LEFT, time));
+        if (!(collision(actualpiece, ROTATE_LEFT))) {
+            clear(actualpiece);
+            actualpiece.rotateLeft();
+            updateInterfaz(actualpiece);
+            return;
+        }
+        updateInterfaz(actualpiece);
+    }
+
+    public void rotateLeft () {
         if (!(collision(actualpiece, ROTATE_LEFT))) {
             clear(actualpiece);
             actualpiece.rotateLeft();
@@ -151,6 +175,16 @@ public class Partida {
         updateInterfaz(actualpiece);
     }
 
+    public void goRight (){
+        if (!(collision(actualpiece, MOVE_RIGHT))) {
+            clear(actualpiece);
+            actualpiece.setPosy(actualpiece.getPosy() + 1);
+            updateInterfaz(actualpiece);
+            return;
+        }
+        updateInterfaz(actualpiece);
+    }
+
     /**
      * Mueva la pieza una posicion hacia la izquierda.
      *
@@ -160,6 +194,16 @@ public class Partida {
      */
     public void goLeft (int time){
         savegame.add(new Move(MOVE_LEFT, time));
+        if (!(collision(actualpiece, MOVE_LEFT))){
+            clear(actualpiece);
+            actualpiece.setPosy(actualpiece.getPosy() - 1);
+            updateInterfaz(actualpiece);
+            return;
+        }
+        updateInterfaz(actualpiece);
+    }
+
+    public void goLeft (){
         if (!(collision(actualpiece, MOVE_LEFT))){
             clear(actualpiece);
             actualpiece.setPosy(actualpiece.getPosy() - 1);
@@ -247,6 +291,7 @@ public class Partida {
            lines--;
        }
        if (lineas == 10){
+
            lineas = 0;
            level++;
        }
@@ -275,6 +320,7 @@ public class Partida {
     public void chargeNextPiece () {
         actualpiece = nextpiece.clone();
         nextpiece = new Pieza(generateRandom());
+        savegame.add(new Move(nextpiece));
         floortime = 2;
     }
 
@@ -284,14 +330,43 @@ public class Partida {
         floortime = 2;
     }
 
-    /*public void saveGame () {
-        String nombre;
-        nombre =
-        File f = new File ();
-        while (!(savegame.isEmpty()){
-
+    public void saveGame () {
+        System.out.println("Guardando Partida");
+        Date actualdate = new Date();
+        DateFormat formatoHora = new SimpleDateFormat("HH.mm");
+        DateFormat formatoFecha = new SimpleDateFormat("dd.MM");
+        String nombre = formatoFecha.format(actualdate) + " - " + formatoHora.format(actualdate);
+        try {
+            PrintWriter pw = new PrintWriter(new FileWriter(nombre + ".txt"));
+            while (!(savegame.isEmpty())) {
+                pw.println(savegame.peek().toString());
+                savegame.poll();
+            }
+            pw.close();
+        } catch (IOException ioe){
+            ioe.printStackTrace();
         }
-    }*/
+    }
+
+    public void doMove (int move){
+        switch (move){
+            case MOVE_LEFT:
+                this.goLeft();
+                break;
+            case MOVE_RIGHT:
+                this.goRight();
+                break;
+            case MOVE_DOWN:
+                this.goDown();
+                break;
+            case ROTATE_LEFT:
+                this.rotateLeft();
+                break;
+            case ROTATE_RIGHT:
+                this.rotateRight();
+                break;
+        }
+    }
 
     //Private Methods
 
@@ -2303,13 +2378,4 @@ public class Partida {
     public int getLevel() {return level;}
     public int getPoints() {return points;}
 
-    public void setMasterTimer(PlayGame t){
-        master = t;
-    }
-    public void reduceVelocidad(){
-        master.setVelocidad(1000);
-    }
-    public void subeVelocidad(){
-        master.setVelocidad(300);
-    }
 }
