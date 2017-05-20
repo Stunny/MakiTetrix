@@ -70,6 +70,15 @@ public class GameController implements KeyListener {
     }
 
 
+
+    private final int LEFT = 65;
+    private final int RIGHT = 68;
+    private final int DOWN = 83;
+    private final int ROTATE_LEFT = 83;
+    private final int ROTATE_RIGHT = 83;
+
+    //TODO: IMPLEMENTAR LA TECLA DE PAUSAR EL JUEGO
+
     @Override
     public void keyPressed (KeyEvent e){
         switch (e.getKeyCode()){
@@ -98,6 +107,12 @@ public class GameController implements KeyListener {
                 break;
         }
     }
+
+    private void keyActions(int right, int left, int down, int rotateLeft, int rotateRight){
+
+    }
+
+
     @Override()
     public void keyReleased(KeyEvent e){
         if (e.getKeyCode()==83){

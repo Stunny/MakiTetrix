@@ -9,6 +9,7 @@ import sun.applet.Main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Scanner;
 
 /**
  * Created by avoge on 04/04/2017.
@@ -16,13 +17,15 @@ import java.awt.event.ActionListener;
 public class MenuController implements ActionListener {
     private MainMenuView mmv;
 
-
     public MenuController(MainMenuView mmv){
         this.mmv = mmv;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        GameView gameView = new GameView();
+        Partida partida = new Partida();
+        GameController gameController = new GameController(gameView, partida);
         switch (e.getActionCommand()){
             case "teclas":
                 //Assignar Teclas
@@ -31,7 +34,6 @@ public class MenuController implements ActionListener {
             case "jugar":
                 GameView game = new GameView();
                 game.setVisible(true);
-                Partida partida = new Partida();
                 GameController asdf = new GameController(game,partida);
                 asdf.startGame();
                 asdf.playGame();

@@ -1,5 +1,7 @@
 import Vista.GameView;
+import Vista.LoginView;
 import controller.GameController;
+import controller.LoginController;
 import model.Partida;
 
 import javax.swing.*;
@@ -29,9 +31,9 @@ public class Main {
                 game.setVisible(true);
                 Partida partida = new Partida();
                 GameController asdf = new GameController(game,partida);
-                asdf.startReplay("19.05 - 22.38.txt");
-                //asdf.startGame();
-                //asdf.playGame();
+                //asdf.startReplay("19.05 - 22.38.txt");
+                asdf.startGame();
+                asdf.playGame();
 
                 // Menu principal
                 /*MainMenuView mmv = new MainMenuView();
