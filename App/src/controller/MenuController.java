@@ -1,6 +1,7 @@
 package controller;
 
 import Vista.GameView;
+import Vista.KeySelectMenu;
 import Vista.MainMenuView;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import model.Partida;
@@ -28,13 +29,14 @@ public class MenuController implements ActionListener {
         GameController gameController = new GameController(gameView, partida);
         switch (e.getActionCommand()){
             case "teclas":
-                //Assignar Teclas
-                System.out.println("asignar teclas");
+                KeySelectMenu key = new KeySelectMenu();
+                KeySelectMenuController keyContoller = new KeySelectMenuController(key);
+                key.registerKey(keyContoller);
+                key.setVisible(true);
                 break;
             case "jugar":
-                GameView game = new GameView();
-                game.setVisible(true);
-                GameController asdf = new GameController(game,partida);
+                gameView.setVisible(true);
+                GameController asdf = new GameController(gameView, partida);
                 asdf.startGame();
                 asdf.playGame();
                 mmv.setVisible(false);

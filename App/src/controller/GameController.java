@@ -69,8 +69,6 @@ public class GameController implements KeyListener {
         return toreplay;
     }
 
-
-
     private final int LEFT = 65;
     private final int RIGHT = 68;
     private final int DOWN = 83;
@@ -102,6 +100,8 @@ public class GameController implements KeyListener {
                 game.rotateRight(t.getTiempo());
                 gv.printarPantalla(game.getInterfaz());
                 break;
+            case 80:
+                //TODO: PAUSAR EL JUEGO
             default:
                 System.out.println("Tecla no válida");
                 break;
