@@ -37,12 +37,26 @@ public class EspectatorView extends JFrame {
         topPane.add(topLabel, BorderLayout.NORTH);
         north.add(topPane);
 
-        JTextArea rightTextArea = new JTextArea();
         model = new DefaultListModel();
         leftList = new JList(model);
 
-        rightTextArea.setEditable(false);
-        final JScrollPane auxScroll = new JScrollPane(rightTextArea);
+        final JScrollPane auxScroll = new JScrollPane(leftList);
         auxPane.add(auxScroll, BorderLayout.CENTER);
+    }
+
+    public JList getLeftList() {
+        return leftList;
+    }
+
+    public void setLeftList(JList leftList) {
+        this.leftList = leftList;
+    }
+
+    public DefaultListModel getModel() {
+        return model;
+    }
+
+    public void setModel(DefaultListModel model) {
+        this.model = model;
     }
 }

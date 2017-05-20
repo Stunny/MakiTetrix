@@ -19,13 +19,11 @@ public class ServerController implements ActionListener, MouseListener {
     private static View view;
     private GestioDades gestioDades;
     private ThreadSocketServer ts;
-    private ArrayList<String> usuaris;
 
     public ServerController(View view, GestioDades gestioDades, ThreadSocketServer threadSocketServer) {
         this.view = view;
         this.gestioDades = gestioDades;
         this.ts = threadSocketServer;
-        usuaris = gestioDades.plenaUsuaris();
         ompleUsuaris();
         startThread();
     }
