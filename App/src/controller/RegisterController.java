@@ -169,6 +169,13 @@ public class RegisterController implements ActionListener {
         }
     }
 
+    //iniciar el MenuController
+    public static void main(String[] args) {
+        MainMenuView mmv = new MainMenuView();
+        MenuController mc = new MenuController(mmv);
+        mmv.registerActions(mc);
+        mmv.setVisible(true);
+    }
     public void startThread(User u){
         if (tsc == null || !tsc.isAlive()) {
             //aqui comence thread

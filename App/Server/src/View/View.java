@@ -12,28 +12,20 @@ public class View extends JFrame{
     public static final String ACTION_BORRAR = "Borrar";
     public static final String ACTION_SEARCH = "Busca";
 
-    private JPanel principal;
-    private JPanel north;
-    private JPanel south;
-    private JPanel rightPane;
-    private JPanel leftPane;
-    private JLabel topLabel;
-    private JTextArea rightTextArea;
     private JList leftList;
     private JButton borrar;
     private DefaultListModel model;
-    private JPanel topPane;
     private JTextField buscador;
     private JButton busca;
 
 
     public View() {
         //creem els components principals
-        principal = new JPanel(new BorderLayout());
-        north = new JPanel();
-        south = new JPanel(new GridLayout(1,2));
-        rightPane = new JPanel(new BorderLayout());
-        leftPane = new JPanel(new BorderLayout());
+        JPanel principal = new JPanel(new BorderLayout());
+        JPanel north = new JPanel();
+        JPanel south = new JPanel(new GridLayout(1, 2));
+        JPanel rightPane = new JPanel(new BorderLayout());
+        JPanel leftPane = new JPanel(new BorderLayout());
         rightPane.setBorder(BorderFactory.createTitledBorder("Informacio usuari"));
         leftPane.setBorder(BorderFactory.createTitledBorder("Usuaris"));
 
@@ -47,8 +39,8 @@ public class View extends JFrame{
         setContentPane(principal);
 
         //afegim els components al panell superior
-        topPane = new JPanel(new BorderLayout());
-        topLabel = new JLabel("ADMINISTRADOR");
+        JPanel topPane = new JPanel(new BorderLayout());
+        JLabel topLabel = new JLabel("ADMINISTRADOR");
         topLabel.setFont (topLabel.getFont ().deriveFont (40.0f));
         buscador = new JTextField();
         busca = new JButton("Busca Usuari");
@@ -59,7 +51,7 @@ public class View extends JFrame{
         north.add(topPane);
 
         //afegim els components al panell inferior
-        rightTextArea = new JTextArea();
+        JTextArea rightTextArea = new JTextArea();
         model = new DefaultListModel();
         leftList = new JList(model);
 

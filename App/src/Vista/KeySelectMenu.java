@@ -10,13 +10,6 @@ import java.awt.*;
  */
 public class KeySelectMenu extends JFrame {
 
-    public static void main(String[] args) {
-        KeySelectMenu key = new KeySelectMenu();
-        KeySelectMenuController keyContoller = new KeySelectMenuController(key);
-        key.registerKey(keyContoller);
-        key.setVisible(true);
-    }
-
     public static String SAVE = "save";
     private JButton button;
 
@@ -24,7 +17,6 @@ public class KeySelectMenu extends JFrame {
         setSize(420,500);
         setTitle("MakiTetrix - Configuración");
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         //creamos un panerl superior con un grid para las teclas y un panel inferior para el boton de save
         JPanel top = new JPanel();

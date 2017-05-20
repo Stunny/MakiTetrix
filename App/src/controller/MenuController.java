@@ -1,5 +1,6 @@
 package controller;
 
+import Vista.EspectatorView;
 import Vista.GameView;
 import Vista.KeySelectMenu;
 import Vista.MainMenuView;
@@ -43,9 +44,14 @@ public class MenuController implements ActionListener {
                 //Permite Jugar
                 break;
             case "ver":
+                //TODO: IMPLEMENTAR EN LA NUEVA VISTA LAS PARTIDAS EN DIRECTO ORDENADAS POR VIEWERS
+                EspectatorView espectatorView = new EspectatorView();
+                espectatorView.setVisible(true);
                 //Ver Partida en vivo
                 break;
             case "anterior":
+                //TODO: IMPLEMENTAR UNA NUEVA VISTA CON UN HISTORIAL DE PARTIDAS GUARDADAS CON LA FECHA, LA PUNTUACION,
+                //TODO: TIEMPO Y PICO MAXIMO DE ESPECTADORES
                 //Reproducir anterior
                 break;
             case "salir":
