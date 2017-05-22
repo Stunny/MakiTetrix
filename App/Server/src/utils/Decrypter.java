@@ -10,6 +10,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
+import model.utils.Encrypter;
 
 /**
  * Created by pedroriera on 15/5/17.

@@ -82,6 +82,7 @@ public class GestioDades {
     }
 
     public int checkExisteix (User u){
+        System.out.println("entro checkExisteix");
         Boolean nomrepe = false;
         Boolean mailrepe = false;
         try {
@@ -94,8 +95,10 @@ public class GestioDades {
             while (r.next()) {
                 if(r.getString("user").equals(u.getUserName())){
                     nomrepe = true;
+                    System.out.println("user repe");
                 }
                 if(r.getString("mail").equals(u.getEmail())){
+                    System.out.println("email repe");
                     mailrepe = true;
                 }
             }
@@ -117,7 +120,7 @@ public class GestioDades {
                 }
             }
         }else{
-            return 0;
+            return 1;
         }
     }
 
@@ -163,8 +166,10 @@ public class GestioDades {
 
     public int addUser(User u) {
         int answer = checkExisteix(u);
+        System.out.println("check existeix retorna: " + answer);
         try {
             if (answer == 1) {
+                System.out.println("entro add user");
                 // create a mysql database connection
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
@@ -178,7 +183,7 @@ public class GestioDades {
                 preparedStmt.execute();
 
                 c.close();
-                return answer;
+                return 0;
             }else{
                 return answer;
             }
@@ -186,6 +191,7 @@ public class GestioDades {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
         }
+        System.out.println("retorno: " + answer);
        return answer;
     }
 
@@ -199,6 +205,7 @@ public class GestioDades {
     }
 
     public int gestionaRegistre(String missatge) {
+        System.out.println("entro gestiona");
         //0:ok, 3:usuari existeix 4:mail existeix 5:both
         String [] dades = missatge.split("#");
         String usuari = dades[0];

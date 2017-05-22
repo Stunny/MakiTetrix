@@ -19,35 +19,35 @@ public class Encrypter {
      * encripta el nombre de usuario
      * @param user string que contiene el nombre de usuario
      * @return contiene un array de bits con el nombre de usuario encriptado
-     */
+     *//*
     private String encryptUserName(String user) throws Exception {
         byte[] input = user.getBytes(StandardCharsets.UTF_8);
         return new String(encyptBytes(input), StandardCharsets.UTF_8);
 
-    }
+    }*/
 
     /**
      * Encripta el mail
      * @param mail string que contiene el mail
      * @return contiene un array de bits con el mail encriptado
-     */
+     *//*
     private String encryptMail(String mail) throws Exception {
         byte[] input = mail.getBytes(StandardCharsets.UTF_8);
         return new String(encyptBytes(input), StandardCharsets.UTF_8);
 
     }
-
+*/
     /**
      * Encripta la contrsena
      * @param pass string que contiene la contrasena
      * @return contiene un array de bits con la contrasena encriptada
-     */
+     *//*
     private String encryptPass(String pass) throws Exception {
         byte[] input = pass.getBytes(StandardCharsets.UTF_8);
         return new String(encyptBytes(input), StandardCharsets.UTF_8);
 
     }
-
+*/
     /**
      * Encripta una cadena de bytes
      * @param input cadena de bytes a encriptar

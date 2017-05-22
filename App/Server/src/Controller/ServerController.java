@@ -33,9 +33,11 @@ public class ServerController implements ActionListener, MouseListener {
         if (e.getActionCommand().equals(view.ACTION_BORRAR)){
            // gestioDades.borraUsuari(usuaris[view.getLeftList().getSelectedIndex()]);
         }else if (e.getActionCommand().equals(view.ACTION_SEARCH)){
-            gestioDades.busca(view.getBuscador().getText());
-            //buscar usuari a la base de dades
-        }
+            ArrayList<String> usuaris =  gestioDades.busca(view.getBuscador().getText());
+            view.getModel().clear();
+            for (int i = 0; i < usuaris.size(); i++){
+                view.getModel().addElement(usuaris.get(i));
+            }        }
     }
 
     /**
