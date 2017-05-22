@@ -22,6 +22,7 @@ public class Move {
 
     public Move (Pieza piece) {
         this.piece = piece;
+        time = 0;
         option = PIECE;
     }
 

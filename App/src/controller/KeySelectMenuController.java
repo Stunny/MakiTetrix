@@ -1,8 +1,6 @@
 package controller;
 
-import Vista.GameView;
 import Vista.KeySelectMenu;
-import model.Partida;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +20,7 @@ public class KeySelectMenuController implements ActionListener {
 
         if (e.getActionCommand().equals("save")){
             //TODO: GUARDAR LOS CAMBIOS EN LA CONFIGURACION DE LAS TECLAS DE USUARIO
+
 
             key.setVisible(false);
         }

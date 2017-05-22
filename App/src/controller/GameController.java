@@ -19,12 +19,14 @@ public class GameController implements KeyListener {
     private Partida game;
     private PlayGame pg;
     private Timer t;
+    private int[] teclas;
 
     public GameController (GameView gv, Partida game){
         this.gv = gv;
         this.game = game;
         gv.addKeyListener(this);
         t = new Timer(gv,game);
+        teclas = new int[]{65,83,68,81,69,80};
     }
 
     public void startGame (){
@@ -69,47 +71,28 @@ public class GameController implements KeyListener {
         return toreplay;
     }
 
-    private final int LEFT = 65;
-    private final int RIGHT = 68;
-    private final int DOWN = 83;
-    private final int ROTATE_LEFT = 83;
-    private final int ROTATE_RIGHT = 83;
-
-    //TODO: IMPLEMENTAR LA TECLA DE PAUSAR EL JUEGO
-
     @Override
     public void keyPressed (KeyEvent e){
-        switch (e.getKeyCode()){
-            case 65:
-                game.goLeft(t.getTiempo());
-                gv.printarPantalla(game.getInterfaz());
-                break;
-            case 83:
-                game.goDown(t.getTiempo());
-                gv.printarPantalla(game.getInterfaz());
-                break;
-            case 68:
-                game.goRight(t.getTiempo());
-                gv.printarPantalla(game.getInterfaz());
-                break;
-            case 81:
-                game.rotateLeft(t.getTiempo());
-                gv.printarPantalla(game.getInterfaz());
-                break;
-            case 69:
-                game.rotateRight(t.getTiempo());
-                gv.printarPantalla(game.getInterfaz());
-                break;
-            case 80:
-                //TODO: PAUSAR EL JUEGO
-            default:
-                System.out.println("Tecla no válida");
-                break;
+        if (e.getKeyCode() == teclas[0]){
+            game.goLeft(t.getTiempo());
+            gv.printarPantalla(game.getInterfaz());
+        } else if (e.getKeyCode() == teclas[1]){
+            game.goDown(t.getTiempo());
+            gv.printarPantalla(game.getInterfaz());
+        } else if (e.getKeyCode() == teclas[2]){
+            game.goRight(t.getTiempo());
+            gv.printarPantalla(game.getInterfaz());
+        } else if (e.getKeyCode() == teclas[3]){
+            game.rotateLeft(t.getTiempo());
+            gv.printarPantalla(game.getInterfaz());
+        } else if (e.getKeyCode() == teclas[4]){
+            game.rotateRight(t.getTiempo());
+            gv.printarPantalla(game.getInterfaz());
+        } else if (e.getKeyCode() == teclas[5]){
+            //TODO: PAUSA DEL JUEGO
+        } else {
+            System.out.println("Tecla no válida.");
         }
-    }
-
-    private void keyActions(int right, int left, int down, int rotateLeft, int rotateRight){
-
     }
 
 
@@ -123,7 +106,16 @@ public class GameController implements KeyListener {
 
     }
 
+    //Getters && Setters
 
+    private void setTeclas (int right, int left, int down, int rotateleft, int rotateright, int pause){
+        teclas[0] = left;
+        teclas[1] = down;
+        teclas[2] = right;
+        teclas[3] = rotateleft;
+        teclas[4] = rotateright;
+        teclas[5] = pause;
+    }
 
     public Timer getTimer () {
         return t;

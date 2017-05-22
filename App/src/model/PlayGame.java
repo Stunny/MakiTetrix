@@ -62,6 +62,8 @@ public class PlayGame extends Thread {
         }
     }
 
+    //Mirar como trabajar con alarmas.
+
     public void replay (){
         int time = 0;
         Pieza actual = toplay.peek().getPiece();
@@ -77,20 +79,24 @@ public class PlayGame extends Thread {
                    gc.getGV().printarPantalla(game.getInterfaz());
                    break;
                case Move.MOVE:
-                   if (time <= toplay.peek().getTime()){
-                       System.out.println(toplay.peek().toString());
-                       game.doMove(toplay.peek().getMove());
-                       gc.getGV().printarPantalla(game.getInterfaz());
-                   }
+                   game.doMove(toplay.peek().getMove());
+                   gc.getGV().printarPantalla(game.getInterfaz());
                    break;
+           }
+           if (toplay.peek().getTime() != 0){
+               time = toplay.peek().getTime();
            }
            toplay.poll();
             try {
-                Thread.sleep(100);
-                time++;
+                if (!toplay.isEmpty()) {
+                    System.out.println(toplay.peek().getTime() - time);
+                    Thread.sleep(toplay.peek().getTime() - time);
+                }
             } catch (InterruptedException ie){
                 System.out.println("Final del Juego");
                 game.saveGame();
+            } catch (IllegalArgumentException iae){
+                System.out.println("Cargando Pieza");
             }
         }
     }
