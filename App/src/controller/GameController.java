@@ -19,14 +19,13 @@ public class GameController implements KeyListener {
     private Partida game;
     private PlayGame pg;
     private Timer t;
-    private int[] teclas;
+    private static int[] teclas  = new int[]{65,83,68,81,69,80};
 
     public GameController (GameView gv, Partida game){
         this.gv = gv;
         this.game = game;
         gv.addKeyListener(this);
         t = new Timer(gv,game);
-        teclas = new int[]{65,83,68,81,69,80};
     }
 
     public void startGame (){
@@ -108,7 +107,7 @@ public class GameController implements KeyListener {
 
     //Getters && Setters
 
-    private void setTeclas (int right, int left, int down, int rotateleft, int rotateright, int pause){
+    public static void setTeclas (int right, int left, int down, int rotateleft, int rotateright, int pause){
         teclas[0] = left;
         teclas[1] = down;
         teclas[2] = right;
