@@ -9,7 +9,7 @@ import javax.swing.*;
  * Created by jorti on 30/03/2017.
  */
 
-public class Main {
+public class ClientMain {
     public static void main (String[] args){
         SwingUtilities.invokeLater(new Runnable (){
 

@@ -8,7 +8,7 @@ import View.*;
 /**
  * Created by Admin on 20/03/2017.
  */
-public class Main {
+public class ServerMain {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

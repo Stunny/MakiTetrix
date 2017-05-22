@@ -53,7 +53,7 @@ public class MainMenuView extends JFrame{
         auxjugarpartida.add(jugarpartida);
         verpartida = new JButton("Ver Partida En Vivo");
         auxverpartida.add(verpartida);
-        partidaanterior = new JButton ("Reproducir partida anterior.");
+        partidaanterior = new JButton ("Reproducir Partida Anterior");
         auxpartidaanterior.add(partidaanterior);
         salir = new JButton("Salir");
         auxsalir.add(salir);

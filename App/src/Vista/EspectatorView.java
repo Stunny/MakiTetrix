@@ -1,5 +1,7 @@
 package Vista;
 
+import controller.EspectatorController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,8 +10,10 @@ import java.awt.*;
  */
 public class EspectatorView extends JFrame {
 
-    private JList leftList;
+    private JList List;
     private DefaultListModel model;
+    private JPanel rightList;
+    private JPanel leftList;
 
     public EspectatorView(){
         setSize(420,500);
@@ -37,19 +41,24 @@ public class EspectatorView extends JFrame {
         topPane.add(topLabel, BorderLayout.NORTH);
         north.add(topPane);
 
-        model = new DefaultListModel();
-        leftList = new JList(model);
+        rightList = new JPanel();
+        leftList = new JPanel();
 
-        final JScrollPane auxScroll = new JScrollPane(leftList);
+        model = new DefaultListModel();
+        model.addElement(rightList);
+        model.addElement(leftList);
+        List = new JList(model);
+
+        final JScrollPane auxScroll = new JScrollPane(List);
         auxPane.add(auxScroll, BorderLayout.CENTER);
     }
 
     public JList getLeftList() {
-        return leftList;
+        return List;
     }
 
-    public void setLeftList(JList leftList) {
-        this.leftList = leftList;
+    public void setLeftList(JList List) {
+        this.List = List;
     }
 
     public DefaultListModel getModel() {
@@ -58,5 +67,21 @@ public class EspectatorView extends JFrame {
 
     public void setModel(DefaultListModel model) {
         this.model = model;
+    }
+
+    public JPanel getRightList() {
+        return rightList;
+    }
+
+    public void setRightList(JPanel rightList) {
+        this.rightList = rightList;
+    }
+
+    public void setLeftList(JPanel leftList) {
+        this.leftList = leftList;
+    }
+
+    public void registerEspectator(EspectatorController espectatorController) {
+        leftList.addMouseListener(espectatorController);
     }
 }

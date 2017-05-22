@@ -28,10 +28,10 @@ public class MenuController implements ActionListener {
         switch (e.getActionCommand()){
             case "teclas":
                 //modifica los valores de las teclasa gusto del usuario
-                KeySelectMenu key = new KeySelectMenu();
-                KeySelectMenuController keyContoller = new KeySelectMenuController(key);
-                key.registerKey(keyContoller);
-                key.setVisible(true);
+                KeySelectMenu keyView = new KeySelectMenu();
+                KeySelectMenuController keyContoller = new KeySelectMenuController(keyView);
+                keyView.registerKey(keyContoller);
+                keyView.setVisible(true);
                 break;
             case "jugar":
                 //Permite Jugar
@@ -44,6 +44,8 @@ public class MenuController implements ActionListener {
                 //TODO: IMPLEMENTAR EN LA NUEVA VISTA LAS PARTIDAS EN DIRECTO ORDENADAS POR VIEWERS
                 //Ver Partida en vivo
                 EspectatorView espectatorView = new EspectatorView();
+                EspectatorController espectatorController = new EspectatorController(espectatorView);
+                espectatorView.registerEspectator(espectatorController);
                 espectatorView.setVisible(true);
                 break;
             case "anterior":
