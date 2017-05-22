@@ -20,7 +20,7 @@ import java.util.Properties;
 public class Encrypter {
 
     private static final String ALG = "AES";
-    private static final byte[] key =  getUTF8Bytes("12345678912345");
+    private static final byte[] key =  getUTF8Bytes("1234567890123456");
 
     /**
      * encripta el nombre de usuario

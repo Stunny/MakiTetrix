@@ -1,18 +1,11 @@
 package model.utils;
 
-import org.apache.commons.crypto.cipher.CryptoCipher;
-import org.apache.commons.crypto.cipher.CryptoCipherFactory;
-import org.apache.commons.crypto.utils.Utils;
 import sun.misc.BASE64Decoder;
 
 import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.crypto.Data;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Base64;
-import java.util.Properties;
 
 /**
  * Created by pedroriera on 6/4/17.
@@ -20,7 +13,7 @@ import java.util.Properties;
 public class Encrypter {
 
     private static final String ALG = "AES";
-    private static final byte[] key =  getUTF8Bytes("12345678912345");
+    private static final byte[] key =  getUTF8Bytes("1234567890123456");
 
     /**
      * encripta el nombre de usuario
