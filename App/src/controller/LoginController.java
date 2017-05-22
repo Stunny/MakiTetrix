@@ -66,8 +66,8 @@ public class LoginController implements ActionListener {
         switch(e.getActionCommand()){
             case LOGIN_ACTION_LOG:
                 OnLogin();
-
                 break;
+
             case LOGIN_ACTION_REG:
                 OnRegister();
                 break;
@@ -85,18 +85,10 @@ public class LoginController implements ActionListener {
     /**
      *
      */
-    public void OnLogin(){
+    private void OnLogin(){
 
         if (view.getUserName().equals(view.LOG_EMPTY_UNAME) || view.getPassword().equals(view.LOG_EMPTY_PSSWD)){
             OnLoginFailed();
-            return;
-            /*
-            quien ha hecho este if y para que??
-        } else if (view.getUserName().indexOf("@") == -1){
-            loginUser = new User (null, null, null);
-            loginUser.setUserName(view.getUserName());
-            loginUser.setPassword(view.getPassword());
-        */
         } else {
             //TODO: COMPROVAR SI EL USUARIO SE HA LOGUEADO CON EL USERNAME O EL EMAIL Y GENERAR DISTINTOS USER CON LOS
             //TODO: CORRESPONDIENTES CAMPOS A NULL Y PASARSELOS AL THREAD
@@ -132,7 +124,7 @@ public class LoginController implements ActionListener {
     }
 
     /**
-     *
+     * Oculta la vista vista del login y muestra la vista del registro
      */
     public void OnRegister(){
         JPanel formPanel;

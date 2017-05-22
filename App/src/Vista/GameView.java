@@ -22,7 +22,6 @@ public class GameView extends JFrame{
 
         setTitle("MakiTetrix - Game");
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(432,800);
 
         //Pantalla principal del juego

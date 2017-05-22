@@ -74,7 +74,7 @@ public class RegisterController implements ActionListener {
     }
 
     /**
-     *
+     * Oculta la vista del registro y muestra la vista del login
      */
     public void OnRegisterSuccess(){
 

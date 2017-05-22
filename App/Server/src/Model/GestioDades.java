@@ -12,7 +12,11 @@ public class GestioDades {
         plenaUsuaris();
     }
 
-
+    /**
+     *  LLena un lista con todos los usuarios existentes en la BBDD
+     *
+     * @return Devuelve un ArrayList con todos los usuarios existentes en la BBDD
+     */
     public ArrayList<String> plenaUsuaris(){
         ArrayList<String> usuaris = new ArrayList<>();
         try {
@@ -32,6 +36,12 @@ public class GestioDades {
         return usuaris;
     }
 
+    /**
+     * Devuelve una instancia del modelo User, con toda la informacion del usuario que hayamos seleccionado
+     *
+     * @param nom Nombre del usuario del cual queremos obtener toda la información
+     * @return Dvuelve una instancia de User
+     */
     public User mostraDades (String nom){
         User u = new User(null, null, null);
         try {
@@ -55,6 +65,12 @@ public class GestioDades {
         return u;
     }
 
+    /**
+     * Busca usaurios en la BBDD segun el nombre introducido
+     *
+     * @param b Nombre del usuario/s que queremos buscar
+     * @return Devuelve un ArrayList con todos aquellos usuarios de la BBDD que coincidan con el nombre de busqueda
+     */
     public ArrayList<String> busca(String b){
         ArrayList<String>trobats = new ArrayList<>();
         try {
@@ -81,8 +97,7 @@ public class GestioDades {
         return trobats;
     }
 
-    public int checkExisteix (User u){
-        System.out.println("entro checkExisteix");
+    private int checkExisteix(User u){
         Boolean nomrepe = false;
         Boolean mailrepe = false;
         try {
@@ -164,7 +179,8 @@ public class GestioDades {
 
     }
 
-    public int addUser(User u) {
+
+    private int addUser(User u) {
         int answer = checkExisteix(u);
         System.out.println("check existeix retorna: " + answer);
         try {
@@ -191,7 +207,6 @@ public class GestioDades {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
         }
-        System.out.println("retorno: " + answer);
        return answer;
     }
 

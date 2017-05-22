@@ -46,6 +46,17 @@ public class KeySelectMenuController implements ActionListener {
         }
     }
 
+    /**
+     * Identifica si todos los valores de las tesclas que ha introducido el usuario contienen un solo elemento.
+     *
+     * @param derecha Tecla que el usuario ha asignado para mover a la derecha
+     * @param izquierda Tecla que el usuario ha asignado para mover a la izquierda
+     * @param abajo Tecla que el usuario ha asignado para mover abajo
+     * @param rotarDerecha Tecla que el usuario ha asignado para rotar a la derecha
+     * @param rotarIzquierda Tecla que el usuario ha asignado para rotar a la izquierda
+     * @param pause Tecla que el usuario ha asignado para pausar
+     * @return retorna cierto si el tamaño de todos los campos es igual a 1, de lo contrario retorna falso
+     */
     private boolean checkLenght(String derecha, String izquierda, String abajo, String rotarDerecha, String rotarIzquierda, String pause) {
         if (derecha.length() == 1 && izquierda.length()== 1 && abajo.length() == 1 && rotarDerecha.length() == 1
             && rotarIzquierda.length() == 1 && pause.length() == 1){
@@ -55,6 +66,12 @@ public class KeySelectMenuController implements ActionListener {
         }
     }
 
+    /**
+     * Transforma el char de la tecla a su valor en ascii (integer).
+     *
+     * @param tecla Parametro a convertir a entero
+     * @return devuelve el valor entero del parametro
+     */
     private int getAscii(String tecla) {
         if (tecla.codePointAt(0) < 65 || tecla.codePointAt(0) > 90){
             return tecla.toUpperCase().codePointAt(0);
@@ -63,6 +80,17 @@ public class KeySelectMenuController implements ActionListener {
         }
     }
 
+    /**
+     *
+     *
+     * @param asciiDerecha Valor ascii de la tecla asiganada para moverse a la derecha
+     * @param asciiIzquierda Valor ascii de la tecla asiganada para moverse a la izquierda
+     * @param asciiAbajo Valor ascii de la tecla asiganada para moverse anajo
+     * @param asciiRotarDerecha Valor ascii de la tecla asiganada para rotar a la derecha
+     * @param asciiRotarIzquierda Valor ascii de la tecla asiganada para rotar a la izquierda
+     * @param asciiPause Valor ascii de la tecla asiganada para pausar
+     * @return Retorna cierto si todas las teclas devuelven cierto en la funcion checkKey
+     */
     private boolean checkValues(int asciiDerecha, int asciiIzquierda, int asciiAbajo, int asciiRotarDerecha, int asciiRotarIzquierda, int asciiPause) {
         if (checkKey(asciiDerecha) && checkKey(asciiIzquierda) && checkKey(asciiAbajo) && checkKey(asciiRotarDerecha)
                 && checkKey(asciiRotarIzquierda) && checkKey(asciiPause)){
@@ -72,6 +100,12 @@ public class KeySelectMenuController implements ActionListener {
         }
     }
 
+    /**
+     * Comprueva si la tecla se encuentra entre a A y la Z
+     *
+     * @param key valor ascii de una tecla
+     * @return devuelve cierto si la tecla se encuentra entre a A y la Z
+     */
     private boolean checkKey(int key){
         //si la letra es minuscula la convertimos a mayusucla
         if (key < 65 || key > 90){

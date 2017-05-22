@@ -82,6 +82,11 @@ public class KeySelectMenu extends JFrame {
         button.addActionListener(c);
     }
 
+    /**
+     * Muestra un dialog por pantalla
+     *
+     * @param errorMessage Texto que mostrara el dialog
+     */
     public void showKeySelectError(String errorMessage){
         String[] options = { "OK" };
         JOptionPane.showOptionDialog(this, errorMessage,

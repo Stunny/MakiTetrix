@@ -80,7 +80,7 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
     public void login(User user) {
         try {
             Encrypter encrypter = new Encrypter();
-            if (user.getEmail().isEmpty()){
+            if (user.getEmail() == null){
                 //el usuario ha logueado usando el nombre de usuario
                 String nameAux = encrypter.encryptUserName(user.getUserName());
                 String passwordAux = encrypter.encryptPass(user.getPassword());
@@ -99,9 +99,7 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
 
                 doStream.writeUTF("R-" + emailAux + "#" + passwordAux);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }catch (Exception a){
+        } catch (Exception a){
             a.printStackTrace();
         }
     }
