@@ -1,7 +1,7 @@
 package controller;
 
 import Vista.LoginView;
-import Vista.MenuView;
+import Vista.MainMenuView;
 import Vista.RegisterView;
 import model.User;
 import model.utils.UserDataChecker;
@@ -157,9 +157,11 @@ public class RegisterController implements ActionListener {
                 }
 
                 if (tsc.isAux()){
-                    MenuView menuView = new MenuView();
+                    MainMenuView mmv = new MainMenuView();
+                    MenuController mc = new MenuController(mmv);
+                    mmv.registerActions(mc);
+                    mmv.setVisible(true);
                     view.setVisible(false);
-                    menuView.setVisible(true);
                 }else{
                     view.displayError(tsc.getResponse());
                 }
@@ -167,6 +169,13 @@ public class RegisterController implements ActionListener {
         }
     }
 
+    //iniciar el MenuController
+    public static void main(String[] args) {
+        MainMenuView mmv = new MainMenuView();
+        MenuController mc = new MenuController(mmv);
+        mmv.registerActions(mc);
+        mmv.setVisible(true);
+    }
     public void startThread(User u){
         if (tsc == null || !tsc.isAlive()) {
             //aqui comence thread

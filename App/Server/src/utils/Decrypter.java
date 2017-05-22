@@ -1,5 +1,6 @@
 package utils;
 
+import model.utils.Encrypter;
 import org.apache.commons.crypto.cipher.CryptoCipher;
 import org.apache.commons.crypto.cipher.CryptoCipherFactory;
 import org.apache.commons.crypto.utils.Utils;

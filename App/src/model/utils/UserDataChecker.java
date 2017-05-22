@@ -30,6 +30,7 @@ public class UserDataChecker {
         return ev.isValid(email);
     }
 
+
     /**
      * Comprueba que la contrasena contenga un minimo de 8 caracteres que sean caracteres ASCII,
      * una mayuscula, una minuscula, un digito y un caracter especial (#?!@$%^&*-)

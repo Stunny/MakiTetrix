@@ -1,7 +1,6 @@
 package controller;
 
 import Vista.LoginView;
-import Vista.MenuView;
 import Vista.RegisterView;
 import model.User;
 import network.ThreadSocketClient;
@@ -10,7 +9,6 @@ import network.UserAccessRepository;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 /**
  * View controller for the Login functionality
@@ -100,6 +98,8 @@ public class LoginController implements ActionListener {
             loginUser.setPassword(view.getPassword());
         */
         } else {
+            //TODO: COMPROVAR SI EL USUARIO SE HA LOGUEADO CON EL USERNAME O EL EMAIL Y GENERAR DISTINTOS USER CON LOS
+            //TODO: CORRESPONDIENTES CAMPOS A NULL Y PASARSELOS AL THREAD
             User loginUser = new User(view.getUserName(), null, view.getPassword());
             startThread(loginUser);
 
@@ -121,9 +121,6 @@ public class LoginController implements ActionListener {
      *
      */
     public void OnLoginSuccess(){
-        MenuView menuView = new MenuView();
-        view.setVisible(false);
-        menuView.setVisible(true);
     }
 
     /**
