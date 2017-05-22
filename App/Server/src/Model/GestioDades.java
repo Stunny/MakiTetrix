@@ -220,7 +220,6 @@ public class GestioDades {
     }
 
     public int gestionaRegistre(String missatge) {
-        System.out.println("entro gestiona");
         //0:ok, 3:usuari existeix 4:mail existeix 5:both
         String [] dades = missatge.split("#");
         String usuari = dades[0];

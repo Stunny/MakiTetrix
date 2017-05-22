@@ -14,6 +14,14 @@ import java.awt.event.ActionListener;
 public class KeySelectMenuController implements ActionListener {
     private KeySelectMenu view;
 
+    private String derecha;
+    private String izquierda;
+    private String abajo;
+    private String rotarDerecha;
+    private String rotarIzquierda;
+    private String pause;
+
+
     public KeySelectMenuController(KeySelectMenu view) {
         this.view = view;
     }
@@ -21,12 +29,12 @@ public class KeySelectMenuController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e){
         if (e.getActionCommand().equals("save")){
-            String derecha = view.getTextDerecha().getText();
-            String izquierda = view.getTextIzquierda().getText();
-            String abajo = view.getTextAbajo().getText();
-            String rotarDerecha = view.getTextRotarDerecha().getText();
-            String rotarIzquierda = view.getTextRotarIzquierda().getText();
-            String pause = view.getTextPause().getText();
+            derecha = view.getTextDerecha().getText();
+            izquierda = view.getTextIzquierda().getText();
+            abajo = view.getTextAbajo().getText();
+            rotarDerecha = view.getTextRotarDerecha().getText();
+            rotarIzquierda = view.getTextRotarIzquierda().getText();
+            pause = view.getTextPause().getText();
 
             if (checkLenght(derecha, izquierda, abajo, rotarDerecha, rotarIzquierda, pause)){
                 int asciiDerecha = getAscii(derecha);
@@ -36,19 +44,64 @@ public class KeySelectMenuController implements ActionListener {
                 int asciiRotarIzquierda = getAscii(rotarIzquierda);
                 int asciiPause = getAscii(pause);
 
-                if (checkValues(asciiDerecha, asciiIzquierda, asciiAbajo, asciiRotarDerecha, asciiRotarIzquierda, asciiPause)){
-                    view.setVisible(false);
-                    GameController.setTeclas(asciiDerecha, asciiIzquierda, asciiAbajo, asciiRotarIzquierda, asciiIzquierda, asciiPause);
+                if (checkValues(asciiDerecha, asciiIzquierda, asciiAbajo, asciiRotarDerecha, asciiRotarIzquierda, asciiPause)) {
+                    derecha = derecha.toUpperCase();
+                    izquierda = izquierda.toUpperCase();
+                    abajo = abajo.toUpperCase();
+                    rotarDerecha = rotarDerecha.toUpperCase();
+                    rotarIzquierda = rotarIzquierda.toUpperCase();
+                    pause = pause.toUpperCase();
+
+                    if (checkRepetitions()) {
+                        view.setVisible(false);
+                        GameController.setTeclas(asciiDerecha, asciiIzquierda, asciiAbajo, asciiRotarIzquierda, asciiIzquierda, asciiPause);
+                    }else{
+                        view.showKeySelectError("No se puede asignar una misma tecla para dos acciones!");
+                    }
                 }
             }else{
-                view.showKeySelectError("Los movimientos solo pueden tener una tecla asociada!");
+                view.showKeySelectError("Los movimientos deben tener una sola tecla asociada!");
             }
         }
     }
 
     /**
+     * Comprueba que no haya ninguna tecla asignada a dos acciones distintas
+     * @return True si ho hay ninguna tecla asignada a dos acciones distintas
+     */
+    private boolean checkRepetitions() {
+        return checkItemRepetition(derecha) && checkItemRepetition(izquierda) && checkItemRepetition(abajo)
+                && checkItemRepetition(rotarDerecha) && checkItemRepetition(rotarIzquierda) && checkItemRepetition(pause);
+
+    }
+
+    /**
+     * Comprueba que una sola tecla no se halle repetida en mas de un solo campo a la vez
+     * @param item tecla a comprobar que no se halle repetida
+     * @return True si la tecla no esta repetida en mas de un campo
+     */
+    private boolean checkItemRepetition(String item) {
+        int result = getResult(item.equals(derecha), item.equals(izquierda), item.equals(abajo) ,
+                item.equals(rotarDerecha), item.equals(rotarIzquierda), item.equals(pause));
+
+        return result == 1;
+    }
+
+    /**
+     * Cuenta y devuelve el numero de True que existen en los parametros
+     * @param vars Todas aquellos parametros booleanos a contabilizar
+     * @return El numero de True que existen en los parametros
+     */
+    private int getResult(boolean... vars) {
+        int count = 0;
+        for (boolean var : vars) {
+            count += (var ? 1 : 0);
+        }
+        return count;
+    }
+
+    /**
      * Identifica si todos los valores de las tesclas que ha introducido el usuario contienen un solo elemento.
-     *
      * @param derecha Tecla que el usuario ha asignado para mover a la derecha
      * @param izquierda Tecla que el usuario ha asignado para mover a la izquierda
      * @param abajo Tecla que el usuario ha asignado para mover abajo
@@ -68,7 +121,6 @@ public class KeySelectMenuController implements ActionListener {
 
     /**
      * Transforma el char de la tecla a su valor en ascii (integer).
-     *
      * @param tecla Parametro a convertir a entero
      * @return devuelve el valor entero del parametro
      */
@@ -81,8 +133,7 @@ public class KeySelectMenuController implements ActionListener {
     }
 
     /**
-     *
-     *
+     * Comprueva que los valores introducidos por el usuario son validos
      * @param asciiDerecha Valor ascii de la tecla asiganada para moverse a la derecha
      * @param asciiIzquierda Valor ascii de la tecla asiganada para moverse a la izquierda
      * @param asciiAbajo Valor ascii de la tecla asiganada para moverse anajo
@@ -102,7 +153,6 @@ public class KeySelectMenuController implements ActionListener {
 
     /**
      * Comprueva si la tecla se encuentra entre a A y la Z
-     *
      * @param key valor ascii de una tecla
      * @return devuelve cierto si la tecla se encuentra entre a A y la Z
      */
