@@ -12,6 +12,12 @@ public class KeySelectMenu extends JFrame {
 
     public static String SAVE = "save";
     private JButton button;
+    private JTextField textDerecha;
+    private JTextField textIzquierda;
+    private JTextField textAbajo;
+    private JTextField textRotarIzquierda;
+    private JTextField textRotarDerecha;
+    private JTextField textPause;
 
     public KeySelectMenu(){
         setSize(420,500);
@@ -38,32 +44,32 @@ public class KeySelectMenu extends JFrame {
         //generamos los textArea y los Labels dentro del grid
         JLabel labelDerecha = new JLabel("Derecha");
         gridPane.add(labelDerecha);
-        JTextField textDerecha = new JTextField("D");
+        textDerecha = new JTextField("D");
         gridPane.add(textDerecha);
 
         JLabel labelIzquierda = new JLabel("Izquierda");
         gridPane.add(labelIzquierda);
-        JTextField textIzquierda = new JTextField("A");
+        textIzquierda = new JTextField("A");
         gridPane.add(textIzquierda);
 
         JLabel labelAbajo = new JLabel("Abajo");
         gridPane.add(labelAbajo);
-        JTextField textAbajo = new JTextField("S");
+        textAbajo = new JTextField("S");
         gridPane.add(textAbajo);
 
         JLabel labelRotarIzquierda = new JLabel("Rotar izquierda");
         gridPane.add(labelRotarIzquierda);
-        JTextField textRotarIzquierda = new JTextField("Q");
+        textRotarIzquierda = new JTextField("Q");
         gridPane.add(textRotarIzquierda);
 
         JLabel labelRotarDerecha = new JLabel("Rotar derecha");
         gridPane.add(labelRotarDerecha);
-        JTextField textRotarDerecha = new JTextField("E");
+        textRotarDerecha = new JTextField("E");
         gridPane.add(textRotarDerecha);
 
         JLabel labelPause = new JLabel("Pause");
         gridPane.add(labelPause);
-        JTextField textPause = new JTextField("P");
+        textPause = new JTextField("P");
         gridPane.add(textPause);
 
         top.add(gridPane, CENTER_ALIGNMENT);
@@ -74,5 +80,36 @@ public class KeySelectMenu extends JFrame {
 
     public void registerKey(KeySelectMenuController c){
         button.addActionListener(c);
+    }
+
+    public void showKeySelectError(String errorMessage){
+        String[] options = { "OK" };
+        JOptionPane.showOptionDialog(this, errorMessage,
+                "ERROR AL CONFIGURAR LAS TECLAS", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
+                null, options, options[0]);
+    }
+
+    public JTextField getTextDerecha() {
+        return textDerecha;
+    }
+
+    public JTextField getTextIzquierda() {
+        return textIzquierda;
+    }
+
+    public JTextField getTextAbajo() {
+        return textAbajo;
+    }
+
+    public JTextField getTextRotarIzquierda() {
+        return textRotarIzquierda;
+    }
+
+    public JTextField getTextRotarDerecha() {
+        return textRotarDerecha;
+    }
+
+    public JTextField getTextPause() {
+        return textPause;
     }
 }
