@@ -70,12 +70,14 @@ public class Encrypter {
 
     }
 
-    public static byte[] decrypt(byte[] encrypted_input) throws Exception {
+    public static String decrypt(String encrypted_input) throws Exception {
         Key _key = generateKey();
         Cipher c = Cipher.getInstance(ALG);
         c.init(Cipher.DECRYPT_MODE, _key);
-        byte[] decoded_value = new BASE64Decoder().decodeBuffer(String.valueOf(encrypted_input));
-        return c.doFinal(decoded_value);
+        byte[] decoded_value = new BASE64Decoder().decodeBuffer(encrypted_input);
+        byte[] dec_value_bytes = c.doFinal(decoded_value);
+        return new String(dec_value_bytes);
+
     }
 
     private static Key generateKey() throws Exception {
