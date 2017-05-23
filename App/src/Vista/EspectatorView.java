@@ -3,6 +3,7 @@ package Vista;
 import controller.EspectatorController;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 /**
@@ -10,8 +11,7 @@ import java.awt.*;
  */
 public class EspectatorView extends JFrame {
 
-    private JList List;
-    private DefaultListModel model;
+    private JTable table;
     private JPanel rightList;
     private JPanel leftList;
 
@@ -44,29 +44,19 @@ public class EspectatorView extends JFrame {
         rightList = new JPanel();
         leftList = new JPanel();
 
-        model = new DefaultListModel();
-        model.addElement(rightList);
-        model.addElement(leftList);
-        List = new JList(model);
+        table = new JTable();
+        table.getTableHeader().setReorderingAllowed(false);
 
-        final JScrollPane auxScroll = new JScrollPane(List);
+        JScrollPane auxScroll = new JScrollPane(table);
         auxPane.add(auxScroll, BorderLayout.CENTER);
     }
 
-    public JList getLeftList() {
-        return List;
+    public JTable getTable() {
+        return table;
     }
 
-    public void setLeftList(JList List) {
-        this.List = List;
-    }
-
-    public DefaultListModel getModel() {
-        return model;
-    }
-
-    public void setModel(DefaultListModel model) {
-        this.model = model;
+    public void setTable(JTable table) {
+        this.table = table;
     }
 
     public JPanel getRightList() {

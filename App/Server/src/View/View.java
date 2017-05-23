@@ -12,9 +12,8 @@ public class View extends JFrame{
     public static final String ACTION_BORRAR = "Borrar";
     public static final String ACTION_SEARCH = "Busca";
 
-    private JList leftList;
+    private JTable Table;
     private JButton borrar;
-    private DefaultListModel model;
     private JTextField buscador;
     private JButton busca;
 
@@ -52,14 +51,14 @@ public class View extends JFrame{
 
         //afegim els components al panell inferior
         JTextArea rightTextArea = new JTextArea();
-        model = new DefaultListModel();
-        leftList = new JList(model);
+        Table = new JTable();
+        Table.getTableHeader().setReorderingAllowed(false);
 
         rightTextArea.setEditable(false);
         borrar = new JButton("Borrar");
         borrar.setActionCommand(ACTION_BORRAR);
         final JScrollPane rightScroll = new JScrollPane(rightTextArea);
-        final JScrollPane leftScroll = new JScrollPane(leftList);
+        final JScrollPane leftScroll = new JScrollPane(Table);
         rightPane.add(borrar, BorderLayout.SOUTH);
         rightPane.add(rightScroll, BorderLayout.CENTER);
         leftPane.add(leftScroll, BorderLayout.CENTER);
@@ -73,17 +72,17 @@ public class View extends JFrame{
     }
 
     public void controladorBoto(ServerController sController){
-        leftList.addMouseListener(sController);
+        Table.addMouseListener(sController);
         borrar.addActionListener(sController);
         busca.addActionListener(sController);
     }
 
-    public DefaultListModel getModel() {
-        return model;
+    public JTable getTable() {
+        return Table;
     }
 
-    public JList getLeftList() {
-        return leftList;
+    public void setTable(JTable leftList) {
+        this.Table = leftList;
     }
 
     public JTextField getBuscador() {

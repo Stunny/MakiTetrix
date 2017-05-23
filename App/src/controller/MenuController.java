@@ -49,7 +49,7 @@ public class MenuController implements ActionListener {
                 espectatorView.setVisible(true);
                 break;
             case "anterior":
-                //TODO: IMPLEMENTAR UNA NUEVA VISTA CON UN HISTORIAL DE PARTIDAS GUARDADAS CON LA FECHA, LA PUNTUACION,
+                //TODO: IMPLEMENTAR EN LA NUEVA VISTA UN HISTORIAL DE PARTIDAS GUARDADAS CON LA FECHA, LA PUNTUACION,
                 //TODO: TIEMPO Y PICO MAXIMO DE ESPECTADORES
                 //Reproducir anterior
                 ReplaySelectView replay = new ReplaySelectView();

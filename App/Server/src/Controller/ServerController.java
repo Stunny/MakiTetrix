@@ -1,15 +1,19 @@
 package Controller;
 
 import Model.GestioDades;
+import Model.User;
 import Network.ThreadSocketServer;
 import View.View;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Vector;
 
 /**
  * Created by Admin on 21/03/2017.
@@ -34,10 +38,15 @@ public class ServerController implements ActionListener, MouseListener {
            // gestioDades.borraUsuari(usuaris[view.getLeftList().getSelectedIndex()]);
         }else if (e.getActionCommand().equals(view.ACTION_SEARCH)){
             ArrayList<String> usuaris =  gestioDades.busca(view.getBuscador().getText());
+            //DefaultTableModel model = (DefaultTableModel) View.getTable().getModel();
+
+            /*
             view.getModel().clear();
             for (int i = 0; i < usuaris.size(); i++){
                 view.getModel().addElement(usuaris.get(i));
-            }        }
+            }
+                    */
+        }
     }
 
     /**
@@ -45,8 +54,12 @@ public class ServerController implements ActionListener, MouseListener {
      */
     public void ompleUsuaris(){
         ArrayList<String> usuaris = gestioDades.plenaUsuaris();
+        DefaultTableModel model = (DefaultTableModel) view.getTable().getModel();
+
+        model.addColumn("Name");
         for (int i = 0; i < usuaris.size(); i++){
-            view.getModel().addElement(usuaris.get(i));
+            Vector<String> userName = new Vector<>(Arrays.asList(usuaris.get(i)));
+            model.addRow(userName);
         }
     }
 
@@ -60,10 +73,11 @@ public class ServerController implements ActionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        JList list = (JList)e.getSource();
+        JTable table = (JTable) e.getSource();
         //han fet doble click
-        if (e.getClickCount() == 2) {
-            gestioDades.mostraDades(list.getSelectedValue().toString());
+        if (e.getClickCount() == 1) {
+            int row = view.getTable().getSelectedRow();
+            gestioDades.mostraDades(table.getValueAt(row, 0).toString());
         }
     }
 

@@ -13,7 +13,7 @@ import java.security.Key;
 public class Encrypter {
 
     private static final String ALG = "AES";
-    private static final byte[] key =  getUTF8Bytes("1234567890123456");
+    private final byte[] key =  getUTF8Bytes("1234567890123456");
 
     /**
      * encripta el nombre de usuario
@@ -38,7 +38,7 @@ public class Encrypter {
     }
 
     /**
-     * Encripta la contrsena
+     * Encripta la contraseña
      * @param pass string que contiene la contrasena
      * @return contiene un array de bits con la contrasena encriptada
      */
@@ -63,7 +63,7 @@ public class Encrypter {
 
     }
 
-    public static String decrypt(String encrypted_input) throws Exception {
+    public String decrypt(String encrypted_input) throws Exception {
         Key _key = generateKey();
         Cipher c = Cipher.getInstance(ALG);
         c.init(Cipher.DECRYPT_MODE, _key);
@@ -73,7 +73,7 @@ public class Encrypter {
 
     }
 
-    private static Key generateKey() throws Exception {
+    private Key generateKey() throws Exception {
         return new SecretKeySpec(key, ALG);
     }
 
@@ -82,7 +82,7 @@ public class Encrypter {
      * @param input String a convertir
      * @return Cadena de bytes que contiene los datos del input en forma de bytes
      */
-    private static byte[] getUTF8Bytes(String input) {
+    public byte[] getUTF8Bytes(String input) {
         return input.getBytes(StandardCharsets.UTF_8);
     }
 }

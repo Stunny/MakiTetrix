@@ -88,7 +88,7 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
                 System.out.println("nom encriptat: " + nameAux);
                 System.out.println("pasword encriptat: " + passwordAux);
 
-                doStream.writeUTF("R-" + nameAux + "#" + passwordAux);
+                doStream.writeUTF("L-" + nameAux + "#" + passwordAux);
             }else{
                 //el usuario ha logueado usando el email
                 String emailAux = encrypter.encryptMail(user.getEmail());
@@ -97,7 +97,7 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
                 System.out.println("email encriptat: " + emailAux);
                 System.out.println("pasword encriptat: " + passwordAux);
 
-                doStream.writeUTF("R-" + emailAux + "#" + passwordAux);
+                doStream.writeUTF("L-" + emailAux + "#" + passwordAux);
             }
         } catch (Exception a){
             a.printStackTrace();

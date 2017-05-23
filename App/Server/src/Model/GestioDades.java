@@ -1,6 +1,6 @@
 package Model;
 import java.sql.*;
-import Controller.ServerController;
+
 import java.io.DataInputStream;
 import java.util.ArrayList;
 import java.util.StringJoiner;
@@ -185,7 +185,6 @@ public class GestioDades {
         System.out.println("check existeix retorna: " + answer);
         try {
             if (answer == 1) {
-                System.out.println("entro add user");
                 // create a mysql database connection
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");

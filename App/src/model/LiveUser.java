@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 /**
  * Created by natal on 20/5/2017.
  */
@@ -7,6 +9,7 @@ public class LiveUser {
 
     private String userName;
     private int espectators;
+    private Date date;
 
     public LiveUser(String userName, int espectators){
         this.userName = userName;
@@ -28,4 +31,6 @@ public class LiveUser {
     public void setEspectators(int espectators) {
         this.espectators = espectators;
     }
+
+
 }

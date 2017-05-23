@@ -1,6 +1,7 @@
 package Network;
 
 import Model.GestioDades;
+import model.utils.Encrypter;
 import utils.GameDataManager;
 import utils.ObserveManager;
 
@@ -51,14 +52,19 @@ public class ThreadServidorDedicat extends Thread {
      * @param request
      */
     public void readRequest(String request) throws IOException {
-        System.out.println("Rebo en el server aixo: " + request);
-
         String [] reqData = request.split("-");
 
         switch(reqData[0]){
             case "L": //Login Request
-                loginStatus = gestioDades.gestionaLogin(reqData[1]);
-                enviaResposta(loginStatus);
+                Encrypter encrypter = new Encrypter();
+                try {
+                    String aux = encrypter.decrypt(reqData[1]);
+                    System.out.println("Decripted string: " + aux);
+                    loginStatus = gestioDades.gestionaLogin(aux);
+                    enviaResposta(loginStatus);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
 
             case "R": //Register Request
