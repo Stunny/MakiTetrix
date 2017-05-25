@@ -53,6 +53,8 @@ public class MenuController implements ActionListener {
                 //TODO: TIEMPO Y PICO MAXIMO DE ESPECTADORES
                 //Reproducir anterior
                 ReplaySelectView replay = new ReplaySelectView();
+                ReplaySelectController replayController = new ReplaySelectController(replay);
+                replay.registerReplay(replayController);
                 replay.setVisible(true);
                 break;
             case "salir":

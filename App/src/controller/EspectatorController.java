@@ -20,16 +20,16 @@ import java.util.Vector;
 public class EspectatorController implements MouseListener {
     private static EspectatorView espectatorView;
 
-    public EspectatorController(EspectatorView espectatorView){
+    EspectatorController(EspectatorView espectatorView){
         this.espectatorView = espectatorView;
         ompleLlistaUsuaris();
     }
 
 
-    public void ompleLlistaUsuaris(){
+    private void ompleLlistaUsuaris(){
         //TODO: LLENAR UNA ARRAYLIST DE LiveUser Y LLENAR LA LISTA DE LA VISTA
 
-        //codigo para testear que el usuario "angel" sale por pantalla
+        //codigo para testear que el usuario "angel" i "farre" sale por pantalla
         LiveUser liveUser = new LiveUser("angel", 15);
         LiveUser liveUser2 = new LiveUser("farre", 152);
 
@@ -37,7 +37,7 @@ public class EspectatorController implements MouseListener {
         usuaris.add(liveUser);
         usuaris.add(liveUser2);
 //----------
-        //TODO: LLAMAR A DUNCION QUE DEVUELVA UNA INSTANCIA VALIDA DE LiveUser PARA POBLAR LA JTABLE
+        //TODO: LLAMAR A FUNCION QUE DEVUELVA UNA INSTANCIA VALIDA DE LiveUser PARA POBLAR LA JTABLE
         DefaultTableModel model = (DefaultTableModel) espectatorView.getTable().getModel();
         model.addColumn("Nombre de usuario");
         model.addColumn("Tiempo de juego");
@@ -54,15 +54,15 @@ public class EspectatorController implements MouseListener {
             row.addElement(espectators.get(0));
             model.addRow(row);
         }
-
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        JList list = (JList)e.getSource();
-        //han fet doble click
-        if (e.getClickCount() == 2) {
-            System.out.println("Quiero ver esta partida: " + list.getSelectedValue().toString());
+        JTable table = (JTable) e.getSource();
+        if (e.getClickCount() == 1) {
+            int row = espectatorView.getTable().getSelectedRow();
+            //TODO: IMPLEMENTAR FUNCION QUE DEVUELVA LOS DATOS DE LA PARTIDA SELECCIONADA AL SERVER
+            System.out.println("Quiero espectar la partida de " + table.getValueAt(row, 0).toString());
         }
     }
 

@@ -7,26 +7,16 @@ import java.util.Date;
  */
 public class UserReplay {
 
-    private String userName;
     private Date date;
     private int puntuacion;
     private int tiempo;
     private int picoEspectadores;
 
-    public UserReplay(String userName, Date date, int puntuacion, int tiempo, int picoEspectadores){
-        this.userName = userName;
+    public UserReplay(Date date, int puntuacion, int tiempo, int picoEspectadores){
         this.date = date;
         this.puntuacion = puntuacion;
         this.tiempo = tiempo;
         this.picoEspectadores = picoEspectadores;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public Date getDate() {

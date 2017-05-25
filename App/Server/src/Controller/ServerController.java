@@ -74,7 +74,6 @@ public class ServerController implements ActionListener, MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         JTable table = (JTable) e.getSource();
-        //han fet doble click
         if (e.getClickCount() == 1) {
             int row = view.getTable().getSelectedRow();
             gestioDades.mostraDades(table.getValueAt(row, 0).toString());

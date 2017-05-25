@@ -3,17 +3,13 @@ package Vista;
 import controller.EspectatorController;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 /**
  * Created by natal on 20/5/2017.
  */
 public class EspectatorView extends JFrame {
-
     private JTable table;
-    private JPanel rightList;
-    private JPanel leftList;
 
     public EspectatorView(){
         setSize(420,500);
@@ -41,9 +37,6 @@ public class EspectatorView extends JFrame {
         topPane.add(topLabel, BorderLayout.NORTH);
         north.add(topPane);
 
-        rightList = new JPanel();
-        leftList = new JPanel();
-
         table = new JTable();
         table.getTableHeader().setReorderingAllowed(false);
 
@@ -59,19 +52,7 @@ public class EspectatorView extends JFrame {
         this.table = table;
     }
 
-    public JPanel getRightList() {
-        return rightList;
-    }
-
-    public void setRightList(JPanel rightList) {
-        this.rightList = rightList;
-    }
-
-    public void setLeftList(JPanel leftList) {
-        this.leftList = leftList;
-    }
-
     public void registerEspectator(EspectatorController espectatorController) {
-        leftList.addMouseListener(espectatorController);
+        table.addMouseListener(espectatorController);
     }
 }

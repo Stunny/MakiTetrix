@@ -1,5 +1,7 @@
 package Vista;
 
+import controller.ReplaySelectController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,12 +9,11 @@ import java.awt.*;
  * Created by natal on 22/5/2017.
  */
 public class ReplaySelectView extends JFrame {
-    private JList leftList;
-    private DefaultListModel model;
+    private JTable table;
 
     public ReplaySelectView(){
         setSize(420,500);
-        setTitle("MakiTetrix - Repeticiones");
+        setTitle("MakiTetrix - Replays");
         setLocationRelativeTo(null);
 
         //creem els components principals
@@ -31,32 +32,27 @@ public class ReplaySelectView extends JFrame {
 
         //afegim els components al panell superior
         JPanel topPane = new JPanel();
-        JLabel topLabel = new JLabel("REPETICIONES");
+        JLabel topLabel = new JLabel("REPLAYS");
         topLabel.setFont (topLabel.getFont ().deriveFont (40.0f));
         topPane.add(topLabel, BorderLayout.NORTH);
         north.add(topPane);
 
-        model = new DefaultListModel();
-        leftList = new JList(model);
+        table = new JTable();
+        table.getTableHeader().setReorderingAllowed(false);
 
-        final JScrollPane auxScroll = new JScrollPane(leftList);
+        JScrollPane auxScroll = new JScrollPane(table);
         auxPane.add(auxScroll, BorderLayout.CENTER);
     }
 
-    public JList getLeftList() {
-        return leftList;
+    public JTable getTable() {
+        return table;
     }
 
-    public void setLeftList(JList leftList) {
-        this.leftList = leftList;
+    public void setTable(JTable table) {
+        this.table = table;
     }
 
-    public DefaultListModel getModel() {
-        return model;
+    public void registerReplay(ReplaySelectController registerController){
+        table.addMouseListener(registerController);
     }
-
-    public void setModel(DefaultListModel model) {
-        this.model = model;
-    }
-
 }
