@@ -1,6 +1,7 @@
 package Vista;
 
 import controller.EspectatorController;
+import model.JTableModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +38,8 @@ public class EspectatorView extends JFrame {
         topPane.add(topLabel, BorderLayout.NORTH);
         north.add(topPane);
 
-        table = new JTable();
+        JTableModel jTableModel = new JTableModel();
+        table = new JTable(jTableModel);
         table.getTableHeader().setReorderingAllowed(false);
 
         JScrollPane auxScroll = new JScrollPane(table);

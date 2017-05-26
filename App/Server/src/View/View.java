@@ -1,6 +1,7 @@
 package View;
 
 import Controller.ServerController;
+import Model.JTableModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,7 +52,8 @@ public class View extends JFrame{
 
         //afegim els components al panell inferior
         JTextArea rightTextArea = new JTextArea();
-        Table = new JTable();
+        JTableModel jTableModel = new JTableModel();
+        Table = new JTable(jTableModel);
         Table.getTableHeader().setReorderingAllowed(false);
 
         rightTextArea.setEditable(false);
