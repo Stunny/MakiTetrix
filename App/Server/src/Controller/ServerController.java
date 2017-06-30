@@ -66,7 +66,7 @@ public class ServerController implements ActionListener, MouseListener {
     public void startThread() {
         if (ts == null || !ts.isAlive()) {
             //aqui comence thread
-            ts = new ThreadSocketServer();
+            ts = new ThreadSocketServer(gestioDades);
             ts.start();
         }
     }

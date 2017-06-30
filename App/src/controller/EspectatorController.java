@@ -20,11 +20,11 @@ import java.util.Vector;
  */
 public class EspectatorController implements MouseListener {
     private static EspectatorView espectatorView;
-    private ThreadSocketClient tsc;
+    private ThreadSocketClient conexio;
 
-    EspectatorController(EspectatorView espectatorView, ThreadSocketClient tsc){
+    EspectatorController(EspectatorView espectatorView, ThreadSocketClient conexio){
         this.espectatorView = espectatorView;
-        this.tsc = tsc;
+        this.conexio = conexio;
         ompleLlistaUsuaris();
     }
 
@@ -67,7 +67,7 @@ public class EspectatorController implements MouseListener {
             //TODO: IMPLEMENTAR FUNCION QUE DEVUELVA LOS DATOS DE LA PARTIDA SELECCIONADA AL SERVER
             System.out.println("Quiero espectar la partida de " + table.getValueAt(row, 0).toString());
 
-            tsc.sendUserToEspectate(table.getValueAt(row, 0).toString());
+            conexio.sendUserToEspectate(table.getValueAt(row, 0).toString());
         }
     }
 

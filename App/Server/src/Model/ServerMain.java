@@ -5,6 +5,8 @@ import Controller.ServerController;
 import Network.ThreadSocketServer;
 import View.*;
 
+import java.util.Scanner;
+
 /**
  * Created by Admin on 20/03/2017.
  */
@@ -16,11 +18,10 @@ public class ServerMain {
 
                 //creem la vista
                 View view = new View();
-                //creem el socket
-                ThreadSocketServer threadSocketServer = new ThreadSocketServer();
                 //creem el model
                 GestioDades gestioDades = new GestioDades();
-
+                //creem el socket
+                ThreadSocketServer threadSocketServer = new ThreadSocketServer(gestioDades);
                 //creem el controlador
                 ServerController sController = new ServerController(view, gestioDades, threadSocketServer);
                 //printa el numero segons si es pot fer un adduser: 1:ok 2:usuari existeix 3:mail existeix 4:both

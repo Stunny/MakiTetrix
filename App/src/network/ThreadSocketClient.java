@@ -96,24 +96,23 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
     public void login(User user) {
         try {
             Encrypter encrypter = new Encrypter();
-            if (user.getEmail() == null){
+            if (user.getUserName().contains("@")){
+                //el usuario ha logueado usando el email
+                System.out.println("user login con email");
+                String emailAux = encrypter.encryptMail(user.getUserName());
+                String passwordAux = encrypter.encryptPass(user.getPassword());
+
+                doStream.writeUTF("L-" + emailAux + "#" + passwordAux);
+            }else{
                 //el usuario ha logueado usando el nombre de usuario
+                System.out.println("user login con userName");
                 String nameAux = encrypter.encryptUserName(user.getUserName());
                 String passwordAux = encrypter.encryptPass(user.getPassword());
 
-                System.out.println("nom encriptat: " + nameAux);
-                System.out.println("pasword encriptat: " + passwordAux);
+                System.out.println("nom encriptat 1: " + nameAux);
+                System.out.println("pasword encriptat 1: " + passwordAux);
 
                 doStream.writeUTF("L-" + nameAux + "#" + passwordAux);
-            }else{
-                //el usuario ha logueado usando el email
-                String emailAux = encrypter.encryptMail(user.getEmail());
-                String passwordAux = encrypter.encryptPass(user.getPassword());
-
-                System.out.println("email encriptat: " + emailAux);
-                System.out.println("pasword encriptat: " + passwordAux);
-
-                doStream.writeUTF("L-" + emailAux + "#" + passwordAux);
             }
         } catch (Exception a){
             a.printStackTrace();
@@ -127,10 +126,6 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
             String nameAux = encrypter.encryptUserName(user.getUserName());
             String emailAux = encrypter.encryptMail(user.getEmail());
             String passwordAux = encrypter.encryptPass(user.getPassword());
-
-            System.out.println("nom encriptat: " + nameAux);
-            System.out.println("email encriptat: " + emailAux);
-            System.out.println("pasword encriptat: " + passwordAux);
 
             doStream.writeUTF("R-" + nameAux + "#" + emailAux + "#" + passwordAux);
         } catch (IOException e) {
@@ -155,15 +150,27 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
 
     @Override
     public void sendUserToEspectate(String userNameToEspectate) {
-
+        connect();
         try {
             doStream.writeUTF("OBSelect-" + userNameToEspectate);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        disconnect();
     }
 
 
+    public void sendDesiredUserReplay(String userNameReplays) {
+        connect();
+        try {
+            doStream.writeUTF("ReplaySelect-" + userNameReplays);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        disconnect();
+    }
 
     @Override
     public boolean logout() {
@@ -197,4 +204,5 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
     public boolean isAux() {
         return aux;
     }
+
 }

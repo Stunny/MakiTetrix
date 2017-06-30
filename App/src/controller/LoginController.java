@@ -75,14 +75,6 @@ public class LoginController implements ActionListener {
         }
     }
 
-    public void startThread(User u){
-        if (conexio == null || !conexio.isAlive()) {
-            //aqui comence thread
-            conexio = new ThreadSocketClient();
-            conexio.start();
-        }
-    }
-
     /**
      *
      */
@@ -91,8 +83,6 @@ public class LoginController implements ActionListener {
         if (view.getUserName().equals(view.LOG_EMPTY_UNAME) || view.getPassword().equals(view.LOG_EMPTY_PSSWD)){
             OnLoginFailed();
         } else {
-            //TODO: COMPROVAR SI EL USUARIO SE HA LOGUEADO CON EL USERNAME O EL EMAIL Y GENERAR DISTINTOS USER CON LOS
-            //TODO: CORRESPONDIENTES CAMPOS A NULL Y PASARSELOS AL THREAD
             User loginUser = new User(view.getUserName(), null, view.getPassword());
             conexio.startingLoginRegister(loginUser);
 

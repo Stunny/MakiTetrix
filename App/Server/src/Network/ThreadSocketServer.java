@@ -1,5 +1,8 @@
 package Network;
 
+import Model.GestioDades;
+import network.ThreadSocketClient;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,6 +13,11 @@ import java.net.Socket;
 public class ThreadSocketServer extends Thread{
     private ServerSocket serverSocket;
     private ThreadServidorDedicat tsd;
+    private GestioDades gestioDades;
+
+    public ThreadSocketServer(GestioDades gestioDades){
+        this.gestioDades = gestioDades;
+    }
 
     @Override
     public void run(){
@@ -29,7 +37,7 @@ public class ThreadSocketServer extends Thread{
     }
 
     public void generaNouServidorDedicat(Socket sClient){
-        tsd = new ThreadServidorDedicat(sClient);
+        tsd = new ThreadServidorDedicat(sClient, gestioDades);
         tsd.start();
     }
 }

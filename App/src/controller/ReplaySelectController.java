@@ -2,6 +2,7 @@ package controller;
 
 import Vista.ReplaySelectView;
 import model.UserReplay;
+import network.ThreadSocketClient;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -17,15 +18,17 @@ import java.util.Vector;
  */
 public class ReplaySelectController implements MouseListener{
     private ReplaySelectView view;
+    private ThreadSocketClient conexio;
 
-    ReplaySelectController(ReplaySelectView view){
+    ReplaySelectController(ReplaySelectView view, ThreadSocketClient conexio){
         this.view = view;
+        this.conexio = conexio;
         ompleReplays();
     }
 
 
     private void ompleReplays(){
-        //codigo para testear si printa por pantalla
+        //codigo para testear si printa por pantalla. borrar i hacer que los datos le lleguen de la BBDD
         Date date = new Date();
 
         UserReplay rep1 = new UserReplay(date, 12, 13,14);
@@ -63,7 +66,8 @@ public class ReplaySelectController implements MouseListener{
         if (e.getClickCount() == 1) {
             int row = view.getTable().getSelectedRow();
             //TODO: IMPLEMENTAR FUNCION QUE DEVUELVA LOS DATOS DE LA PARTIDA SELECCIONADA AL SERVER
-            System.out.println("Quiero espectar la partida de " + table.getValueAt(row, 0).toString());
+            System.out.println("Quiero ver las replays de " + table.getValueAt(row, 0).toString());
+            conexio.sendDesiredUserReplay(table.getValueAt(row, 0).toString());
         }
     }
 

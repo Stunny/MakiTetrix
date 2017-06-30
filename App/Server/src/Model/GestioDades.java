@@ -1,12 +1,15 @@
 package Model;
 import java.sql.*;
 
-import java.io.DataInputStream;
 import java.util.ArrayList;
-import java.util.StringJoiner;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.Scanner;
 
 
 public class GestioDades {
+    private Connection c;
+    private String pass;
     //tractament de dades --> info del server a la BBDD (Miquel)
     public GestioDades(){
         plenaUsuaris();
@@ -20,8 +23,12 @@ public class GestioDades {
     public ArrayList<String> plenaUsuaris(){
         ArrayList<String> usuaris = new ArrayList<>();
         try {
+            System.out.println("Introdueix la contraseña de la teva base de dades local:");
+            Scanner keyboard = new Scanner(System.in);
+            pass = keyboard.next();
+
             Class.forName("com.mysql.jdbc.Driver");
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
             Statement s = c.createStatement();
             ResultSet r = s.executeQuery("select user from Login");
             while (r.next()) {
@@ -46,7 +53,7 @@ public class GestioDades {
         User u = new User(null, null, null);
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
             Statement s = c.createStatement();
             ResultSet r = s.executeQuery("select * from Login");
             while (r.next()) {
@@ -76,8 +83,7 @@ public class GestioDades {
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
-
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
             Statement s = c.createStatement();
             ResultSet r = s.executeQuery("select user,mail, password from Login");
             while (r.next()) {
@@ -103,10 +109,9 @@ public class GestioDades {
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
-
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
             Statement s = c.createStatement();
-            ResultSet r = s.executeQuery("select user,mail from Login");
+            ResultSet r = s.executeQuery("select user, mail from Login");
             while (r.next()) {
                 if(r.getString("user").equals(u.getUserName())){
                     nomrepe = true;
@@ -146,10 +151,9 @@ public class GestioDades {
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
-
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
             Statement s = c.createStatement();
-            ResultSet r = s.executeQuery("select user,mail, password from Login");
+            ResultSet r = s.executeQuery("select user, mail, password from Login");
             while (r.next()) {
                 if(r.getString("user").equals(nom)||r.getString("mail").equals(nom)){
                     if(r.getString("password").equals(contra)){
@@ -182,13 +186,11 @@ public class GestioDades {
 
     private int addUser(User u) {
         int answer = checkExisteix(u);
-        System.out.println("check existeix retorna: " + answer);
         try {
             if (answer == 1) {
                 // create a mysql database connection
                 Class.forName("com.mysql.jdbc.Driver");
-                Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris", "root", "root");
-
+                c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
                 String query = " insert into Login (user, mail, password)" + " values (?, ?, ?)";
 
                 PreparedStatement preparedStmt = c.prepareStatement(query);
@@ -198,6 +200,7 @@ public class GestioDades {
                 preparedStmt.execute();
 
                 c.close();
+
                 return 0;
             }else{
                 return answer;
@@ -227,6 +230,7 @@ public class GestioDades {
         //extreure el usuari, password i email i crear instancia de usuari i afegirlo
         User u = new User(usuari, password, email);
         int error = addUser(u);
+        System.out.println("al gestio dades, addUser em retorna un " + error);
         return error;
     }
 }

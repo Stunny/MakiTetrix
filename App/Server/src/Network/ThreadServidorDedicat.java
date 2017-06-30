@@ -21,13 +21,14 @@ public class ThreadServidorDedicat extends Thread {
 
     private int loginStatus;
     private int registerStatus;
+    private GestioDades gestioDades;
 
-    private GestioDades gestioDades = new GestioDades();
     private GameDataManager gdm;
     private ObserveManager observeManager;
 
-    public ThreadServidorDedicat(Socket sClient){
+    public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades){
         this.sClient = sClient;
+        this.gestioDades = gestioDades;
     }
 
     @Override
@@ -68,7 +69,9 @@ public class ThreadServidorDedicat extends Thread {
                 break;
 
             case "R": //Register Request
+                System.out.println("detecto un registre en el server");
                 registerStatus = gestioDades.gestionaRegistre(reqData[1]);
+                System.out.println("gestiona dades em retorna un " + registerStatus);
                 enviaResposta(registerStatus);
                 break;
 
@@ -85,8 +88,9 @@ public class ThreadServidorDedicat extends Thread {
                 // TODO: observeManager.notifyEndOfGame();
                 break;
 
-            case "OBSRequest":
+            case "ReplaySelect"://Selected user to see replays
                 // observeManager.beginObserve();
+                System.out.println("I want to see: " + reqData[1] + "user's replays");
                 // TODO: enviar las diferentes partidas a escoger para observar
                 break;
 
@@ -103,6 +107,7 @@ public class ThreadServidorDedicat extends Thread {
      * @throws IOException
      */
     public void enviaResposta(int error) throws IOException {
+        System.out.println("envio aquesta resposta del servidor (bbdd) al client: " + error);
         switch(error){
             case 0:
                 doStream.writeUTF("OK");

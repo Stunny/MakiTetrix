@@ -16,11 +16,11 @@ import java.util.Scanner;
  */
 public class MenuController implements ActionListener {
     private MainMenuView mmv;
-    private ThreadSocketClient tsc;
+    private ThreadSocketClient conexio;
 
-    public MenuController(MainMenuView mmv, ThreadSocketClient tsc){
+    public MenuController(MainMenuView mmv, ThreadSocketClient conexio){
         this.mmv = mmv;
-        this.tsc = tsc;
+        this.conexio = conexio;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class MenuController implements ActionListener {
                 //TODO: IMPLEMENTAR EN LA NUEVA VISTA LAS PARTIDAS EN DIRECTO ORDENADAS POR VIEWERS
                 //Ver Partida en vivo
                 EspectatorView espectatorView = new EspectatorView();
-                EspectatorController espectatorController = new EspectatorController(espectatorView, tsc);
+                EspectatorController espectatorController = new EspectatorController(espectatorView, conexio);
                 espectatorView.registerEspectator(espectatorController);
                 espectatorView.setVisible(true);
                 break;
@@ -56,7 +56,7 @@ public class MenuController implements ActionListener {
                 //TODO: TIEMPO Y PICO MAXIMO DE ESPECTADORES
                 //Reproducir anterior
                 ReplaySelectView replay = new ReplaySelectView();
-                ReplaySelectController replayController = new ReplaySelectController(replay);
+                ReplaySelectController replayController = new ReplaySelectController(replay, conexio);
                 replay.registerReplay(replayController);
                 replay.setVisible(true);
                 break;
