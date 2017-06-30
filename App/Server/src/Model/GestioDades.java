@@ -1,4 +1,6 @@
 package Model;
+import model.utils.Encrypter;
+
 import java.sql.*;
 
 import java.util.ArrayList;
@@ -11,8 +13,11 @@ public class GestioDades {
     private Connection c;
     private String pass;
     //tractament de dades --> info del server a la BBDD (Miquel)
+
     public GestioDades(){
-        plenaUsuaris();
+        System.out.println("Introdueix la contraseña de la teva base de dades local:");
+        Scanner keyboard = new Scanner(System.in);
+        pass = keyboard.next();
     }
 
     /**
@@ -22,17 +27,17 @@ public class GestioDades {
      */
     public ArrayList<String> plenaUsuaris(){
         ArrayList<String> usuaris = new ArrayList<>();
+        Encrypter encrypter = new Encrypter();
         try {
-            System.out.println("Introdueix la contraseña de la teva base de dades local:");
-            Scanner keyboard = new Scanner(System.in);
-            pass = keyboard.next();
-
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
             Statement s = c.createStatement();
             ResultSet r = s.executeQuery("select user from Login");
             while (r.next()) {
-               usuaris.add(r.getString("user"));
+                //TODO: ARREGLAR LA FUNCION DECRYPT DEL ENCRIPTADOR, I DESCOMENTAR LO COMENTADO Y COMENTAR LO NO COMENTADO
+                //String userName = encrypter.decrypt(r.getString("user"));
+                //usuaris.add(userName);
+                usuaris.add(r.getString("user"));
             }
             c.close();
 
@@ -50,6 +55,8 @@ public class GestioDades {
      * @return Dvuelve una instancia de User
      */
     public User mostraDades (String nom){
+        //TODO: NECESITEM SABER SI ESTA CONECTAT O NO, DATA DE REGISTRE, ULTIM INICI DE SESIO, NOMBRE DE PARTIDES I TOTAL DE PUNTS.
+        //TODO: S'HA DE MODIFICAR EL TIPUS DE RETORN I LA FUNCIO DEL ServerContoller ompleInformacioUsuari
         User u = new User(null, null, null);
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -230,7 +237,6 @@ public class GestioDades {
         //extreure el usuari, password i email i crear instancia de usuari i afegirlo
         User u = new User(usuari, password, email);
         int error = addUser(u);
-        System.out.println("al gestio dades, addUser em retorna un " + error);
         return error;
     }
 }

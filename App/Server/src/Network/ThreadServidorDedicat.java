@@ -69,9 +69,7 @@ public class ThreadServidorDedicat extends Thread {
                 break;
 
             case "R": //Register Request
-                System.out.println("detecto un registre en el server");
                 registerStatus = gestioDades.gestionaRegistre(reqData[1]);
-                System.out.println("gestiona dades em retorna un " + registerStatus);
                 enviaResposta(registerStatus);
                 break;
 
@@ -107,7 +105,6 @@ public class ThreadServidorDedicat extends Thread {
      * @throws IOException
      */
     public void enviaResposta(int error) throws IOException {
-        System.out.println("envio aquesta resposta del servidor (bbdd) al client: " + error);
         switch(error){
             case 0:
                 doStream.writeUTF("OK");

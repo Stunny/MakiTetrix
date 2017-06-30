@@ -12,12 +12,14 @@ import java.awt.*;
 public class View extends JFrame{
     public static final String ACTION_BORRAR = "Borrar";
     public static final String ACTION_SEARCH = "Busca";
+    public static final String UPDATE = "Actualiza";
 
-    private JTable Table;
+    private JTable leftJTable;
     private JButton borrar;
     private JTextField buscador;
     private JButton busca;
-
+    private JButton actualitza;
+    private JTable rightJTable;
 
     public View() {
         //creem els components principals
@@ -42,25 +44,32 @@ public class View extends JFrame{
         JPanel topPane = new JPanel(new BorderLayout());
         JLabel topLabel = new JLabel("ADMINISTRADOR");
         topLabel.setFont (topLabel.getFont ().deriveFont (40.0f));
+        JPanel aux = new JPanel(new GridLayout(1, 2));
         buscador = new JTextField();
         busca = new JButton("Busca Usuari");
         busca.setActionCommand(ACTION_SEARCH);
+        actualitza = new JButton("Actualitza llistat");
+        actualitza.setActionCommand(UPDATE);
+        aux.add(busca);
+        aux.add(actualitza);
         topPane.add(topLabel, BorderLayout.NORTH);
         topPane.add(buscador, BorderLayout.CENTER);
-        topPane.add(busca, BorderLayout.SOUTH);
+        topPane.add(aux, BorderLayout.SOUTH);
         north.add(topPane);
 
         //afegim els components al panell inferior
-        JTextArea rightTextArea = new JTextArea();
-        JTableModel jTableModel = new JTableModel();
-        Table = new JTable(jTableModel);
-        Table.getTableHeader().setReorderingAllowed(false);
+        rightJTable = new JTable();
+        JTableModel jTableModelLeft = new JTableModel();
+        JTableModel jTableModelRight = new JTableModel();
+        leftJTable = new JTable(jTableModelLeft);
+        leftJTable.getTableHeader().setReorderingAllowed(false);
+        rightJTable = new JTable(jTableModelRight);
+        rightJTable.getTableHeader().setReorderingAllowed(false);
 
-        rightTextArea.setEditable(false);
         borrar = new JButton("Borrar");
         borrar.setActionCommand(ACTION_BORRAR);
-        final JScrollPane rightScroll = new JScrollPane(rightTextArea);
-        final JScrollPane leftScroll = new JScrollPane(Table);
+        final JScrollPane rightScroll = new JScrollPane(rightJTable);
+        final JScrollPane leftScroll = new JScrollPane(leftJTable);
         rightPane.add(borrar, BorderLayout.SOUTH);
         rightPane.add(rightScroll, BorderLayout.CENTER);
         leftPane.add(leftScroll, BorderLayout.CENTER);
@@ -74,17 +83,22 @@ public class View extends JFrame{
     }
 
     public void controladorBoto(ServerController sController){
-        Table.addMouseListener(sController);
+        leftJTable.addMouseListener(sController);
         borrar.addActionListener(sController);
         busca.addActionListener(sController);
+        actualitza.addActionListener(sController);
     }
 
-    public JTable getTable() {
-        return Table;
+    public JTable getLeftTable() {
+        return leftJTable;
+    }
+
+    public JTable getRightJTable() {
+        return rightJTable;
     }
 
     public void setTable(JTable leftList) {
-        this.Table = leftList;
+        this.leftJTable = leftList;
     }
 
     public JTextField getBuscador() {

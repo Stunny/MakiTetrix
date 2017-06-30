@@ -7,6 +7,9 @@
 -- Versió del servidor: 5.6.35
 -- Versió de PHP: 7.1.1
 
+-- CREATE DATABASE MakiTetris;
+USE MakiTetris;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -19,7 +22,7 @@ SET time_zone = "+00:00";
 --
 -- Estructura de la taula `Login`
 --
-
+DROP TABLE IF EXISTS Login CASCADE;
 CREATE TABLE `Login` (
   `user` varchar(255) NOT NULL,
   `mail` varchar(255) NOT NULL,
@@ -31,11 +34,9 @@ CREATE TABLE `Login` (
 --
 
 INSERT INTO `Login` (`user`, `mail`, `password`) VALUES
-('aapppa', 'll', 'wed'),
-('bullshit', 'megabullshit', 'ultrabullshit'),
-('miquelator', 'miquelet-sans@hotmail.com', 'Goddammit96'),
-('miquelet', 'sansnosanz@gmail.com', 'Goddammit96'),
-('moltbondia', 'ssss', 'wed');
+('userName1', 'email1@mail.com', 'pass1'),
+('userName2', 'email2@mail.com', 'pass2'),
+('userName3', 'email3@mail.com', 'pass3');
 
 --
 -- Indexos per taules bolcades
@@ -47,3 +48,5 @@ INSERT INTO `Login` (`user`, `mail`, `password`) VALUES
 ALTER TABLE `Login`
   ADD UNIQUE KEY `user` (`user`),
   ADD UNIQUE KEY `mail` (`mail`);
+  
+  SELECT * FROM Login;

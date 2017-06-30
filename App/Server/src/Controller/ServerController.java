@@ -46,6 +46,8 @@ public class ServerController implements ActionListener, MouseListener {
                 view.getModel().addElement(usuaris.get(i));
             }
                     */
+        }else if (e.getActionCommand().equals(view.UPDATE)){
+            ompleUsuaris();
         }
     }
 
@@ -54,13 +56,32 @@ public class ServerController implements ActionListener, MouseListener {
      */
     public void ompleUsuaris(){
         ArrayList<String> usuaris = gestioDades.plenaUsuaris();
-        DefaultTableModel model = (DefaultTableModel) view.getTable().getModel();
+        DefaultTableModel model = (DefaultTableModel) view.getLeftTable().getModel();
+        model.setRowCount(0);
+        model.setColumnCount(0);
 
         model.addColumn("Name");
         for (int i = 0; i < usuaris.size(); i++){
             Vector<String> userName = new Vector<>(Arrays.asList(usuaris.get(i)));
             model.addRow(userName);
         }
+    }
+
+    /**
+     * Fills de view with the selected user's data
+     * @param u Selected user
+     */
+    private void ompleInformacioUsuari(User u){
+        DefaultTableModel model = (DefaultTableModel) view.getRightJTable().getModel();
+        model.setRowCount(0);
+        model.setColumnCount(0);
+
+        model.addColumn("Conectat");
+        model.addColumn("Data de registre");
+        model.addColumn("Ultim inici de sesio");
+        model.addColumn("Nombre de partides");
+        model.addColumn("Total de punts");
+
     }
 
     public void startThread() {
@@ -75,8 +96,9 @@ public class ServerController implements ActionListener, MouseListener {
     public void mouseClicked(MouseEvent e) {
         JTable table = (JTable) e.getSource();
         if (e.getClickCount() == 1) {
-            int row = view.getTable().getSelectedRow();
-            gestioDades.mostraDades(table.getValueAt(row, 0).toString());
+            int row = view.getLeftTable().getSelectedRow();
+            User u = gestioDades.mostraDades(table.getValueAt(row, 0).toString());
+            ompleInformacioUsuari(u);
         }
     }
 
