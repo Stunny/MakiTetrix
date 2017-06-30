@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 public class RegisterController implements ActionListener {
 
     public static final String ACTION_REG = "REGISTER";
-    private ThreadSocketClient tsc;
+    private static ThreadSocketClient conexio;
     //private static final String EMAIL_REGEX = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
     /**
@@ -59,7 +59,7 @@ public class RegisterController implements ActionListener {
      */
     public static RegisterController getInstance(RegisterView view, LoginView parent/*, UserAccessRepository uar*/){
         if(rc == null)
-            rc = new RegisterController(view, parent/*, uar*/);
+            rc = new RegisterController(view, parent, conexio/*, uar*/);
         return rc;
     }
 
@@ -67,9 +67,10 @@ public class RegisterController implements ActionListener {
      *
      * @param view
      */
-    public RegisterController(RegisterView view, LoginView parent/*, UserAccessRepository uar*/){
+    public RegisterController(RegisterView view, LoginView parent, ThreadSocketClient conexio/*, UserAccessRepository uar*/){
         this.view = view;
         this.parent = parent;
+        this.conexio = conexio;
         //accessRepo = uar;
     }
 
@@ -147,23 +148,24 @@ public class RegisterController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals(ACTION_REG)){
             if(credentialsOK()){
+                System.out.println("userName: " + userName);
                 User registerUser = new User(userName, userEmail, userPass);
-                startThread(registerUser);
+                conexio.startingLoginRegister(registerUser);
 
                 try {
-                    tsc.join();
+                    conexio.join();
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
 
-                if (tsc.isAux()){
+                if (conexio.isAux()){
                     MainMenuView mmv = new MainMenuView();
-                    MenuController mc = new MenuController(mmv);
+                    MenuController mc = new MenuController(mmv, conexio);
                     mmv.registerActions(mc);
                     mmv.setVisible(true);
                     view.setVisible(false);
                 }else{
-                    view.displayError(tsc.getResponse());
+                    view.displayError(conexio.getResponse());
                 }
             }
         }
@@ -172,15 +174,16 @@ public class RegisterController implements ActionListener {
     //iniciar el MenuController
     public static void main(String[] args) {
         MainMenuView mmv = new MainMenuView();
-        MenuController mc = new MenuController(mmv);
+        MenuController mc = new MenuController(mmv, conexio);
         mmv.registerActions(mc);
         mmv.setVisible(true);
     }
-    public void startThread(User u){
+    /*
+    public void startThread(){
         if (tsc == null || !tsc.isAlive()) {
             //aqui comence thread
-            tsc = new ThreadSocketClient(u);
+            tsc = new ThreadSocketClient();
             tsc.start();
         }
-    }
+    }*/
 }

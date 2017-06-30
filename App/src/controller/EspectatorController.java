@@ -4,6 +4,7 @@ import Vista.EspectatorView;
 import com.sun.xml.internal.fastinfoset.util.CharArray;
 import model.LiveUser;
 import model.User;
+import network.ThreadSocketClient;
 import org.omg.CORBA.TIMEOUT;
 
 import javax.swing.*;
@@ -19,9 +20,11 @@ import java.util.Vector;
  */
 public class EspectatorController implements MouseListener {
     private static EspectatorView espectatorView;
+    private ThreadSocketClient tsc;
 
-    EspectatorController(EspectatorView espectatorView){
+    EspectatorController(EspectatorView espectatorView, ThreadSocketClient tsc){
         this.espectatorView = espectatorView;
+        this.tsc = tsc;
         ompleLlistaUsuaris();
     }
 
@@ -63,6 +66,8 @@ public class EspectatorController implements MouseListener {
             int row = espectatorView.getTable().getSelectedRow();
             //TODO: IMPLEMENTAR FUNCION QUE DEVUELVA LOS DATOS DE LA PARTIDA SELECCIONADA AL SERVER
             System.out.println("Quiero espectar la partida de " + table.getValueAt(row, 0).toString());
+
+            tsc.sendUserToEspectate(table.getValueAt(row, 0).toString());
         }
     }
 

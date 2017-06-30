@@ -91,6 +91,7 @@ public class ThreadServidorDedicat extends Thread {
                 break;
 
             case "OBSelect": //Selected user to observe
+                System.out.println("I want to spectate: " + reqData[1]);
                 // TODO: establecer observador a la partida seleccionada
                 break;
         }

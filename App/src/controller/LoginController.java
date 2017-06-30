@@ -41,11 +41,11 @@ public class LoginController implements ActionListener {
      *
      * @return
      */
-    private ThreadSocketClient tsc;
+    private ThreadSocketClient conexio;
 
-    public static LoginController getInstance(LoginView view, UserAccessRepository uar){
+    public static LoginController getInstance(LoginView view, ThreadSocketClient conexio, UserAccessRepository uar){
        if(loginController == null){
-           loginController = new LoginController(view, uar);
+           loginController = new LoginController(view, conexio, uar);
        }
        return loginController;
     }
@@ -54,9 +54,10 @@ public class LoginController implements ActionListener {
      * Creates a new instance of a login controller
      * @param view an instance of a Login Screen
      */
-    public LoginController(LoginView view, UserAccessRepository uar){
+    public LoginController(LoginView view, ThreadSocketClient conexio, UserAccessRepository uar){
         this.uar = uar;
         this.view = view;
+        this.conexio = conexio;
     }
 
 
@@ -75,10 +76,10 @@ public class LoginController implements ActionListener {
     }
 
     public void startThread(User u){
-        if (tsc == null || !tsc.isAlive()) {
+        if (conexio == null || !conexio.isAlive()) {
             //aqui comence thread
-            tsc = new ThreadSocketClient(u);
-            tsc.start();
+            conexio = new ThreadSocketClient();
+            conexio.start();
         }
     }
 
@@ -93,15 +94,15 @@ public class LoginController implements ActionListener {
             //TODO: COMPROVAR SI EL USUARIO SE HA LOGUEADO CON EL USERNAME O EL EMAIL Y GENERAR DISTINTOS USER CON LOS
             //TODO: CORRESPONDIENTES CAMPOS A NULL Y PASARSELOS AL THREAD
             User loginUser = new User(view.getUserName(), null, view.getPassword());
-            startThread(loginUser);
+            conexio.startingLoginRegister(loginUser);
 
             try {
-                tsc.join();
+                conexio.join();
             } catch (InterruptedException e1) {
                 e1.printStackTrace();
             }
 
-            if (tsc.isAux()){
+            if (conexio.isAux()){
                 OnLoginSuccess();
             }else{
                 OnLoginFailed();
@@ -119,7 +120,7 @@ public class LoginController implements ActionListener {
      *
      */
     public void OnLoginFailed(){
-        String[] aux = tsc.getResponse().split("-");
+        String[] aux = conexio.getResponse().split("-");
         view.setLoginError(aux[1]);
     }
 
@@ -135,7 +136,7 @@ public class LoginController implements ActionListener {
         formPanel = rv.getFormPanel();
         rv.setContentPane(formPanel);
         rv.pack();
-        RegisterController rc = new RegisterController(rv, null);
+        RegisterController rc = new RegisterController(rv, null, conexio);
         rv.registerController(rc);
         rv.setVisible(true);
 

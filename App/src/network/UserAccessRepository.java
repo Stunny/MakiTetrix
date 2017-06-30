@@ -43,5 +43,15 @@ public interface UserAccessRepository {
 
     String response();
 
+    /**
+     * Treats server's response
+     * @return True if response is satisfactory. False if otherwise
+     */
     boolean tractaResposta();
+
+    /**
+     * Sends to server the selected user to espectate from current client
+     * @param userNameToEspectate User name selected to espectate
+     */
+    void sendUserToEspectate(String userNameToEspectate);
 }
