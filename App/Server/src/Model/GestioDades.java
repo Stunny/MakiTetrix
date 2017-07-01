@@ -32,7 +32,7 @@ public class GestioDades {
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
             Statement s = c.createStatement();
-            ResultSet r = s.executeQuery("select user from Login");
+            ResultSet r = s.executeQuery("SELECT user FROM Login");
             while (r.next()) {
                 //TODO: ARREGLAR LA FUNCION DECRYPT DEL ENCRIPTADOR, I DESCOMENTAR LO COMENTADO Y COMENTAR LO NO COMENTADO
                 //String userName = encrypter.decrypt(r.getString("user"));
@@ -82,22 +82,20 @@ public class GestioDades {
     /**
      * Busca usaurios en la BBDD segun el nombre introducido
      *
-     * @param b Nombre del usuario/s que queremos buscar
+     * @param userName Nombre del usuario/s que queremos buscar
      * @return Devuelve un ArrayList con todos aquellos usuarios de la BBDD que coincidan con el nombre de busqueda
      */
-    public ArrayList<String> busca(String b){
-        ArrayList<String>trobats = new ArrayList<>();
+    public ArrayList<String> busca(String userName){
+        ArrayList<String> trobats = new ArrayList<>();
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
             Statement s = c.createStatement();
-            ResultSet r = s.executeQuery("select user,mail, password from Login");
+
+            ResultSet r = s.executeQuery("SELECT user FROM Login WHERE user REGEXP '" + userName + "';");
             while (r.next()) {
-                if(r.getString("user").contains(b)){
-                    trobats.add(r.getString("user"));
-                    System.out.println(r.getString("user"));
-                }
+                trobats.add(r.getString("user"));
             }
 
             c.close();

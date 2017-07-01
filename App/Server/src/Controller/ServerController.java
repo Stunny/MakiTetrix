@@ -29,7 +29,7 @@ public class ServerController implements ActionListener, MouseListener {
         this.view = view;
         this.gestioDades = gestioDades;
         this.ts = threadSocketServer;
-        ompleUsuaris();
+        ompleUsuaris(gestioDades.busca("^"));
         startThread();
     }
 
@@ -39,13 +39,21 @@ public class ServerController implements ActionListener, MouseListener {
 
             try{
                 gestioDades.borraUsuari(selectedUser.getUserName());
-                ompleUsuaris();
+                ompleUsuaris(gestioDades.busca("^"));
                 selectedUser = null;
             }catch (NullPointerException s){
                 view.mostraError();
             }
         }else if (e.getActionCommand().equals(view.ACTION_SEARCH)){
-            ArrayList<String> usuaris =  gestioDades.busca(view.getBuscador().getText());
+            if (view.getBuscador().getText().equals("")){
+                ArrayList<String> usuaris = gestioDades.busca("^");
+                ompleUsuaris(usuaris);
+            }else{
+                ArrayList<String> usuaris = gestioDades.busca(view.getBuscador().getText());
+                ompleUsuaris(usuaris);
+            }
+
+
             //DefaultTableModel model = (DefaultTableModel) View.getTable().getModel();
 
             /*
@@ -55,15 +63,15 @@ public class ServerController implements ActionListener, MouseListener {
             }
                     */
         }else if (e.getActionCommand().equals(view.UPDATE)){
-            ompleUsuaris();
+            ompleUsuaris(gestioDades.busca("^"));
         }
     }
 
     /**
      * Fills the view with the users' data
      */
-    public void ompleUsuaris(){
-        ArrayList<String> usuaris = gestioDades.plenaUsuaris();
+    public void ompleUsuaris(ArrayList<String> usuaris){
+        //usuaris = gestioDades.plenaUsuaris();
         DefaultTableModel model = (DefaultTableModel) view.getLeftTable().getModel();
         model.setRowCount(0);
         model.setColumnCount(0);

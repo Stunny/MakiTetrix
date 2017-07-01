@@ -37,7 +37,6 @@ INSERT INTO `Login` (`user`, `mail`, `password`) VALUES
 ('userName1', 'email1@mail.com', 'pass1'),
 ('userName2', 'email2@mail.com', 'pass2'),
 ('userName3', 'email3@mail.com', 'pass3');
-
 --
 -- Indexos per taules bolcades
 --
@@ -49,4 +48,4 @@ ALTER TABLE `Login`
   ADD UNIQUE KEY `user` (`user`),
   ADD UNIQUE KEY `mail` (`mail`);
   
-  SELECT * FROM Login;
+  SELECT * FROM Login WHERE user = %'algo';
