@@ -61,6 +61,7 @@ public class MenuController implements ActionListener {
                 replay.setVisible(true);
                 break;
             case "salir":
+                conexio.setDisconnected();
                 System.exit(1);
                 break;
         }

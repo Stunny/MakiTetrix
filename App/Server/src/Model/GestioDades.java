@@ -3,9 +3,12 @@ import model.utils.Encrypter;
 
 import java.sql.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Calendar;
 import java.util.Scanner;
 
 
@@ -49,20 +52,49 @@ public class GestioDades {
     }
 
     /**
-     * Devuelve una instancia del modelo User, con toda la informacion del usuario que hayamos seleccionado
+     * Devuelve la informacion del usuario que hayamos seleccionado
+     *
+     * @param nom Nombre del usuario del cual queremos obtener toda la información
+     * @return Devuelve un ArrayList<String>
+     */
+    public ArrayList<String> mostraDades (String nom){
+        ArrayList<String> info = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
+            Statement s = c.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM Login");
+            while (r.next()) {
+                if(r.getString("user").equals(nom)){
+                    info.add(r.getString("connected"));
+                    info.add(r.getString("register_date"));
+                    info.add(r.getString("last_login"));
+                    info.add(r.getString("number_games"));
+                    info.add(r.getString("total_points"));
+                    return info;
+                }
+            }
+            c.close();
+
+        } catch (Exception var2) {
+            var2.printStackTrace();
+        }
+        return info;
+    }
+
+    /**
+     * Devuelve una instancia del modelo User correspondiente al nombre recibido
      *
      * @param nom Nombre del usuario del cual queremos obtener toda la información
      * @return Dvuelve una instancia de User
      */
-    public User mostraDades (String nom){
-        //TODO: NECESITEM SABER SI ESTA CONECTAT O NO, DATA DE REGISTRE, ULTIM INICI DE SESIO, NOMBRE DE PARTIDES I TOTAL DE PUNTS.
-        //TODO: S'HA DE MODIFICAR EL TIPUS DE RETORN I LA FUNCIO DEL ServerContoller ompleInformacioUsuari
+    public User retornaUser (String nom){
         User u = new User(null, null, null);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
             Statement s = c.createStatement();
-            ResultSet r = s.executeQuery("select * from Login");
+            ResultSet r = s.executeQuery("SELECT * FROM Login");
             while (r.next()) {
                 if(r.getString("user").equals(nom)){
                     u.setUserName(r.getString("user"));
@@ -162,6 +194,7 @@ public class GestioDades {
             while (r.next()) {
                 if(r.getString("user").equals(nom)||r.getString("mail").equals(nom)){
                     if(r.getString("password").equals(contra)){
+                        ResultSet res = s.executeQuery("INSERT INTO Login (connected) VALUES (true);");
                         ok = true;
                     }
                     else {
@@ -188,7 +221,6 @@ public class GestioDades {
 
     }
 
-
     private int addUser(User u) {
         int answer = checkExisteix(u);
         try {
@@ -196,12 +228,20 @@ public class GestioDades {
                 // create a mysql database connection
                 Class.forName("com.mysql.jdbc.Driver");
                 c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
-                String query = " insert into Login (user, mail, password)" + " values (?, ?, ?)";
+                String query = "INSERT INTO Login (user, mail, password, connected, register_date, last_login, number_games, total_points)"
+                        + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
                 PreparedStatement preparedStmt = c.prepareStatement(query);
                 preparedStmt.setString(1, u.getUserName());
                 preparedStmt.setString(2, u.getEmail());
                 preparedStmt.setString(3, u.getPassword());
+                preparedStmt.setBoolean(4, true);
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                Date date = new Date(System.currentTimeMillis());
+                preparedStmt.setString(5, dateFormat.format(date));
+                preparedStmt.setString(6, dateFormat.format(date));
+                preparedStmt.setInt(7, 0);
+                preparedStmt.setInt(8, 0);
                 preparedStmt.execute();
 
                 c.close();
@@ -214,8 +254,9 @@ public class GestioDades {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
         }
-       return answer;
+        return answer;
     }
+
 
     public int gestionaLogin(String missatge) {
         //0:ok, 1:usuari/mail no existeix 2:contra no

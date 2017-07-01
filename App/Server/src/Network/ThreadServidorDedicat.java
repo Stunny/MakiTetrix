@@ -56,7 +56,7 @@ public class ThreadServidorDedicat extends Thread {
             case "L": //Login Request
                 Encrypter encrypter = new Encrypter();
                 try {
-                    String aux = encrypter.decrypt(reqData[1]);
+                    String aux = encrypter.decrypt(reqData[1]); // peta por el encrypter
                     System.out.println("Decripted string: " + aux);
                     loginStatus = gestioDades.gestionaLogin(aux);
                     enviaResposta(loginStatus);
@@ -81,6 +81,7 @@ public class ThreadServidorDedicat extends Thread {
             case "EoG": //End of Game: final de partida
                 // TODO: gdm.setFinishTime(reqData[1]);
                 // TODO: observeManager.notifyEndOfGame();
+                // TODO: ACTUALIZAR BASE DE DATOS CON LA NUEVA INFORMACION
                 break;
 
             case "ReplaySelect"://Selected user to see replays
@@ -92,6 +93,10 @@ public class ThreadServidorDedicat extends Thread {
             case "OBSelect": //Selected user to observe
                 System.out.println("I want to spectate: " + reqData[1]);
                 // TODO: establecer observador a la partida seleccionada
+                break;
+
+            case "STATUS":
+                System.out.println("disconnect user");
                 break;
         }
 

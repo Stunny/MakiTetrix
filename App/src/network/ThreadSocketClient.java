@@ -83,14 +83,10 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         aux = tractaResposta();
-
-        System.out.println("resposta que arrive al client: " + response);
 
         disconnect();
     }
-
 
     @Override
     public void login(User user) {
@@ -172,6 +168,19 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
         disconnect();
     }
 
+    public void setDisconnected() {
+        connect();
+
+        try {
+            doStream.writeUTF("STATUS-IMPLEMENTAR TODO"/* + */);
+            //TODO: PASAR EL NOMBRE DEL USUARIO QUE SE QUIERE DESCONECTAR AL SERVER
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        disconnect();
+    }
+
     @Override
     public boolean logout() {
         return false;
@@ -204,5 +213,6 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
     public boolean isAux() {
         return aux;
     }
+
 
 }

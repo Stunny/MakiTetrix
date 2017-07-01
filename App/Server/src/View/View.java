@@ -75,7 +75,7 @@ public class View extends JFrame{
         leftPane.add(leftScroll, BorderLayout.CENTER);
 
         //configuracio basica de la nostra finestra
-        setSize(500, 700);
+        setSize(700, 700);
         setTitle("Administrator view");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
