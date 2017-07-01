@@ -23,6 +23,7 @@ public class ServerController implements ActionListener, MouseListener {
     private static View view;
     private GestioDades gestioDades;
     private ThreadSocketServer ts;
+    private User selectedUser;
 
     public ServerController(View view, GestioDades gestioDades, ThreadSocketServer threadSocketServer) {
         this.view = view;
@@ -35,7 +36,14 @@ public class ServerController implements ActionListener, MouseListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals(view.ACTION_BORRAR)){
-           // gestioDades.borraUsuari(usuaris[view.getLeftList().getSelectedIndex()]);
+
+            try{
+                gestioDades.borraUsuari(selectedUser.getUserName());
+                ompleUsuaris();
+                selectedUser = null;
+            }catch (NullPointerException s){
+                view.mostraError();
+            }
         }else if (e.getActionCommand().equals(view.ACTION_SEARCH)){
             ArrayList<String> usuaris =  gestioDades.busca(view.getBuscador().getText());
             //DefaultTableModel model = (DefaultTableModel) View.getTable().getModel();
@@ -95,10 +103,11 @@ public class ServerController implements ActionListener, MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         JTable table = (JTable) e.getSource();
-        if (e.getClickCount() == 1) {
+        if (e.getClickCount() == 2) {
             int row = view.getLeftTable().getSelectedRow();
             User u = gestioDades.mostraDades(table.getValueAt(row, 0).toString());
             ompleInformacioUsuari(u);
+            selectedUser = u;
         }
     }
 

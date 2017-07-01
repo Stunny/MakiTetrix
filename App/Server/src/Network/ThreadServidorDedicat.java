@@ -37,11 +37,8 @@ public class ThreadServidorDedicat extends Thread {
 
             doStream = new DataOutputStream(sClient.getOutputStream());
             diStream = new DataInputStream(sClient.getInputStream());
-
-            while (true){
-                String request = diStream.readUTF();
-                readRequest(request);
-            }
+            String request = diStream.readUTF();
+            readRequest(request);
 
         } catch (IOException e) {
             e.printStackTrace();

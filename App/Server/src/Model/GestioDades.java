@@ -239,4 +239,24 @@ public class GestioDades {
         int error = addUser(u);
         return error;
     }
+
+    public void borraUsuari(String userName){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        String query = "DELETE FROM Login WHERE user = '" + userName + "';";
+        PreparedStatement preparedStmt = null;
+        try {
+            preparedStmt = c.prepareStatement(query);
+            preparedStmt.execute();
+            c.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

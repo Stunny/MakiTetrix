@@ -104,4 +104,12 @@ public class View extends JFrame{
     public JTextField getBuscador() {
         return buscador;
     }
+
+    public void mostraError() {
+        String[] options = { "OK" };
+        JOptionPane.showOptionDialog(this, "Error! Se debe seleccionar un usuario a borrar haciendo doble click sobre el mismo",
+                "ERROR AL INICIAR BORRAR USUARIO", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
+                null, options, options[0]);
+
+    }
 }
