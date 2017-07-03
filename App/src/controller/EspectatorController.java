@@ -1,11 +1,8 @@
 package controller;
 
 import Vista.EspectatorView;
-import com.sun.xml.internal.fastinfoset.util.CharArray;
 import model.LiveUser;
-import model.User;
-import network.ThreadSocketClient;
-import org.omg.CORBA.TIMEOUT;
+import network.Conexio;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -20,9 +17,9 @@ import java.util.Vector;
  */
 public class EspectatorController implements MouseListener {
     private static EspectatorView espectatorView;
-    private ThreadSocketClient conexio;
+    private Conexio conexio;
 
-    EspectatorController(EspectatorView espectatorView, ThreadSocketClient conexio){
+    EspectatorController(EspectatorView espectatorView, Conexio conexio){
         this.espectatorView = espectatorView;
         this.conexio = conexio;
         ompleLlistaUsuaris();
@@ -40,6 +37,8 @@ public class EspectatorController implements MouseListener {
         usuaris.add(liveUser);
         usuaris.add(liveUser2);
 //----------
+
+        conexio.getOnlineUsers();
         //TODO: LLAMAR A FUNCION QUE DEVUELVA UNA INSTANCIA VALIDA DE LiveUser PARA POBLAR LA JTABLE
         DefaultTableModel model = (DefaultTableModel) espectatorView.getTable().getModel();
         model.addColumn("Nombre de usuario");

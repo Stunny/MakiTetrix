@@ -3,7 +3,7 @@ package controller;
 import Vista.LoginView;
 import Vista.RegisterView;
 import model.User;
-import network.ThreadSocketClient;
+import network.Conexio;
 import network.UserAccessRepository;
 
 import javax.swing.*;
@@ -41,9 +41,9 @@ public class LoginController implements ActionListener {
      *
      * @return
      */
-    private ThreadSocketClient conexio;
+    private Conexio conexio;
 
-    public static LoginController getInstance(LoginView view, ThreadSocketClient conexio, UserAccessRepository uar){
+    public static LoginController getInstance(LoginView view, Conexio conexio, UserAccessRepository uar){
        if(loginController == null){
            loginController = new LoginController(view, conexio, uar);
        }
@@ -54,7 +54,7 @@ public class LoginController implements ActionListener {
      * Creates a new instance of a login controller
      * @param view an instance of a Login Screen
      */
-    public LoginController(LoginView view, ThreadSocketClient conexio, UserAccessRepository uar){
+    public LoginController(LoginView view, Conexio conexio, UserAccessRepository uar){
         this.uar = uar;
         this.view = view;
         this.conexio = conexio;

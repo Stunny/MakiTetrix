@@ -22,13 +22,12 @@ import java.util.Vector;
 public class ServerController implements ActionListener, MouseListener {
     private static View view;
     private GestioDades gestioDades;
-    private ThreadSocketServer ts;
     private User selectedUser;
 
     public ServerController(View view, GestioDades gestioDades, ThreadSocketServer threadSocketServer) {
         this.view = view;
         this.gestioDades = gestioDades;
-        this.ts = threadSocketServer;
+        ThreadSocketServer ts = threadSocketServer;
         ompleUsuaris(gestioDades.busca("^"));
 
         if (ts == null || !ts.isAlive()) {
@@ -98,14 +97,21 @@ public class ServerController implements ActionListener, MouseListener {
         model.addColumn("Nombre de partides");
         model.addColumn("Total de punts");
 
-        Vector<String> connected = new Vector<String>(Arrays.asList(info.get(0)));
-        Vector<String> registerDate = new Vector<String>(Arrays.asList(info.get(1)));
-        Vector<String> lastLogin = new Vector<String>(Arrays.asList(info.get(2)));
-        Vector<String> gameCount = new Vector<String>(Arrays.asList(info.get(3)));
-        Vector<String> totalPoints = new Vector<String>(Arrays.asList(info.get(4)));
+        Vector<String> connected = new Vector<>(Arrays.asList(info.get(0)));
+        Vector<String> registerDate = new Vector<>(Arrays.asList(info.get(1)));
+        Vector<String> lastLogin = new Vector<>(Arrays.asList(info.get(2)));
+        Vector<String> gameCount = new Vector<>(Arrays.asList(info.get(3)));
+        Vector<String> totalPoints = new Vector<>(Arrays.asList(info.get(4)));
+
+        String con;
+        if (connected.get(0).equals("1")){
+            con = "Online";
+        }else{
+            con = "Offline";
+        }
 
         Vector<Object> row = new Vector<Object>();
-        row.addElement(connected.get(0));
+        row.addElement(con);
         row.addElement(registerDate.get(0));
         row.addElement(lastLogin.get(0));
         row.addElement(gameCount.get(0));

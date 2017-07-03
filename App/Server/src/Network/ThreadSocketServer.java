@@ -1,7 +1,6 @@
 package Network;
 
 import Model.GestioDades;
-import network.ThreadSocketClient;
 
 import java.io.IOException;
 import java.net.ServerSocket;

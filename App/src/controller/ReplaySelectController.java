@@ -2,7 +2,7 @@ package controller;
 
 import Vista.ReplaySelectView;
 import model.UserReplay;
-import network.ThreadSocketClient;
+import network.Conexio;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -18,9 +18,9 @@ import java.util.Vector;
  */
 public class ReplaySelectController implements MouseListener{
     private ReplaySelectView view;
-    private ThreadSocketClient conexio;
+    private Conexio conexio;
 
-    ReplaySelectController(ReplaySelectView view, ThreadSocketClient conexio){
+    ReplaySelectController(ReplaySelectView view, Conexio conexio){
         this.view = view;
         this.conexio = conexio;
         ompleReplays();

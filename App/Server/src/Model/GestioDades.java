@@ -1,5 +1,4 @@
 package Model;
-import model.utils.Encrypter;
 
 import java.sql.*;
 
@@ -8,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.Calendar;
 import java.util.Scanner;
 
 
@@ -37,10 +35,9 @@ public class GestioDades {
             Statement s = c.createStatement();
             ResultSet r = s.executeQuery("SELECT user FROM Login");
             while (r.next()) {
-                //TODO: ARREGLAR LA FUNCION DECRYPT DEL ENCRIPTADOR, I DESCOMENTAR LO COMENTADO Y COMENTAR LO NO COMENTADO
-                //String userName = encrypter.decrypt(r.getString("user"));
-                //usuaris.add(userName);
-                usuaris.add(r.getString("user"));
+                String userName = encrypter.decrypt(r.getString("user"));
+                usuaris.add(userName);
+                //usuaris.add(r.getString("user"));
             }
             c.close();
 
@@ -155,6 +152,8 @@ public class GestioDades {
                     System.out.println("user repe");
                 }
                 if(r.getString("mail").equals(u.getEmail())){
+                    System.out.println("email de la base de dades: " + r.getString("mail"));
+                    System.out.println("email amb el que ens volem registrar: " + u.getEmail());
                     System.out.println("email repe");
                     mailrepe = true;
                 }
@@ -267,14 +266,11 @@ public class GestioDades {
         return error;
     }
 
-    public int gestionaRegistre(String missatge) {
+    public int gestionaRegistre(String usuari, String password, String email) {
         //0:ok, 3:usuari existeix 4:mail existeix 5:both
-        String [] dades = missatge.split("#");
-        String usuari = dades[0];
-        String password = dades[1];
-        String email = dades[2];
-        //extreure el usuari, password i email i crear instancia de usuari i afegirlo
         User u = new User(usuari, password, email);
+        System.out.println("password fails here?: " + password);
+        System.out.println("password fails here2?: " + u.getEmail());
         int error = addUser(u);
         return error;
     }

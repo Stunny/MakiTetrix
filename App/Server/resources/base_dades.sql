@@ -23,20 +23,26 @@ SET time_zone = "+00:00";
 -- Estructura de la taula `Login`
 --
 DROP TABLE IF EXISTS Login CASCADE;
-CREATE TABLE `Login` (
-  `user` varchar(255) NOT NULL,
-  `mail` varchar(255) NOT NULL,
-  `password` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE Login (
+  user varchar(255) NOT NULL,
+  mail varchar(255) NOT NULL,
+  password varchar(50) NOT NULL,
+  connected BOOLEAN,
+  register_date VARCHAR(255),
+  last_login VARCHAR(255),
+  number_games INT,
+  total_points INT,
+  PRIMARY KEY (user, mail)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 --
 -- Bolcant dades de la taula `Login`
 --
 
-INSERT INTO `Login` (`user`, `mail`, `password`) VALUES
-('userName1', 'email1@mail.com', 'pass1'),
-('userName2', 'email2@mail.com', 'pass2'),
-('userName3', 'email3@mail.com', 'pass3');
+INSERT INTO Login (user, mail, password, connected, register_date, last_login, number_games, total_points) VALUES
+('userName1', 'email1@mail.com', 'pass1', true, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '03/06/1996', 20, 1240),
+('angel', 'angel@mail.com', 'pass2', false, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '20/11/2020', 12, 2131),
+('test', 'test@mail.com', 'pass3', true, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '21/05/2011', 5, 2311);
 --
 -- Indexos per taules bolcades
 --
@@ -44,8 +50,10 @@ INSERT INTO `Login` (`user`, `mail`, `password`) VALUES
 --
 -- Index de la taula `Login`
 --
+/*
 ALTER TABLE `Login`
   ADD UNIQUE KEY `user` (`user`),
   ADD UNIQUE KEY `mail` (`mail`);
+*/
+  SELECT * FROM Login;
   
-  SELECT * FROM Login WHERE user = %'algo';

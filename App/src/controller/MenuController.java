@@ -1,26 +1,25 @@
 package controller;
 
 import Vista.*;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import model.Partida;
-import network.ThreadSocketClient;
-import org.omg.SendingContext.RunTime;
-import sun.applet.Main;
+import model.User;
+import network.Conexio;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
 
 /**
  * Created by avoge on 04/04/2017.
  */
 public class MenuController implements ActionListener {
     private MainMenuView mmv;
-    private ThreadSocketClient conexio;
+    private Conexio conexio;
+    private User currentUser;
 
-    public MenuController(MainMenuView mmv, ThreadSocketClient conexio){
+    public MenuController(MainMenuView mmv, Conexio conexio, User currentUser){
         this.mmv = mmv;
         this.conexio = conexio;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -61,7 +60,7 @@ public class MenuController implements ActionListener {
                 replay.setVisible(true);
                 break;
             case "salir":
-                conexio.setDisconnected();
+                conexio.setDisconnected(currentUser);
                 System.exit(1);
                 break;
         }

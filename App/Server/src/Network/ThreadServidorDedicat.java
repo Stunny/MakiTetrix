@@ -1,7 +1,7 @@
 package Network;
 
+import Model.Encrypter;
 import Model.GestioDades;
-import model.utils.Encrypter;
 import utils.GameDataManager;
 import utils.ObserveManager;
 
@@ -50,15 +50,13 @@ public class ThreadServidorDedicat extends Thread {
      * @param request
      */
     public void readRequest(String request) throws IOException {
-        String [] reqData = request.split("-");
 
-        switch(reqData[0]){
+        switch(request){
             case "L": //Login Request
-                Encrypter encrypter = new Encrypter();
                 try {
-                    String aux = encrypter.decrypt(reqData[1]); // peta por el encrypter
-                    System.out.println("Decripted string: " + aux);
-                    loginStatus = gestioDades.gestionaLogin(aux);
+                    String userName = diStream.readUTF();
+                    String aux = Encrypter.decrypt(userName);
+                    loginStatus = gestioDades.gestionaLogin(aux);//crec que esta com el cul perque li hem de pasar mes dades que el userName desencriptat
                     enviaResposta(loginStatus);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -66,8 +64,20 @@ public class ThreadServidorDedicat extends Thread {
                 break;
 
             case "R": //Register Request
-                registerStatus = gestioDades.gestionaRegistre(reqData[1]);
-                enviaResposta(registerStatus);
+                try {
+                    String usuari = diStream.readUTF();
+                    String password = diStream.readUTF();
+                    String email = diStream.readUTF();
+
+                    String decryptedUserName = Encrypter.decrypt(usuari);
+                    String decryptedPassword = Encrypter.decrypt(password);
+                    String decryptedMail = Encrypter.decrypt(email);
+                    registerStatus = gestioDades.gestionaRegistre(decryptedUserName, decryptedPassword, decryptedMail);
+                    enviaResposta(registerStatus);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 break;
 
             case "NG": //New Game Start Request
@@ -84,19 +94,24 @@ public class ThreadServidorDedicat extends Thread {
                 // TODO: ACTUALIZAR BASE DE DATOS CON LA NUEVA INFORMACION
                 break;
 
-            case "ReplaySelect"://Selected user to see replays
+            case "LIVE_USERS":
+                System.out.println("I want to see all ONLINE users");
+                //gestioDades.retornaOnlineUsers;
+                break;
+
+            case "REPLAY"://Selected user to see replays
                 // observeManager.beginObserve();
-                System.out.println("I want to see: " + reqData[1] + "user's replays");
+                System.out.println("I want to see: " + diStream.readUTF() + "user's replays");
                 // TODO: enviar las diferentes partidas a escoger para observar
                 break;
 
-            case "OBSelect": //Selected user to observe
-                System.out.println("I want to spectate: " + reqData[1]);
+            case "ESPECTATE": //Selected user to observe
+                System.out.println("I want to spectate: " + diStream.readUTF());
                 // TODO: establecer observador a la partida seleccionada
                 break;
 
             case "STATUS":
-                System.out.println("disconnect user");
+                System.out.println("disconnect " + diStream.readUTF());
                 break;
         }
 
@@ -112,19 +127,24 @@ public class ThreadServidorDedicat extends Thread {
                 doStream.writeUTF("OK");
                 break;
             case 1:
-                doStream.writeUTF("KO-Usuari/email no existeix");
+                doStream.writeUTF("KO");
+                doStream.writeUTF("Usuari/email no existeix");
                 break;
             case 2:
-                doStream.writeUTF("KO-La contrasenya no es correcta");
+                doStream.writeUTF("KO");
+                doStream.writeUTF("La contrasenya no es correcta");
                 break;
             case 3:
-                doStream.writeUTF("KO-loginStatus'usuari ja existeix");
+                doStream.writeUTF("KO");
+                doStream.writeUTF("El usuari ja existeix");
                 break;
             case 4:
-                doStream.writeUTF("KO-El email ja existeix");
+                doStream.writeUTF("KO");
+                doStream.writeUTF("El email ja existeix");
                 break;
             case 5:
-                doStream.writeUTF("KO-El email i l'usuari ja existeixen");
+                doStream.writeUTF("KO");
+                doStream.writeUTF("El email i l'usuari ja existeixen");
                 break;
         }
     }

@@ -1,21 +1,18 @@
 package network;
 
-import controller.RegisterController;
 import model.User;
 import model.utils.Encrypter;
-import model.utils.UserDataChecker;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  * Created by Admin on 16/05/2017.
  */
-public class ThreadSocketClient extends Thread implements UserAccessRepository{
+public class Conexio extends Thread {
     /*
     formato de las cadenas a mandar al server:
     Login: L-username o email#password
@@ -25,15 +22,9 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
     private DataOutputStream doStream;
     private Socket sServidor;
 
-    private String response;
-    private boolean aux;
-
-    public ThreadSocketClient(){}
-
-    @Override
-    public void run() {
-
-    }
+    private String responseFlag;
+    private String KOMessage;
+    private boolean aux = true;
 
     private void connect(){
         // Averiguem quina direccio IP hem d'utilitzar
@@ -79,76 +70,79 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
         }
 
         try {
-            response = diStream.readUTF();
+            responseFlag = diStream.readUTF();
+            if (responseFlag.equals("KO")){
+                KOMessage = diStream.readUTF();
+                aux = false;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        aux = tractaResposta();
+        //aux = tractaResposta();
 
         disconnect();
     }
 
-    @Override
     public void login(User user) {
         try {
             Encrypter encrypter = new Encrypter();
             if (user.getUserName().contains("@")){
                 //el usuario ha logueado usando el email
                 System.out.println("user login con email");
-                String emailAux = encrypter.encryptMail(user.getUserName());
-                String passwordAux = encrypter.encryptPass(user.getPassword());
+                String emailAux = encrypter.encrypt(user.getUserName());
+                String passwordAux = encrypter.encrypt(user.getPassword());
 
-                doStream.writeUTF("L-" + emailAux + "#" + passwordAux);
+                doStream.writeUTF("L");
+                doStream.writeUTF(emailAux);
+                doStream.writeUTF(passwordAux);
             }else{
                 //el usuario ha logueado usando el nombre de usuario
                 System.out.println("user login con userName");
-                String nameAux = encrypter.encryptUserName(user.getUserName());
-                String passwordAux = encrypter.encryptPass(user.getPassword());
+                String nameAux = encrypter.encrypt(user.getUserName());
+                String passwordAux = encrypter.encrypt(user.getPassword());
 
-                System.out.println("nom encriptat 1: " + nameAux);
-                System.out.println("pasword encriptat 1: " + passwordAux);
-
-                doStream.writeUTF("L-" + nameAux + "#" + passwordAux);
+                doStream.writeUTF("L");
+                doStream.writeUTF(nameAux);
+                doStream.writeUTF(passwordAux);
             }
         } catch (Exception a){
             a.printStackTrace();
         }
     }
 
-    @Override
     public void register(User user) {
         try {
             Encrypter encrypter = new Encrypter();
-            String nameAux = encrypter.encryptUserName(user.getUserName());
-            String emailAux = encrypter.encryptMail(user.getEmail());
-            String passwordAux = encrypter.encryptPass(user.getPassword());
+            String nameAux = encrypter.encrypt(user.getUserName());
+            String emailAux = encrypter.encrypt(user.getEmail());
+            String passwordAux = encrypter.encrypt(user.getPassword());
 
-            doStream.writeUTF("R-" + nameAux + "#" + emailAux + "#" + passwordAux);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }catch (Exception a){
+            doStream.writeUTF("R");
+            doStream.writeUTF(nameAux);
+            doStream.writeUTF(emailAux);
+            doStream.writeUTF(passwordAux);
+        } catch (Exception a){
             a.printStackTrace();
         }
     }
 
 
-    @Override
     public boolean tractaResposta() {
-        System.out.println("response: " + response);
+        System.out.println("response: " + responseFlag);
 
-        if (response.equals("OK")){
+        if (responseFlag.equals("OK")){
             return true;
         }else{
-            response = response.substring(3);
+            responseFlag = responseFlag.substring(3);
             return false;
         }
     }
 
-    @Override
     public void sendUserToEspectate(String userNameToEspectate) {
         connect();
         try {
-            doStream.writeUTF("OBSelect-" + userNameToEspectate);
+            doStream.writeUTF("ESPECTATE");
+            doStream.writeUTF(userNameToEspectate);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -156,11 +150,15 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
         disconnect();
     }
 
-
+    /**
+     * Sends the desired user
+     * @param userNameReplays
+     */
     public void sendDesiredUserReplay(String userNameReplays) {
         connect();
         try {
-            doStream.writeUTF("ReplaySelect-" + userNameReplays);
+            doStream.writeUTF("ReplaySelect");
+            doStream.writeUTF(userNameReplays);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -168,12 +166,16 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
         disconnect();
     }
 
-    public void setDisconnected() {
+
+    /**
+     * Set the current user's status to "Offline"
+     */
+    public void setDisconnected(User currentUser) {
         connect();
 
         try {
-            doStream.writeUTF("STATUS-IMPLEMENTAR TODO"/* + */);
-            //TODO: PASAR EL NOMBRE DEL USUARIO QUE SE QUIERE DESCONECTAR AL SERVER
+            doStream.writeUTF("STATUS");
+            doStream.writeUTF(currentUser.getUserName());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -181,38 +183,47 @@ public class ThreadSocketClient extends Thread implements UserAccessRepository{
         disconnect();
     }
 
-    @Override
+
+    public void getOnlineUsers() {
+        connect();
+
+        try {
+            doStream.writeUTF("LIVE_USERS");
+            doStream.writeUTF("PENDIENTE DE IMPLEMENTACION");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        disconnect();
+    }
+
     public boolean logout() {
         return false;
     }
 
-    @Override
     public boolean checkUserName(String userName) {
         return false;
     }
 
-    @Override
     public boolean checkEmail(String userEmail) {
         return false;
     }
 
-    @Override
-    public String response() {
-        if (response.equals("OK")){
+    private String response() {
+        if (responseFlag.equals("OK")){
             return "OK";
         }else{
-            String[] aux = response.split("-");
+            String[] aux = responseFlag.split("-");
             return aux[1];
         }
     }
 
     public String getResponse() {
-        return response;
+        return KOMessage;
     }
 
     public boolean isAux() {
         return aux;
     }
-
 
 }
