@@ -113,7 +113,7 @@ public class ThreadServidorDedicat extends Thread {
                 break;
 
             case "STATUS":
-                System.out.println("disconnect " + diStream.readUTF());
+                gestioDades.setDisconnected(diStream.readUTF());
                 break;
         }
 

@@ -1,6 +1,7 @@
 package controller;
 
 import Vista.LoginView;
+import Vista.MainMenuView;
 import Vista.RegisterView;
 import model.User;
 import network.Conexio;
@@ -81,7 +82,7 @@ public class LoginController implements ActionListener {
     private void OnLogin(){
 
         if (view.getUserName().equals(view.LOG_EMPTY_UNAME) || view.getPassword().equals(view.LOG_EMPTY_PSSWD)){
-            OnLoginFailed();
+            view.setLoginError("El nombre de usuario o contraseña no pueden estar vacios.");
         } else {
             User loginUser = new User(view.getUserName(), null, view.getPassword());
             conexio.startingLoginRegister(loginUser);
@@ -93,24 +94,15 @@ public class LoginController implements ActionListener {
             }
 
             if (conexio.isAux()){
-                OnLoginSuccess();
+                MainMenuView mmv = new MainMenuView();
+                MenuController mc = new MenuController(mmv, conexio, loginUser);
+                mmv.registerActions(mc);
+                mmv.setVisible(true);
+                view.setVisible(false);
             }else{
-                OnLoginFailed();
+                view.setLoginError(conexio.getResponse());
             }
         }
-    }
-
-    /**
-     *
-     */
-    public void OnLoginSuccess(){
-    }
-
-    /**
-     *
-     */
-    public void OnLoginFailed(){
-        view.setLoginError(conexio.getResponse());
     }
 
     /**

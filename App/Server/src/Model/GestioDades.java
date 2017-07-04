@@ -291,4 +291,21 @@ public class GestioDades {
             e.printStackTrace();
         }
     }
+
+    public void setDisconnected(String disconnectingUser){
+        try {
+            // create a mysql database connection
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
+            String query = "UPDATE Login SET connected = false WHERE Login.user = '" + disconnectingUser + "';";
+            PreparedStatement preparedStmt = c.prepareStatement(query);
+            preparedStmt.execute();
+
+            c.close();
+        } catch (Exception e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+        }
+
+    }
 }

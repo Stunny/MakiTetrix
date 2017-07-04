@@ -69,16 +69,13 @@ public class Conexio extends Thread {
             register(user);
         }
 
-        try {
+
+            /*
             responseFlag = diStream.readUTF();
             if (responseFlag.equals("KO")){
                 KOMessage = diStream.readUTF();
                 aux = false;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+            }*/
         disconnect();
     }
 
@@ -94,6 +91,7 @@ public class Conexio extends Thread {
                 doStream.writeUTF("L");
                 doStream.writeUTF(emailAux);
                 doStream.writeUTF(passwordAux);
+
             }else{
                 //el usuario ha logueado usando el nombre de usuario
                 System.out.println("user login con userName");
@@ -104,6 +102,7 @@ public class Conexio extends Thread {
                 doStream.writeUTF(nameAux);
                 doStream.writeUTF(passwordAux);
             }
+            tractaResposta(diStream.readUTF());
         } catch (Exception a){
             a.printStackTrace();
         }
@@ -126,14 +125,12 @@ public class Conexio extends Thread {
     }
 
 
-    public boolean tractaResposta() {
-        System.out.println("response: " + responseFlag);
-
-        if (responseFlag.equals("OK")){
-            return true;
+    public void tractaResposta(String s) throws IOException {
+        if (s.equals("OK")){
+            aux = true;
         }else{
-            responseFlag = responseFlag.substring(3);
-            return false;
+            KOMessage = diStream.readUTF();
+            aux = false;
         }
     }
 
