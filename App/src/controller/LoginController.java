@@ -77,7 +77,8 @@ public class LoginController implements ActionListener {
     }
 
     /**
-     *
+     * Checks if fields are blank, if not waits for server response. If reponse is OK leads to Main menu view.
+     * Otherwise displays error
      */
     private void OnLogin(){
 
@@ -99,6 +100,7 @@ public class LoginController implements ActionListener {
                 mmv.registerActions(mc);
                 mmv.setVisible(true);
                 view.setVisible(false);
+                conexio.setConnected(loginUser);
             }else{
                 view.setLoginError(conexio.getResponse());
             }

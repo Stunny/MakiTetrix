@@ -112,8 +112,12 @@ public class ThreadServidorDedicat extends Thread {
                 // TODO: establecer observador a la partida seleccionada
                 break;
 
-            case "STATUS":
+            case "DISCONNECT":
                 gestioDades.setDisconnected(diStream.readUTF());
+                //TODO: ACTUALIZAR LA VISTA DEL SERVER A OFFLINE
+                break;
+            case "CONNECT":
+                System.out.println("test");
                 break;
         }
 
@@ -127,6 +131,7 @@ public class ThreadServidorDedicat extends Thread {
         switch(error){
             case 0:
                 doStream.writeUTF("OK");
+                //es correcte cridar a una funcio que actulitzi la vista desde aqui?
                 break;
             case 1:
                 doStream.writeUTF("KO");
@@ -150,4 +155,5 @@ public class ThreadServidorDedicat extends Thread {
                 break;
         }
     }
+
 }

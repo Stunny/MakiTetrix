@@ -37,4 +37,5 @@ public class ThreadSocketServer extends Thread{
         tsd = new ThreadServidorDedicat(sClient, gestioDades);
         tsd.start();
     }
+
 }

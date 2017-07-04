@@ -68,9 +68,9 @@ public class ServerController implements ActionListener, MouseListener {
 
     /**
      * Fills the view with a list of the user's names
+     * @param usuaris
      */
     public void ompleUsuaris(ArrayList<String> usuaris){
-        //usuaris = gestioDades.plenaUsuaris();
         DefaultTableModel model = (DefaultTableModel) view.getLeftTable().getModel();
         model.setRowCount(0);
         model.setColumnCount(0);

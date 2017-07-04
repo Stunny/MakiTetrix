@@ -13,11 +13,7 @@ import java.net.Socket;
  * Created by Admin on 16/05/2017.
  */
 public class Conexio extends Thread {
-    /*
-    formato de las cadenas a mandar al server:
-    Login: L-username o email#password
-    Registro: R-username#pasword#email
-     */
+
     private DataInputStream diStream;
     private DataOutputStream doStream;
     private Socket sServidor;
@@ -26,6 +22,9 @@ public class Conexio extends Thread {
     private String KOMessage;
     private boolean aux = true;
 
+    /**
+     * Sets necesary functionalities for client-server communication
+     */
     private void connect(){
         // Averiguem quina direccio IP hem d'utilitzar
         InetAddress iAddress;
@@ -42,6 +41,9 @@ public class Conexio extends Thread {
         }
     }
 
+    /**
+     * Closes necesary functionalities for client-server communication
+     */
     private void disconnect()	{
         try {
             doStream.close();
@@ -60,6 +62,10 @@ public class Conexio extends Thread {
         }
     }
 
+    /**
+     * Manages starting client user request (login or register) for a server communication
+     * @param user User that desires to login or register
+     */
     public void startingLoginRegister(User user){
         connect();
 
@@ -69,22 +75,18 @@ public class Conexio extends Thread {
             register(user);
         }
 
-
-            /*
-            responseFlag = diStream.readUTF();
-            if (responseFlag.equals("KO")){
-                KOMessage = diStream.readUTF();
-                aux = false;
-            }*/
         disconnect();
     }
 
+    /**
+     * Comunicates with server when a login request is done
+     * @param user User to login
+     */
     public void login(User user) {
         try {
             Encrypter encrypter = new Encrypter();
+            //el usuario ha logueado usando el email
             if (user.getUserName().contains("@")){
-                //el usuario ha logueado usando el email
-                System.out.println("user login con email");
                 String emailAux = encrypter.encrypt(user.getUserName());
                 String passwordAux = encrypter.encrypt(user.getPassword());
 
@@ -108,6 +110,10 @@ public class Conexio extends Thread {
         }
     }
 
+    /**
+     * Comunicates with server when a register request is done
+     * @param user User to register
+     */
     public void register(User user) {
         try {
             Encrypter encrypter = new Encrypter();
@@ -124,7 +130,11 @@ public class Conexio extends Thread {
         }
     }
 
-
+    /**
+     * Checks server's answer to client requests
+     * @param s String indicating the server response
+     * @throws IOException
+     */
     public void tractaResposta(String s) throws IOException {
         if (s.equals("OK")){
             aux = true;
@@ -134,6 +144,10 @@ public class Conexio extends Thread {
         }
     }
 
+    /**
+     * Sends the desired user to espectate
+     * @param userNameToEspectate User to spectate name
+     */
     public void sendUserToEspectate(String userNameToEspectate) {
         connect();
         try {
@@ -164,14 +178,32 @@ public class Conexio extends Thread {
 
 
     /**
-     * Set the current user's status to "Offline"
+     * Sets the specified user's status to "Offline"
+     * @param currentUser Specified user
      */
     public void setDisconnected(User currentUser) {
         connect();
 
         try {
-            doStream.writeUTF("STATUS");
+            doStream.writeUTF("DISCONNECT");
             doStream.writeUTF(currentUser.getUserName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        disconnect();
+    }
+
+    /**
+     * Set's the specified user's status to "Online"
+     * @param connectedUser Specified user
+     */
+    public void setConnected(User connectedUser) {
+        connect();
+
+        try {
+            doStream.writeUTF("CONNECT");
+            doStream.writeUTF(connectedUser.getUserName());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -191,27 +223,6 @@ public class Conexio extends Thread {
         }
 
         disconnect();
-    }
-
-    public boolean logout() {
-        return false;
-    }
-
-    public boolean checkUserName(String userName) {
-        return false;
-    }
-
-    public boolean checkEmail(String userEmail) {
-        return false;
-    }
-
-    private String response() {
-        if (responseFlag.equals("OK")){
-            return "OK";
-        }else{
-            String[] aux = responseFlag.split("-");
-            return aux[1];
-        }
     }
 
     public String getResponse() {
