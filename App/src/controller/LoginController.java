@@ -110,8 +110,7 @@ public class LoginController implements ActionListener {
      *
      */
     public void OnLoginFailed(){
-        String[] aux = conexio.getResponse().split("-");
-        view.setLoginError(aux[1]);
+        view.setLoginError(conexio.getResponse());
     }
 
     /**

@@ -188,12 +188,15 @@ public class GestioDades {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
-            Statement s = c.createStatement();
-            ResultSet r = s.executeQuery("select user, mail, password from Login");
-            while (r.next()) {
+            Statement s = c.createStatement ();
+            s.executeQuery ("SELECT user, mail, password FROM Login");
+            ResultSet r = s.getResultSet ();
+            while (r.next ()) {
                 if(r.getString("user").equals(nom)||r.getString("mail").equals(nom)){
                     if(r.getString("password").equals(contra)){
-                        ResultSet res = s.executeQuery("INSERT INTO Login (connected) VALUES (true);");
+                        String query = "UPDATE Login SET connected = true WHERE Login.user = '" + nom + "';";
+                        PreparedStatement preparedStmt = c.prepareStatement(query);
+                        preparedStmt.execute();
                         ok = true;
                     }
                     else {
@@ -217,7 +220,6 @@ public class GestioDades {
         }else{
             return 1;
         }
-
     }
 
     private int addUser(User u) {
@@ -257,20 +259,15 @@ public class GestioDades {
     }
 
 
-    public int gestionaLogin(String missatge) {
+    public int gestionaLogin(String userNameOREmail, String password) {
         //0:ok, 1:usuari/mail no existeix 2:contra no
-        String [] dades = missatge.split("#");
-        String usuari_password = dades[0];
-        String email = dades[1];
-        int error = loginUser(usuari_password, email);
+        int error = loginUser(userNameOREmail, password);
         return error;
     }
 
     public int gestionaRegistre(String usuari, String password, String email) {
         //0:ok, 3:usuari existeix 4:mail existeix 5:both
         User u = new User(usuari, password, email);
-        System.out.println("password fails here?: " + password);
-        System.out.println("password fails here2?: " + u.getEmail());
         int error = addUser(u);
         return error;
     }

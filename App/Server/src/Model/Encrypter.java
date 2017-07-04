@@ -1,10 +1,11 @@
 package Model;
 
-import java.security.*;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
+import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.spec.InvalidKeySpecException;
-import javax.crypto.*;
-import sun.misc.*;
+import java.security.Key;
 
 public class Encrypter {
 

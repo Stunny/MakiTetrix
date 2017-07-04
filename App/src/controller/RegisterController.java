@@ -148,7 +148,6 @@ public class RegisterController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals(ACTION_REG)){
             if(credentialsOK()){
-                System.out.println("userName: " + userName);
                 User registerUser = new User(userName, userEmail, userPass);
                 conexio.startingLoginRegister(registerUser);
 

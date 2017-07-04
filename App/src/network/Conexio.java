@@ -78,7 +78,6 @@ public class Conexio extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //aux = tractaResposta();
 
         disconnect();
     }

@@ -54,9 +54,11 @@ public class ThreadServidorDedicat extends Thread {
         switch(request){
             case "L": //Login Request
                 try {
-                    String userName = diStream.readUTF();
-                    String aux = Encrypter.decrypt(userName);
-                    loginStatus = gestioDades.gestionaLogin(aux);//crec que esta com el cul perque li hem de pasar mes dades que el userName desencriptat
+                    String userNameOREmail = diStream.readUTF();
+                    String password = diStream.readUTF();
+                    String aux = Encrypter.decrypt(userNameOREmail);
+                    String aux2 = Encrypter.decrypt(password);
+                    loginStatus = gestioDades.gestionaLogin(aux, aux2);
                     enviaResposta(loginStatus);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -66,8 +68,8 @@ public class ThreadServidorDedicat extends Thread {
             case "R": //Register Request
                 try {
                     String usuari = diStream.readUTF();
-                    String password = diStream.readUTF();
                     String email = diStream.readUTF();
+                    String password = diStream.readUTF();
 
                     String decryptedUserName = Encrypter.decrypt(usuari);
                     String decryptedPassword = Encrypter.decrypt(password);
