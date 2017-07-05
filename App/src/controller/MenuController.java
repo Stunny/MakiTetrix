@@ -38,9 +38,8 @@ public class MenuController implements ActionListener {
             case "jugar":
                 //Permite Jugar
                 gameView.setVisible(true);
-                GameController asdf = new GameController(gameView, partida);
-                asdf.startGame();
-                asdf.playGame();
+                gameController.startGame();
+                gameController.playGame();
                 break;
             case "ver":
                 //TODO: IMPLEMENTAR EN LA NUEVA VISTA LAS PARTIDAS EN DIRECTO ORDENADAS POR VIEWERS

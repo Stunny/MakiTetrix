@@ -23,6 +23,10 @@ public class KeySelectMenuController implements ActionListener {
 
 
     public KeySelectMenuController(KeySelectMenu view) {
+        //TODO: actulizar al tener nuevas letras, cambiar view a los nuevos valores.
+        /*
+        Falta añadir controlador game para coger los valores nuevos.
+         */
         this.view = view;
     }
 

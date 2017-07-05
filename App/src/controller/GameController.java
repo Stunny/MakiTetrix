@@ -97,8 +97,6 @@ public class GameController implements KeyListener {
 
     @Override()
     public void keyReleased(KeyEvent e){
-        if (e.getKeyCode()==83){
-        }
     }
     @Override
     public void keyTyped (KeyEvent e){
