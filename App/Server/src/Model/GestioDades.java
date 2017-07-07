@@ -132,6 +132,7 @@ public class GestioDades {
         } catch (Exception e) {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return trobats;
@@ -163,6 +164,7 @@ public class GestioDades {
         } catch (Exception e) {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
        // System.out.println("nomrepe ="+nomrepe+" mailrepe ="+mailrepe);
         if(nomrepe||mailrepe){
@@ -211,6 +213,7 @@ public class GestioDades {
         } catch (Exception e) {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
 
         if(ok){
@@ -254,6 +257,7 @@ public class GestioDades {
         } catch (Exception e) {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
         return answer;
     }
@@ -305,7 +309,11 @@ public class GestioDades {
         } catch (Exception e) {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
+    }
+
+    private void connect(){
 
     }
 }

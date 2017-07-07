@@ -1,5 +1,6 @@
 package Network;
 
+import Controller.ServerController;
 import Model.Encrypter;
 import Model.GestioDades;
 import utils.GameDataManager;
@@ -22,13 +23,15 @@ public class ThreadServidorDedicat extends Thread {
     private int loginStatus;
     private int registerStatus;
     private GestioDades gestioDades;
+    private ServerController sController;
 
     private GameDataManager gdm;
     private ObserveManager observeManager;
 
-    public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades){
+    public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades, ServerController sController){
         this.sClient = sClient;
         this.gestioDades = gestioDades;
+        this.sController = sController;
     }
 
     @Override
@@ -50,7 +53,6 @@ public class ThreadServidorDedicat extends Thread {
      * @param request
      */
     public void readRequest(String request) throws IOException {
-
         switch(request){
             case "L": //Login Request
                 try {
@@ -114,6 +116,8 @@ public class ThreadServidorDedicat extends Thread {
 
             case "DISCONNECT":
                 gestioDades.setDisconnected(diStream.readUTF());
+                sController.actualitzaConexioVista(false);
+                System.out.println("disconnect");
                 //TODO: ACTUALIZAR LA VISTA DEL SERVER A OFFLINE
                 break;
             case "CONNECT":

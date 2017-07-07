@@ -24,17 +24,11 @@ public class ServerController implements ActionListener, MouseListener {
     private GestioDades gestioDades;
     private User selectedUser;
 
-    public ServerController(View view, GestioDades gestioDades, ThreadSocketServer threadSocketServer) {
+    public ServerController(View view, GestioDades gestioDades) {
         this.view = view;
         this.gestioDades = gestioDades;
-        ThreadSocketServer ts = threadSocketServer;
         ompleUsuaris(gestioDades.busca("^"));
 
-        if (ts == null || !ts.isAlive()) {
-            //aqui comence thread
-            ts = new ThreadSocketServer(gestioDades);
-            ts.start();
-        }
     }
 
     @Override
@@ -119,6 +113,12 @@ public class ServerController implements ActionListener, MouseListener {
         model.addRow(row);
     }
 
+
+
+    public void actualitzaConexioVista(boolean connected) {
+
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         JTable table = (JTable) e.getSource();
@@ -150,4 +150,5 @@ public class ServerController implements ActionListener, MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
+
 }
