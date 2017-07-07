@@ -9,7 +9,7 @@ import java.awt.*;
 /**
  * Created by Admin on 20/03/2017.
  */
-public class View extends JFrame{
+public class ServerAdminView extends JFrame{
     public static final String ACTION_BORRAR = "Borrar";
     public static final String ACTION_SEARCH = "Busca";
     public static final String UPDATE = "Actualiza";
@@ -21,7 +21,10 @@ public class View extends JFrame{
     private JButton actualitza;
     private JTable rightJTable;
 
-    public View() {
+    /**
+     * Constructor de la ventana de administracion del servidor
+     */
+    public ServerAdminView() {
         //creem els components principals
         JPanel principal = new JPanel(new BorderLayout());
         JPanel north = new JPanel();
@@ -82,6 +85,10 @@ public class View extends JFrame{
 
     }
 
+    /**
+     * Registro de controlador de acciones
+     * @param sController Controlador principal de la aplicacion servidor
+     */
     public void controladorBoto(ServerController sController){
         leftJTable.addMouseListener(sController);
         borrar.addActionListener(sController);
@@ -89,18 +96,46 @@ public class View extends JFrame{
         actualitza.addActionListener(sController);
     }
 
+    /**
+     * @return JTable con lista de usuarios
+     */
     public JTable getLeftTable() {
         return leftJTable;
     }
 
+    /**
+     * @return JTable de información de usuario seleccionado
+     */
     public JTable getRightJTable() {
         return rightJTable;
     }
 
+    /**
+     * Actualiza en la vista el estado de conexión del usuario si es el que está seleccionado
+     * @param username usuario al que actualizar estado
+     * @param status estado de conexión del usuario
+     */
+    public void updateUserStatus(String username, boolean status){
+
+        int selectedRow = leftJTable.getSelectedRow();
+        String selectedUser = (String) leftJTable.getValueAt(selectedRow, 0);
+
+        if(username.equals(selectedUser)){
+            rightJTable.setValueAt(String.valueOf(status), 0, 0);
+        }
+    }
+
+    /**
+     * Actualiza la lista de usuarios
+     * @param leftList Lista de usuarios
+     */
     public void setTable(JTable leftList) {
         this.leftJTable = leftList;
     }
 
+    /**
+     * @return Campo de texto de busqueda
+     */
     public JTextField getBuscador() {
         return buscador;
     }

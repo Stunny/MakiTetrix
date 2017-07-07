@@ -2,7 +2,7 @@ package Controller;
 
 import Model.GestioDades;
 import Model.User;
-import View.View;
+import View.ServerAdminView;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -19,12 +19,12 @@ import java.util.Vector;
  */
 
 public class ServerController implements ActionListener, MouseListener {
-    private static View view;
+    private static ServerAdminView serverAdminView;
     private GestioDades gestioDades;
     private User selectedUser;
 
-    public ServerController(View view, GestioDades gestioDades) {
-        this.view = view;
+    public ServerController(ServerAdminView serverAdminView, GestioDades gestioDades) {
+        this.serverAdminView = serverAdminView;
         this.gestioDades = gestioDades;
         ompleUsuaris(gestioDades.busca("^"));
 
@@ -32,39 +32,39 @@ public class ServerController implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals(view.ACTION_BORRAR)){
+        if (e.getActionCommand().equals(serverAdminView.ACTION_BORRAR)){
             try{
                 gestioDades.borraUsuari(selectedUser.getUserName());
                 ompleUsuaris(gestioDades.busca("^"));
                 selectedUser = null;
-                DefaultTableModel model = (DefaultTableModel) view.getRightJTable().getModel();
+                DefaultTableModel model = (DefaultTableModel) serverAdminView.getRightJTable().getModel();
                 model.setRowCount(0);
                 model.setColumnCount(0);
 
             }catch (NullPointerException s){
-                view.mostraError();
+                serverAdminView.mostraError();
             }
 
-        }else if (e.getActionCommand().equals(view.ACTION_SEARCH)){
-            if (view.getBuscador().getText().equals("")){
+        }else if (e.getActionCommand().equals(serverAdminView.ACTION_SEARCH)){
+            if (serverAdminView.getBuscador().getText().equals("")){
                 ArrayList<String> usuaris = gestioDades.busca("^");
                 ompleUsuaris(usuaris);
             }else{
-                ArrayList<String> usuaris = gestioDades.busca(view.getBuscador().getText());
+                ArrayList<String> usuaris = gestioDades.busca(serverAdminView.getBuscador().getText());
                 ompleUsuaris(usuaris);
             }
 
-        }else if (e.getActionCommand().equals(view.UPDATE)){
+        }else if (e.getActionCommand().equals(serverAdminView.UPDATE)){
             ompleUsuaris(gestioDades.busca("^"));
         }
     }
 
     /**
-     * Fills the view with a list of the user's names
+     * Fills the serverAdminView with a list of the user's names
      * @param usuaris
      */
     public void ompleUsuaris(ArrayList<String> usuaris){
-        DefaultTableModel model = (DefaultTableModel) view.getLeftTable().getModel();
+        DefaultTableModel model = (DefaultTableModel) serverAdminView.getLeftTable().getModel();
         model.setRowCount(0);
         model.setColumnCount(0);
 
@@ -76,11 +76,11 @@ public class ServerController implements ActionListener, MouseListener {
     }
 
     /**
-     * Fills de view with the selected user's data
+     * Fills de serverAdminView with the selected user's data
      * @param info Selected user
      */
     private void ompleInformacioUsuari(ArrayList<String> info){
-        DefaultTableModel model = (DefaultTableModel) view.getRightJTable().getModel();
+        DefaultTableModel model = (DefaultTableModel) serverAdminView.getRightJTable().getModel();
         model.setRowCount(0);
         model.setColumnCount(0);
 
@@ -119,13 +119,14 @@ public class ServerController implements ActionListener, MouseListener {
      */
     public void updateUserConnectionStatus(boolean connected, String userName) {
         gestioDades.setConnectionStatus(userName, connected);
+        serverAdminView.updateUserStatus(userName, connected);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         JTable table = (JTable) e.getSource();
         if (e.getClickCount() == 2) {
-            int row = view.getLeftTable().getSelectedRow();
+            int row = serverAdminView.getLeftTable().getSelectedRow();
             ArrayList<String> aux = gestioDades.mostraDades(table.getValueAt(row, 0).toString());
             ompleInformacioUsuari(aux);
 
