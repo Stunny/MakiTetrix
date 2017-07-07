@@ -18,7 +18,7 @@ public class GestioDades {
     public GestioDades(){
         System.out.println("Introdueix la contraseña de la teva base de dades local:");
         Scanner keyboard = new Scanner(System.in);
-        pass = keyboard.next();
+        pass = keyboard.nextLine();
     }
 
     /**
@@ -31,7 +31,7 @@ public class GestioDades {
         Encrypter encrypter = new Encrypter();
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass.trim());
             Statement s = c.createStatement();
             ResultSet r = s.executeQuery("SELECT user FROM Login");
             while (r.next()) {

@@ -113,9 +113,14 @@ public class ServerController implements ActionListener, MouseListener {
         model.addRow(row);
     }
 
+    /**
+     * Actualiza tanto en base de datos como en la vista de administrador el estado de conexion
+     * de un usuario (online o offline)
+     * @param connected
+     */
+    public void updateUserConnectionStatus(boolean connected, String userName) {
 
 
-    public void actualitzaConexioVista(boolean connected) {
 
     }
 

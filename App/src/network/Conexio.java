@@ -20,7 +20,7 @@ public class Conexio extends Thread {
 
     private String responseFlag;
     private String KOMessage;
-    private boolean aux = true;
+    private boolean ResponseSuccess = true;
 
     /**
      * Sets necesary functionalities for client-server communication
@@ -131,16 +131,34 @@ public class Conexio extends Thread {
     }
 
     /**
+     * Sets the specified user's status to "Offline"
+     * @param currentUser Specified user
+     */
+    public void setDisconnected(User currentUser) {
+        connect();
+
+        try {
+            doStream.writeUTF("DISCONNECT");
+            doStream.writeUTF(currentUser.getUserName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        disconnect();
+    }
+
+
+    /**
      * Checks server's answer to client requests
      * @param s String indicating the server response
      * @throws IOException
      */
     public void tractaResposta(String s) throws IOException {
         if (s.equals("OK")){
-            aux = true;
+            ResponseSuccess = true;
         }else{
             KOMessage = diStream.readUTF();
-            aux = false;
+            ResponseSuccess = false;
         }
     }
 
@@ -176,42 +194,6 @@ public class Conexio extends Thread {
         disconnect();
     }
 
-
-    /**
-     * Sets the specified user's status to "Offline"
-     * @param currentUser Specified user
-     */
-    public void setDisconnected(User currentUser) {
-        connect();
-
-        try {
-            doStream.writeUTF("DISCONNECT");
-            doStream.writeUTF(currentUser.getUserName());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        disconnect();
-    }
-
-    /**
-     * Set's the specified user's status to "Online"
-     * @param connectedUser Specified user
-     */
-    public void setConnected(User connectedUser) {
-        connect();
-
-        try {
-            doStream.writeUTF("CONNECT");
-            doStream.writeUTF(connectedUser.getUserName());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        disconnect();
-    }
-
-
     public void getOnlineUsers() {
         connect();
 
@@ -229,8 +211,8 @@ public class Conexio extends Thread {
         return KOMessage;
     }
 
-    public boolean isAux() {
-        return aux;
+    public boolean isResponseSuccess() {
+        return ResponseSuccess;
     }
 
 }

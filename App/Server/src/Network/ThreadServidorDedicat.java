@@ -28,6 +28,8 @@ public class ThreadServidorDedicat extends Thread {
     private GameDataManager gdm;
     private ObserveManager observeManager;
 
+    private String connectedUser;
+
     public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades, ServerController sController){
         this.sClient = sClient;
         this.gestioDades = gestioDades;
@@ -62,6 +64,12 @@ public class ThreadServidorDedicat extends Thread {
                     String aux2 = Encrypter.decrypt(password);
                     loginStatus = gestioDades.gestionaLogin(aux, aux2);
                     enviaResposta(loginStatus);
+
+                    if(loginStatus == 0){
+                        //Login successful: keep username
+                        connectedUser = userNameOREmail;
+                        sController.updateUserConnectionStatus(true, connectedUser);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -78,10 +86,24 @@ public class ThreadServidorDedicat extends Thread {
                     String decryptedMail = Encrypter.decrypt(email);
                     registerStatus = gestioDades.gestionaRegistre(decryptedUserName, decryptedPassword, decryptedMail);
                     enviaResposta(registerStatus);
+
+                    if(registerStatus == 0){
+                        //Register succesful: keep username
+                        connectedUser = usuari;
+                        sController.updateUserConnectionStatus(true, connectedUser);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
+                break;
+
+            case "DISCONNECT":
+                gestioDades.setDisconnected(diStream.readUTF());
+                System.out.println("disconnect");
+
+                sController.updateUserConnectionStatus(false, connectedUser);
+                connectedUser = null;
                 break;
 
             case "NG": //New Game Start Request
@@ -112,16 +134,6 @@ public class ThreadServidorDedicat extends Thread {
             case "ESPECTATE": //Selected user to observe
                 System.out.println("I want to spectate: " + diStream.readUTF());
                 // TODO: establecer observador a la partida seleccionada
-                break;
-
-            case "DISCONNECT":
-                gestioDades.setDisconnected(diStream.readUTF());
-                sController.actualitzaConexioVista(false);
-                System.out.println("disconnect");
-                //TODO: ACTUALIZAR LA VISTA DEL SERVER A OFFLINE
-                break;
-            case "CONNECT":
-                System.out.println("test");
                 break;
         }
 

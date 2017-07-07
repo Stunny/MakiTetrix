@@ -67,11 +67,11 @@ public class LoginController implements ActionListener {
 
         switch(e.getActionCommand()){
             case LOGIN_ACTION_LOG:
-                OnLogin();
+                OnLoginPressed();
                 break;
 
             case LOGIN_ACTION_REG:
-                OnRegister();
+                OnRegisterPressed();
                 break;
         }
     }
@@ -80,9 +80,9 @@ public class LoginController implements ActionListener {
      * Checks if fields are blank, if not waits for server response. If reponse is OK leads to Main menu view.
      * Otherwise displays error
      */
-    private void OnLogin(){
+    private void OnLoginPressed(){
 
-        if (view.getUserName().equals(view.LOG_EMPTY_UNAME) || view.getPassword().equals(view.LOG_EMPTY_PSSWD)){
+        if (view.getUserName().equals(LoginView.LOG_EMPTY_UNAME) || view.getPassword().equals(LoginView.LOG_EMPTY_PSSWD)){
             view.setLoginError("El nombre de usuario o contraseña no pueden estar vacios.");
         } else {
             User loginUser = new User(view.getUserName(), null, view.getPassword());
@@ -94,13 +94,8 @@ public class LoginController implements ActionListener {
                 e1.printStackTrace();
             }
 
-            if (conexio.isAux()){
-                MainMenuView mmv = new MainMenuView();
-                MenuController mc = new MenuController(mmv, conexio, loginUser);
-                mmv.registerActions(mc);
-                mmv.setVisible(true);
-                view.setVisible(false);
-                conexio.setConnected(loginUser);
+            if (conexio.isResponseSuccess()){
+                onAccesOK(loginUser);
             }else{
                 view.setLoginError(conexio.getResponse());
             }
@@ -108,9 +103,20 @@ public class LoginController implements ActionListener {
     }
 
     /**
+     * Una vez la transaccion de login/registro ha tenido éxito, conduce al usuario al menu principal
+     */
+    public void onAccesOK(User loginUser){
+        MainMenuView mmv = new MainMenuView();
+        MenuController mc = new MenuController(mmv, conexio, loginUser);
+        mmv.registerActions(mc);
+        mmv.setVisible(true);
+        view.setVisible(false);
+    }
+
+    /**
      * Oculta la vista vista del login y muestra la vista del registro
      */
-    public void OnRegister(){
+    public void OnRegisterPressed(){
         JPanel formPanel;
         view.setVisible(false);
 
@@ -119,7 +125,7 @@ public class LoginController implements ActionListener {
         formPanel = rv.getFormPanel();
         rv.setContentPane(formPanel);
         rv.pack();
-        RegisterController rc = new RegisterController(rv, null, conexio);
+        RegisterController rc = new RegisterController(rv, null, conexio, this);
         rv.registerController(rc);
         rv.setVisible(true);
 

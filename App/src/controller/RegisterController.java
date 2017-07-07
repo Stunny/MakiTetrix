@@ -6,9 +6,7 @@ import Vista.RegisterView;
 import model.User;
 import model.utils.UserDataChecker;
 import network.Conexio;
-import network.UserAccessRepository;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -33,7 +31,7 @@ public class RegisterController implements ActionListener {
      */
     private LoginView parent;
 
-
+    private LoginController parentController;
     /**
      *
      */
@@ -50,16 +48,17 @@ public class RegisterController implements ActionListener {
      * @param parent
      * @return
      */
-    public static RegisterController getInstance(RegisterView view, LoginView parent){
+    public static RegisterController getInstance(RegisterView view, LoginView parent, LoginController parentController){
         if(rc == null)
-            rc = new RegisterController(view, parent, conexio/*, uar*/);
+            rc = new RegisterController(view, parent, conexio, parentController);
         return rc;
     }
 
 
-    public RegisterController(RegisterView view, LoginView parent, Conexio conexio){
+    public RegisterController(RegisterView view, LoginView parent, Conexio conexio, LoginController parentController){
         this.view = view;
         this.parent = parent;
+        this.parentController = parentController;
         this.conexio = conexio;
     }
 
@@ -109,17 +108,16 @@ public class RegisterController implements ActionListener {
                     e1.printStackTrace();
                 }
 
-                if (conexio.isAux()){
-                    MainMenuView mmv = new MainMenuView();
-                    MenuController mc = new MenuController(mmv, conexio, registerUser);
-                    mmv.registerActions(mc);
-                    mmv.setVisible(true);
-                    view.setVisible(false);
-                    conexio.setConnected(registerUser);
+                if (conexio.isResponseSuccess()){
+                    onRegisterOK(registerUser);
                 }else{
                     view.displayError(conexio.getResponse());
                 }
             }
         }
+    }
+
+    private void onRegisterOK(User u){
+        parentController.onAccesOK(u);
     }
 }
