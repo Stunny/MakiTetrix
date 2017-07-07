@@ -134,7 +134,7 @@ public class Conexio extends Thread {
      * Sets the specified user's status to "Offline"
      * @param currentUser Specified user
      */
-    public void setDisconnected(User currentUser) {
+    public void disconnectUser(User currentUser) {
         connect();
 
         try {

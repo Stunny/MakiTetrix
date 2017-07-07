@@ -2,7 +2,6 @@ package Controller;
 
 import Model.GestioDades;
 import Model.User;
-import Network.ThreadSocketServer;
 import View.View;
 
 import javax.swing.*;
@@ -119,9 +118,7 @@ public class ServerController implements ActionListener, MouseListener {
      * @param connected
      */
     public void updateUserConnectionStatus(boolean connected, String userName) {
-
-
-
+        gestioDades.setConnectionStatus(userName, connected);
     }
 
     @Override

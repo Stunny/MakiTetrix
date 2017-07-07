@@ -60,9 +60,11 @@ public class ThreadServidorDedicat extends Thread {
                 try {
                     String userNameOREmail = diStream.readUTF();
                     String password = diStream.readUTF();
-                    String aux = Encrypter.decrypt(userNameOREmail);
-                    String aux2 = Encrypter.decrypt(password);
-                    loginStatus = gestioDades.gestionaLogin(aux, aux2);
+
+                    String decryptedUser = Encrypter.decrypt(userNameOREmail);
+                    String decryptedPsswd = Encrypter.decrypt(password);
+
+                    loginStatus = gestioDades.gestionaLogin(decryptedUser, decryptedPsswd);
                     enviaResposta(loginStatus);
 
                     if(loginStatus == 0){
@@ -84,6 +86,7 @@ public class ThreadServidorDedicat extends Thread {
                     String decryptedUserName = Encrypter.decrypt(usuari);
                     String decryptedPassword = Encrypter.decrypt(password);
                     String decryptedMail = Encrypter.decrypt(email);
+
                     registerStatus = gestioDades.gestionaRegistre(decryptedUserName, decryptedPassword, decryptedMail);
                     enviaResposta(registerStatus);
 
@@ -99,7 +102,6 @@ public class ThreadServidorDedicat extends Thread {
                 break;
 
             case "DISCONNECT":
-                gestioDades.setDisconnected(diStream.readUTF());
                 System.out.println("disconnect");
 
                 sController.updateUserConnectionStatus(false, connectedUser);

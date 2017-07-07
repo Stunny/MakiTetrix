@@ -296,12 +296,12 @@ public class GestioDades {
         }
     }
 
-    public void setDisconnected(String disconnectingUser){
+    public void setConnectionStatus(String user, boolean status){
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
-            String query = "UPDATE Login SET connected = false WHERE Login.user = '" + disconnectingUser + "';";
+            String query = "UPDATE Login SET connected = "+ String.valueOf(status)+ " WHERE Login.user = '" + user + "';";
             PreparedStatement preparedStmt = c.prepareStatement(query);
             preparedStmt.execute();
 
