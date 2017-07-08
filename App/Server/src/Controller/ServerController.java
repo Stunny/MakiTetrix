@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Configuration;
 import Model.GestioDades;
 import Model.User;
 import View.ServerAdminView;
@@ -19,10 +20,16 @@ import java.util.Vector;
  */
 
 public class ServerController implements ActionListener, MouseListener {
-    private static ServerAdminView serverAdminView;
+
+    private ServerAdminView serverAdminView;
     private GestioDades gestioDades;
+
     private User selectedUser;
 
+    /**
+     * @param serverAdminView
+     * @param gestioDades
+     */
     public ServerController(ServerAdminView serverAdminView, GestioDades gestioDades) {
         this.serverAdminView = serverAdminView;
         this.gestioDades = gestioDades;

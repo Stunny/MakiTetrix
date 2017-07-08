@@ -12,32 +12,45 @@ import java.util.Scanner;
 
 public class GestioDades {
 
-    public static int DB_IP;
-    public static int DB_PORT;
-    public static String DB_USER;
-    public static String DB_PASSWORD;
+    private Configuration serverConfig;
 
     private Connection c;
-    private String pass;
-    //tractament de dades --> info del server a la BBDD (Miquel)
+    private String db_pass;
 
+    /**
+     *@deprecated
+     */
     public GestioDades(){
         System.out.println("Introdueix la contraseña de la teva base de dades local:");
         Scanner keyboard = new Scanner(System.in);
-        pass = keyboard.nextLine();
+        db_pass = keyboard.nextLine();
+    }
+
+    /**
+     * Constructor que utiliza la configuracion externalizada del servidor
+     * @param serverConfig Objeto de configuracion del servidor
+     */
+    public GestioDades(Configuration serverConfig){
+        Scanner kb = new Scanner(System.in);
+
+        this.serverConfig = serverConfig;
+
+        System.out.println("Accessing database...");
+        System.out.println("User: "+serverConfig.getDb_user());
     }
 
     /**
      *  LLena un lista con todos los usuarios existentes en la BBDD
      *
      * @return Devuelve un ArrayList con todos los usuarios existentes en la BBDD
+     * @unused
      */
     public ArrayList<String> plenaUsuaris(){
         ArrayList<String> usuaris = new ArrayList<>();
         Encrypter encrypter = new Encrypter();
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass.trim());
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", db_pass.trim());
             Statement s = c.createStatement();
             ResultSet r = s.executeQuery("SELECT user FROM Login");
             while (r.next()) {
@@ -63,8 +76,11 @@ public class GestioDades {
     public ArrayList<String> mostraDades (String nom){
         ArrayList<String> info = new ArrayList<>();
         try {
+
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
+            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
             Statement s = c.createStatement();
             ResultSet r = s.executeQuery("SELECT * FROM Login");
             while (r.next()) {
@@ -79,8 +95,8 @@ public class GestioDades {
             }
             c.close();
 
-        } catch (Exception var2) {
-            var2.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return info;
     }
@@ -94,8 +110,11 @@ public class GestioDades {
     public User retornaUser (String nom){
         User u = new User(null, null, null);
         try {
+
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
+            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
             Statement s = c.createStatement();
             ResultSet r = s.executeQuery("SELECT * FROM Login");
             while (r.next()) {
@@ -108,8 +127,8 @@ public class GestioDades {
             }
             c.close();
 
-        } catch (Exception var2) {
-            var2.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return u;
     }
@@ -125,9 +144,10 @@ public class GestioDades {
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
-            Statement s = c.createStatement();
+            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
 
+            Statement s = c.createStatement();
             ResultSet r = s.executeQuery("SELECT user FROM Login WHERE user REGEXP '" + userName + "';");
             while (r.next()) {
                 trobats.add(r.getString("user"));
@@ -150,7 +170,9 @@ public class GestioDades {
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
+            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
             Statement s = c.createStatement();
             ResultSet r = s.executeQuery("select user, mail from Login");
             while (r.next()) {
@@ -195,7 +217,9 @@ public class GestioDades {
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
+            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
             Statement s = c.createStatement ();
             s.executeQuery ("SELECT user, mail, password FROM Login");
             ResultSet r = s.getResultSet ();
@@ -237,7 +261,9 @@ public class GestioDades {
             if (answer == 1) {
                 // create a mysql database connection
                 Class.forName("com.mysql.jdbc.Driver");
-                c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
+                c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+                        serverConfig.getDb_user(), serverConfig.getDb_pass());
+
                 String query = "INSERT INTO Login (user, mail, password, connected, register_date, last_login, number_games, total_points)"
                         + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
@@ -246,12 +272,15 @@ public class GestioDades {
                 preparedStmt.setString(2, u.getEmail());
                 preparedStmt.setString(3, u.getPassword());
                 preparedStmt.setBoolean(4, true);
+
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                 Date date = new Date(System.currentTimeMillis());
+
                 preparedStmt.setString(5, dateFormat.format(date));
                 preparedStmt.setString(6, dateFormat.format(date));
                 preparedStmt.setInt(7, 0);
                 preparedStmt.setInt(8, 0);
+
                 preparedStmt.execute();
 
                 c.close();
@@ -285,7 +314,8 @@ public class GestioDades {
     public void borraUsuari(String userName){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
+            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -306,7 +336,9 @@ public class GestioDades {
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", pass);
+            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
             String query = "UPDATE Login SET connected = "+ String.valueOf(status)+ " WHERE Login.user = '" + user + "';";
             PreparedStatement preparedStmt = c.prepareStatement(query);
             preparedStmt.execute();

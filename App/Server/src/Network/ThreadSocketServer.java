@@ -26,7 +26,7 @@ public class ThreadSocketServer extends Thread{
     public void run(){
         try {
             //creem el nostre socket
-            ServerSocket serverSocket = new ServerSocket(33333);
+            ServerSocket serverSocket = new ServerSocket(PORT);
             while (true){
                 //esperem a la conexio d'algun usuari dins d'un bucle infinit. A cada usuari li crearem un nou servidor dedicat
                 Socket sClient = serverSocket.accept();
@@ -39,7 +39,7 @@ public class ThreadSocketServer extends Thread{
     }
 
     private void generaNouServidorDedicat(Socket sClient){
-        System.out.println("entro a fer un nou servidor dedicat");
+        //System.out.println("entro a fer un nou servidor dedicat");
         System.out.println(sController);
         ThreadServidorDedicat tsd = new ThreadServidorDedicat(sClient, gestioDades, sController);
         tsd.start();
