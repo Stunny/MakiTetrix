@@ -11,6 +11,12 @@ import java.util.Scanner;
 
 
 public class GestioDades {
+
+    public static int DB_IP;
+    public static int DB_PORT;
+    public static String DB_USER;
+    public static String DB_PASSWORD;
+
     private Connection c;
     private String pass;
     //tractament de dades --> info del server a la BBDD (Miquel)

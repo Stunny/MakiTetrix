@@ -11,6 +11,9 @@ import java.net.Socket;
  * Created by Admin on 21/03/2017.
  */
 public class ThreadSocketServer extends Thread{
+
+    public static int PORT;
+
     private GestioDades gestioDades;
     private ServerController sController;
 
