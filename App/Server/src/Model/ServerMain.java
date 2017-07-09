@@ -5,6 +5,8 @@ import Controller.ServerController;
 import Network.ThreadSocketServer;
 import View.*;
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,15 +23,20 @@ public class ServerMain {
             ServerAdminView serverAdminView = new ServerAdminView();
 
             Configuration serverConfig = null;
-            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
             try {
-                File configFile = new File(classLoader.getResource("config.json").getFile());
+                File configFile = new File("./Server/resources/config.json");
                 serverConfig = new Gson().fromJson(new FileReader(configFile), Configuration.class);
-            }catch (FileNotFoundException|NullPointerException npe){
+            }catch (FileNotFoundException|NullPointerException|JsonIOException e){
                 System.err.println("Error: archivo \"config.json\" no encontrado.");
                 System.err.println("Cree el archivo en el directorio \'resources\' con el siguiente formato:");
                 System.err.println("{\n\t\"port_server\":\"\",\n\t\"db_name\":\"\",\n\t\"db_user\":\"\",\n\t\"db_pass\":\"\",\n\t\"db_ip\":\"\",\n\t\"db_port\":\"\"\n}");
+                e.printStackTrace();
                 System.exit(404);
+            }catch (JsonSyntaxException jse){
+                System.out.println("Error: formato incorrecto en el archivo de configuracion.");
+                System.err.println("Cree el archivo en el directorio \'resources\' con el siguiente formato:");
+                System.err.println("{\n\t\"port_server\":\"\",\n\t\"db_name\":\"\",\n\t\"db_user\":\"\",\n\t\"db_pass\":\"\",\n\t\"db_ip\":\"\",\n\t\"db_port\":\"\"\n}");
+                jse.printStackTrace();
             }
 
             if(serverConfig != null) {
