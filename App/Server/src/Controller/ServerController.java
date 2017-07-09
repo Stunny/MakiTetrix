@@ -1,8 +1,8 @@
 package Controller;
 
-import Model.Configuration;
 import Model.GestioDades;
 import Model.User;
+import Model.exceptions.BadAccessToDatabaseException;
 import View.ServerAdminView;
 
 import javax.swing.*;
@@ -33,7 +33,12 @@ public class ServerController implements ActionListener, MouseListener {
     public ServerController(ServerAdminView serverAdminView, GestioDades gestioDades) {
         this.serverAdminView = serverAdminView;
         this.gestioDades = gestioDades;
-        ompleUsuaris(gestioDades.busca("^"));
+
+        try {
+            ompleUsuaris(gestioDades.fetch("^"));
+        } catch (BadAccessToDatabaseException e) {
+            e.printMessage();
+        }
 
     }
 
@@ -41,28 +46,43 @@ public class ServerController implements ActionListener, MouseListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals(serverAdminView.ACTION_BORRAR)){
             try{
-                gestioDades.borraUsuari(selectedUser.getUserName());
-                ompleUsuaris(gestioDades.busca("^"));
+                gestioDades.deleteUser(selectedUser.getUserName());
+                ompleUsuaris(gestioDades.fetch("^"));
                 selectedUser = null;
                 DefaultTableModel model = (DefaultTableModel) serverAdminView.getRightJTable().getModel();
                 model.setRowCount(0);
                 model.setColumnCount(0);
 
-            }catch (NullPointerException s){
+            }catch (BadAccessToDatabaseException e1){
                 serverAdminView.mostraError();
+                e1.printMessage();
             }
 
         }else if (e.getActionCommand().equals(serverAdminView.ACTION_SEARCH)){
             if (serverAdminView.getBuscador().getText().equals("")){
-                ArrayList<String> usuaris = gestioDades.busca("^");
-                ompleUsuaris(usuaris);
+                ArrayList<String> usuaris;
+                try {
+                    usuaris = gestioDades.fetch("^");
+                    ompleUsuaris(usuaris);
+                } catch (BadAccessToDatabaseException e1) {
+                    e1.printMessage();
+                }
             }else{
-                ArrayList<String> usuaris = gestioDades.busca(serverAdminView.getBuscador().getText());
-                ompleUsuaris(usuaris);
+                ArrayList<String> usuaris;
+                try {
+                    usuaris = gestioDades.fetch(serverAdminView.getBuscador().getText());
+                    ompleUsuaris(usuaris);
+                } catch (BadAccessToDatabaseException e1) {
+                    e1.printMessage();
+                }
             }
 
         }else if (e.getActionCommand().equals(serverAdminView.UPDATE)){
-            ompleUsuaris(gestioDades.busca("^"));
+            try {
+                ompleUsuaris(gestioDades.fetch("^"));
+            } catch (BadAccessToDatabaseException e1) {
+                e1.printMessage();
+            }
         }
     }
 
@@ -125,8 +145,12 @@ public class ServerController implements ActionListener, MouseListener {
      * @param connected
      */
     public void updateUserConnectionStatus(boolean connected, String userName) {
-        gestioDades.setConnectionStatus(userName, connected);
-        serverAdminView.updateUserStatus(userName, connected);
+        try {
+            gestioDades.setConnectionStatus(userName, connected);
+            serverAdminView.updateUserStatus(userName, connected);
+        } catch (BadAccessToDatabaseException e) {
+            e.printMessage();
+        }
     }
 
     @Override
@@ -134,10 +158,15 @@ public class ServerController implements ActionListener, MouseListener {
         JTable table = (JTable) e.getSource();
         if (e.getClickCount() == 2) {
             int row = serverAdminView.getLeftTable().getSelectedRow();
-            ArrayList<String> aux = gestioDades.mostraDades(table.getValueAt(row, 0).toString());
-            ompleInformacioUsuari(aux);
+            ArrayList<String> aux = null;
+            try {
+                aux = gestioDades.mostraDades(table.getValueAt(row, 0).toString());
+                ompleInformacioUsuari(aux);
+                selectedUser = gestioDades.getUser(table.getValueAt(row, 0).toString());
 
-            selectedUser = gestioDades.retornaUser(table.getValueAt(row, 0).toString());
+            } catch (BadAccessToDatabaseException e1) {
+                e1.printMessage();
+            }
         }
     }
 

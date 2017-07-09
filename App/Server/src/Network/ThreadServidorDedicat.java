@@ -64,7 +64,7 @@ public class ThreadServidorDedicat extends Thread {
                     String decryptedUser = Encrypter.decrypt(userNameOREmail);
                     String decryptedPsswd = Encrypter.decrypt(password);
 
-                    loginStatus = gestioDades.gestionaLogin(decryptedUser, decryptedPsswd);
+                    loginStatus = gestioDades.handleLogin(decryptedUser, decryptedPsswd);
                     enviaResposta(loginStatus);
 
                     if(loginStatus == 0){
@@ -87,7 +87,7 @@ public class ThreadServidorDedicat extends Thread {
                     String decryptedPassword = Encrypter.decrypt(password);
                     String decryptedMail = Encrypter.decrypt(email);
 
-                    registerStatus = gestioDades.gestionaRegistre(decryptedUserName, decryptedPassword, decryptedMail);
+                    registerStatus = gestioDades.handleRegister(decryptedUserName, decryptedPassword, decryptedMail);
                     enviaResposta(registerStatus);
 
                     if(registerStatus == 0){

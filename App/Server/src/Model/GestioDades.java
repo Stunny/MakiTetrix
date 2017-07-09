@@ -1,5 +1,7 @@
 package Model;
 
+import Model.exceptions.BadAccessToDatabaseException;
+
 import java.sql.*;
 
 import java.text.DateFormat;
@@ -29,14 +31,24 @@ public class GestioDades {
     /**
      * Constructor que utiliza la configuracion externalizada del servidor
      * @param serverConfig Objeto de configuracion del servidor
+     * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
      */
-    public GestioDades(Configuration serverConfig){
-        Scanner kb = new Scanner(System.in);
-
+    public GestioDades(Configuration serverConfig) throws BadAccessToDatabaseException {
         this.serverConfig = serverConfig;
 
         System.out.println("Accessing database...");
         System.out.println("User: "+serverConfig.getDb_user());
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
+        }
+        catch (SQLException e) {
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
+        }
     }
 
     /**
@@ -73,7 +85,7 @@ public class GestioDades {
      * @param nom Nombre del usuario del cual queremos obtener toda la información
      * @return Devuelve un ArrayList<String>
      */
-    public ArrayList<String> mostraDades (String nom){
+    public ArrayList<String> mostraDades (String nom) throws BadAccessToDatabaseException {
         ArrayList<String> info = new ArrayList<>();
         try {
 
@@ -95,8 +107,11 @@ public class GestioDades {
             }
             c.close();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
+        }
+        catch (SQLException e) {
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
         }
         return info;
     }
@@ -107,7 +122,7 @@ public class GestioDades {
      * @param nom Nombre del usuario del cual queremos obtener toda la información
      * @return Dvuelve una instancia de User
      */
-    public User retornaUser (String nom){
+    public User getUser(String nom) throws BadAccessToDatabaseException {
         User u = new User(null, null, null);
         try {
 
@@ -127,8 +142,11 @@ public class GestioDades {
             }
             c.close();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
+        }
+        catch (SQLException e) {
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
         }
         return u;
     }
@@ -139,7 +157,7 @@ public class GestioDades {
      * @param userName Nombre del usuario/s que queremos buscar
      * @return Devuelve un ArrayList con todos aquellos usuarios de la BBDD que coincidan con el nombre de busqueda
      */
-    public ArrayList<String> busca(String userName){
+    public ArrayList<String> fetch(String userName) throws BadAccessToDatabaseException {
         ArrayList<String> trobats = new ArrayList<>();
         try {
             // create a mysql database connection
@@ -155,18 +173,24 @@ public class GestioDades {
 
             c.close();
 
-        } catch (Exception e) {
-            System.err.println("Got an exception!");
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
+        }
+        catch (SQLException e) {
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
         }
 
         return trobats;
     }
 
-    private int checkExisteix(User u){
-        Boolean nomrepe = false;
-        Boolean mailrepe = false;
+    /**
+     * @param u Usuario
+     * @return true if user exists in database
+     * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
+     */
+    private boolean userExists(User u) throws BadAccessToDatabaseException {
+        Boolean nameExists = false;
+        Boolean mailExists = false;
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
@@ -177,45 +201,40 @@ public class GestioDades {
             ResultSet r = s.executeQuery("select user, mail from Login");
             while (r.next()) {
                 if(r.getString("user").equals(u.getUserName())){
-                    nomrepe = true;
+                    nameExists = true;
                     System.out.println("user repe");
                 }
                 if(r.getString("mail").equals(u.getEmail())){
                     System.out.println("email de la base de dades: " + r.getString("mail"));
                     System.out.println("email amb el que ens volem registrar: " + u.getEmail());
                     System.out.println("email repe");
-                    mailrepe = true;
+                    mailExists = true;
                 }
             }
 
             c.close();
-        } catch (Exception e) {
-            System.err.println("Got an exception!");
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
         }
-       // System.out.println("nomrepe ="+nomrepe+" mailrepe ="+mailrepe);
-        if(nomrepe||mailrepe){
-            if (nomrepe && mailrepe){
-                return 5;
-            }else{
-                if (nomrepe){
-                    return 3;
-                }else{
-                    return 4;
-                }
-            }
-        }else{
-            return 1;
+        catch (SQLException e) {
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
         }
+
+        return (!nameExists && !mailExists);
     }
 
-    public int loginUser(String nom, String contra){
+    /**
+     * Realiza el inicio de sesion de un usuario en la base de datos
+     * @param nom Nombre de usuario
+     * @param contra Contraseña de usuario
+     * @return  0 si OK. 2 si contraseña incorrecta. 1 otro error.
+     * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
+     */
+    public int loginUser(String nom, String contra) throws BadAccessToDatabaseException {
         boolean ok = false;
         boolean passko = false;
-        boolean userko = false;
+
         try {
-            // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
@@ -234,16 +253,15 @@ public class GestioDades {
                     else {
                         passko = true;
                     }
-                }else {
-                    userko = true;
                 }
             }
 
             c.close();
-        } catch (Exception e) {
-            System.err.println("Got an exception!");
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
+        }
+        catch (SQLException e) {
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
         }
 
         if(ok){
@@ -255,11 +273,20 @@ public class GestioDades {
         }
     }
 
-    private int addUser(User u) {
-        int answer = checkExisteix(u);
+    /**
+     * Añade un usuario a la base de datos si no existe ya en ella.
+     * @param u Usuario
+     * @return 0 si se registra con éxito. 1 si algun dato ya estaba en la base de datos
+     * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
+     */
+    private int addUser(User u) throws BadAccessToDatabaseException {
+
+        boolean userExists = userExists(u);
+
         try {
-            if (answer == 1) {
-                // create a mysql database connection
+
+            if (!userExists) {
+
                 Class.forName("com.mysql.jdbc.Driver");
                 c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
                         serverConfig.getDb_user(), serverConfig.getDb_pass());
@@ -284,45 +311,38 @@ public class GestioDades {
                 preparedStmt.execute();
 
                 c.close();
-
-                return 0;
-            }else{
-                return answer;
             }
-        } catch (Exception e) {
-            System.err.println("Got an exception!");
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
         }
-        return answer;
+        catch (SQLException e) {
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
+        }
+
+        return userExists? 1 : 0;
     }
 
-
-    public int gestionaLogin(String userNameOREmail, String password) {
-        //0:ok, 1:usuari/mail no existeix 2:contra no
-        int error = loginUser(userNameOREmail, password);
-        return error;
-    }
-
-    public int gestionaRegistre(String usuari, String password, String email) {
-        //0:ok, 3:usuari existeix 4:mail existeix 5:both
-        User u = new User(usuari, password, email);
-        int error = addUser(u);
-        return error;
-    }
-
-    public void borraUsuari(String userName){
+    /**
+     * Borra un usuario de la base de datos
+     * @param userName Nombre de usuario
+     * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
+     */
+    public void deleteUser(String userName) throws BadAccessToDatabaseException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
         }
+        catch (SQLException e) {
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
+        }
+
         String query = "DELETE FROM Login WHERE user = '" + userName + "';";
         PreparedStatement preparedStmt = null;
+
         try {
             preparedStmt = c.prepareStatement(query);
             preparedStmt.execute();
@@ -332,7 +352,13 @@ public class GestioDades {
         }
     }
 
-    public void setConnectionStatus(String user, boolean status){
+    /**
+     *
+     * @param user
+     * @param status
+     * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
+     */
+    public void setConnectionStatus(String user, boolean status) throws BadAccessToDatabaseException {
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
@@ -344,14 +370,49 @@ public class GestioDades {
             preparedStmt.execute();
 
             c.close();
-        } catch (Exception e) {
-            System.err.println("Got an exception!");
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
+        }
+        catch (SQLException e) {
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
         }
     }
 
-    private void connect(){
+    /**
+     *
+     * @param userNameOREmail
+     * @param password
+     * @return
+     */
+    public int handleLogin(String userNameOREmail, String password) {
+        //0:ok, 1:usuari/mail no existeix 2:contra no
+        int error = 0;
+        try {
+            error = loginUser(userNameOREmail, password);
+        } catch (BadAccessToDatabaseException e) {
+            e.printMessage();
+        }
+        return error;
+    }
 
+    /**
+     * Gestiona el registro de un usuario en la base de datos
+     * @param usuari Nombre de usuario
+     * @param password Contraseña de usuario
+     * @param email Email de usuario
+     * @return 0 si OK. 3 si el nombre de usuario ya existe. 4 si el mail ya existe. 5 Si ambos existen.
+     */
+    public int handleRegister(String usuari, String password, String email) {
+        //0:ok, 3:usuari existeix 4:mail existeix 5:both
+        User u = new User(usuari, password, email);
+
+        int error = 0;
+        try {
+            error = addUser(u);
+        } catch (BadAccessToDatabaseException e) {
+            e.printMessage();
+        }
+
+        return error;
     }
 }

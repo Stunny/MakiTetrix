@@ -2,6 +2,7 @@ package Model;
 
 import javax.swing.*;
 import Controller.ServerController;
+import Model.exceptions.BadAccessToDatabaseException;
 import Network.ThreadSocketServer;
 import View.*;
 import com.google.gson.Gson;
@@ -31,7 +32,6 @@ public class ServerMain {
                 System.err.println("Cree el archivo en el directorio \'resources\' con el siguiente formato:");
                 System.err.println("{\n\t\"port_server\":\"\",\n\t\"db_name\":\"\",\n\t\"db_user\":\"\",\n\t\"db_pass\":\"\",\n\t\"db_ip\":\"\",\n\t\"db_port\":\"\"\n}");
                 e.printStackTrace();
-                System.exit(404);
             }catch (JsonSyntaxException jse){
                 System.out.println("Error: formato incorrecto en el archivo de configuracion.");
                 System.err.println("Cree el archivo en el directorio \'resources\' con el siguiente formato:");
@@ -41,22 +41,29 @@ public class ServerMain {
 
             if(serverConfig != null) {
                 //creem el model
-                GestioDades gestioDades = new GestioDades(serverConfig);
+                GestioDades gestioDades = null;
+                try {
+                    gestioDades = new GestioDades(serverConfig);
+                } catch (BadAccessToDatabaseException e) {
+                    e.printMessage();
+                }
 
-                //creem el controlador
-                ServerController sController = new ServerController(serverAdminView, gestioDades);
+                if(gestioDades != null) {
+                    //creem el controlador
+                    ServerController sController = new ServerController(serverAdminView, gestioDades);
 
-                //creem el socket servidor
-                ThreadSocketServer.PORT = serverConfig.getPort_server();
-                ThreadSocketServer threadSocketServer = new ThreadSocketServer(gestioDades, sController);
-                threadSocketServer.start();
+                    //creem el socket servidor
+                    ThreadSocketServer.PORT = serverConfig.getPort_server();
+                    ThreadSocketServer threadSocketServer = new ThreadSocketServer(gestioDades, sController);
+                    threadSocketServer.start();
 
-                //printa el numero segons si es pot fer un adduser: 1:ok 2:usuari existeix 3:mail existeix 4:both
-                serverAdminView.controladorBoto(sController);
-                serverAdminView.setVisible(true);
+                    //printa el numero segons si es pot fer un adduser: 1:ok 2:usuari existeix 3:mail existeix 4:both
+                    serverAdminView.controladorBoto(sController);
+                    serverAdminView.setVisible(true);
 
-                //añadimos el servidor al thread
-                //threadSocketServer.controller(sController);
+                    //añadimos el servidor al thread
+                    //threadSocketServer.controller(sController);
+                }
             }
         });
     }
