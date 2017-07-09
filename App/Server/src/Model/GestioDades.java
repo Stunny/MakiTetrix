@@ -11,25 +11,36 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Scanner;
 
-
+/**
+ * Clase encargada de manejar los datos del servidor contra la base de datos local
+ */
 public class GestioDades {
 
+    /**
+     * Objeto de configuraciones del servidor
+     */
     private Configuration serverConfig;
 
+    /**
+     * Objeto de conexion con la base de datos
+     */
     private Connection c;
-    private String db_pass;
+
 
     /**
-     *@deprecated
+     * Construye un nuevo objeto gestor de base de datos preguntandole la contraseña al usuario
+     *
+     * @deprecated
      */
     public GestioDades(){
         System.out.println("Introdueix la contraseña de la teva base de dades local:");
         Scanner keyboard = new Scanner(System.in);
-        db_pass = keyboard.nextLine();
+        //db_pass = keyboard.nextLine();
     }
 
     /**
      * Constructor que utiliza la configuracion externalizada del servidor
+     *
      * @param serverConfig Objeto de configuracion del servidor
      * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
      */
@@ -57,12 +68,13 @@ public class GestioDades {
      * @return Devuelve un ArrayList con todos los usuarios existentes en la BBDD
      * @unused
      */
-    public ArrayList<String> plenaUsuaris(){
+    public ArrayList<String> plenaUsuaris() throws BadAccessToDatabaseException {
         ArrayList<String> usuaris = new ArrayList<>();
         Encrypter encrypter = new Encrypter();
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false", "root", db_pass.trim());
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/MakiTetris?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
             Statement s = c.createStatement();
             ResultSet r = s.executeQuery("SELECT user FROM Login");
             while (r.next()) {
@@ -72,8 +84,14 @@ public class GestioDades {
             }
             c.close();
 
-        } catch (Exception var2) {
-            var2.printStackTrace();
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
+        }
+        catch (SQLException e) {
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
 
         return usuaris;
@@ -184,6 +202,8 @@ public class GestioDades {
     }
 
     /**
+     * Comprueba la existencia de un usuario en la abse de datos
+     *
      * @param u Usuario
      * @return true if user exists in database
      * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
@@ -225,6 +245,7 @@ public class GestioDades {
 
     /**
      * Realiza el inicio de sesion de un usuario en la base de datos
+     *
      * @param nom Nombre de usuario
      * @param contra Contraseña de usuario
      * @return  0 si OK. 2 si contraseña incorrecta. 1 otro error.
@@ -275,6 +296,7 @@ public class GestioDades {
 
     /**
      * Añade un usuario a la base de datos si no existe ya en ella.
+     *
      * @param u Usuario
      * @return 0 si se registra con éxito. 1 si algun dato ya estaba en la base de datos
      * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
@@ -325,6 +347,7 @@ public class GestioDades {
 
     /**
      * Borra un usuario de la base de datos
+     *
      * @param userName Nombre de usuario
      * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
      */
@@ -353,9 +376,10 @@ public class GestioDades {
     }
 
     /**
+     * Deja en constancia el cambio de estado de conexion de un usuario (online/offline)
      *
-     * @param user
-     * @param status
+     * @param user Usuario
+     * @param status Estado de conexion (true: online, false: offline)
      * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
      */
     public void setConnectionStatus(String user, boolean status) throws BadAccessToDatabaseException {
@@ -379,13 +403,14 @@ public class GestioDades {
     }
 
     /**
+     * Gestiona el acceso de usuario a la aplicación
      *
-     * @param userNameOREmail
-     * @param password
-     * @return
+     * @param userNameOREmail Nombre o email del usuario ??
+     * @param password Contraseña del usuario
+     * @return 0 si login OK. 1 si el usuario o email no existe. 2 si contraseña incorrecta
      */
     public int handleLogin(String userNameOREmail, String password) {
-        //0:ok, 1:usuari/mail no existeix 2:contra no
+
         int error = 0;
         try {
             error = loginUser(userNameOREmail, password);
@@ -397,13 +422,13 @@ public class GestioDades {
 
     /**
      * Gestiona el registro de un usuario en la base de datos
+     *
      * @param usuari Nombre de usuario
      * @param password Contraseña de usuario
      * @param email Email de usuario
      * @return 0 si OK. 3 si el nombre de usuario ya existe. 4 si el mail ya existe. 5 Si ambos existen.
      */
     public int handleRegister(String usuari, String password, String email) {
-        //0:ok, 3:usuari existeix 4:mail existeix 5:both
         User u = new User(usuari, password, email);
 
         int error = 0;
