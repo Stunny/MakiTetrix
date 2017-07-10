@@ -5,6 +5,7 @@ import Model.JTableModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import java.awt.*;
 
@@ -12,6 +13,8 @@ import java.awt.*;
  * Created by Admin on 20/03/2017.
  */
 public class ServerAdminView extends JFrame{
+    private final Color CONNECTED = new Color(11, 159, 0);
+
     public static final String ACTION_BORRAR = "Borrar";
     public static final String ACTION_SEARCH = "Busca";
     public static final String UPDATE = "Actualiza";
@@ -67,18 +70,19 @@ public class ServerAdminView extends JFrame{
         JTableModel jTableModelLeft = new JTableModel();
         JTableModel jTableModelRight = new JTableModel();
 
-        leftJTable = new JTable(jTableModelLeft);
-        leftJTable.getTableHeader().setReorderingAllowed(false);
-        leftJTable.setDefaultRenderer(String.class, new DefaultTableCellRenderer(){
+        leftJTable = new JTable(jTableModelLeft){
 
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
-                Component c = super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
-                c.setForeground(((String)value).contains("(Online)")? Color.GREEN : Color.BLACK);
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column){
+                Component c = super.prepareRenderer(renderer, row, column);
+
+                c.setForeground(((String)getValueAt(row, column)).contains("(Online)")? CONNECTED : Color.BLACK);
+
                 return c;
             }
 
-        });
+        };
+        leftJTable.getTableHeader().setReorderingAllowed(false);
+
 
         rightJTable = new JTable(jTableModelRight);
         rightJTable.getTableHeader().setReorderingAllowed(false);

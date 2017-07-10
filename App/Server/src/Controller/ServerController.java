@@ -94,6 +94,8 @@ public class ServerController implements ActionListener, MouseListener {
                 userName.add(user);
                 model.addRow(userName);
             }
+
+            serverAdminView.getLeftTable().repaint();
         }catch (BadAccessToDatabaseException bdb){
             bdb.printMessage();
         }
