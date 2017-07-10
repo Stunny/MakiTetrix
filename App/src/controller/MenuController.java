@@ -7,11 +7,13 @@ import network.Conexio;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Created by avoge on 04/04/2017.
  */
-public class MenuController implements ActionListener {
+public class MenuController extends WindowAdapter implements ActionListener {
     private MainMenuView mmv;
     private Conexio conexio;
     private User currentUser;
@@ -63,5 +65,10 @@ public class MenuController implements ActionListener {
                 System.exit(1);
                 break;
         }
+    }
+
+    public void windowClosing(WindowEvent evt){
+        conexio.disconnectUser(currentUser);
+        super.windowClosing(evt);
     }
 }

@@ -29,8 +29,6 @@ public class ThreadServidorDedicat extends Thread {
     private GameDataManager gdm;
     private ObserveManager observeManager;
 
-    private String connectedUser;
-
     public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades, ServerController sController){
         this.sClient = sClient;
         this.gestioDades = gestioDades;
@@ -70,7 +68,6 @@ public class ThreadServidorDedicat extends Thread {
 
                     if(loginStatus == 0){
                         //Login successful: keep username
-                        connectedUser = userNameOREmail;
                         sController.updateUserList();
                     }
                 } catch (Exception e) {
@@ -92,8 +89,6 @@ public class ThreadServidorDedicat extends Thread {
                     enviaResposta(registerStatus);
 
                     if(registerStatus == 0){
-                        //Register succesful: keep username
-                        connectedUser = usuari;
                         sController.updateUserList();
                     }
                 } catch (Exception e) {
@@ -104,12 +99,11 @@ public class ThreadServidorDedicat extends Thread {
 
             case "DISCONNECT":
                 try {
-                    gestioDades.disconnectUser(connectedUser);
+                    gestioDades.disconnectUser(diStream.readUTF());
                 } catch (BadAccessToDatabaseException e) {
                     e.printMessage();
                 }
                 sController.updateUserList();
-                connectedUser = null;
                 break;
 
             case "NG": //New Game Start Request

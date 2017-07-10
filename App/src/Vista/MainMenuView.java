@@ -69,14 +69,21 @@ public class MainMenuView extends JFrame{
     }
 
     public void registerActions (MenuController mc){
+
+        addWindowListener(mc);
+
         teclas.addActionListener(mc);
         teclas.setActionCommand("teclas");
+
         jugarpartida.addActionListener(mc);
         jugarpartida.setActionCommand("jugar");
+
         verpartida.addActionListener(mc);
         verpartida.setActionCommand("ver");
+
         partidaanterior.addActionListener(mc);
         partidaanterior.setActionCommand("anterior");
+
         salir.addActionListener(mc);
         salir.setActionCommand("salir");
     }

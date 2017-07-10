@@ -132,14 +132,13 @@ public class Conexio extends Thread {
 
     /**
      * Sets the specified user's status to "Offline"
-     * @param currentUser Specified user
      */
-    public void disconnectUser(User currentUser) {
+    public void disconnectUser(User user) {
         connect();
 
         try {
             doStream.writeUTF("DISCONNECT");
-            doStream.writeUTF(currentUser.getUserName());
+            doStream.writeUTF(user.getUserName());
         } catch (IOException e) {
             e.printStackTrace();
         }

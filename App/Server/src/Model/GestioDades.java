@@ -397,9 +397,12 @@ public class GestioDades {
             c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
-            Statement s = c.createStatement();
-            s.executeQuery("update login set connected = 0 WHERE user = \""+username+"\"");
+            String query = "update login set connected = 0 where user = ?;";
 
+            PreparedStatement stmt = c.prepareStatement(query);
+            stmt.setString(1, username);
+
+            stmt.execute();
             c.close();
         }catch (ClassNotFoundException cnfe){
             cnfe.printStackTrace();
