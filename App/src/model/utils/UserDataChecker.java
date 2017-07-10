@@ -1,8 +1,7 @@
 package model.utils;
 
 
-import org.apache.commons.validator.routines.EmailValidator;
-
+import org.apache.commons.validator.EmailValidator;
 
 /**
  * Created by pedroriera on 6/4/17.

@@ -30,7 +30,7 @@ public class ThreadSocketServer extends Thread{
             while (true){
                 //esperem a la conexio d'algun usuari dins d'un bucle infinit. A cada usuari li crearem un nou servidor dedicat
                 Socket sClient = serverSocket.accept();
-                System.out.println("Client connected!");
+                //System.out.println("Client connected!");
                 generaNouServidorDedicat(sClient);
             }
         } catch (IOException e) {

@@ -4,6 +4,8 @@ import Controller.ServerController;
 import Model.JTableModel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableModel;
 import java.awt.*;
 
 /**
@@ -64,8 +66,20 @@ public class ServerAdminView extends JFrame{
         rightJTable = new JTable();
         JTableModel jTableModelLeft = new JTableModel();
         JTableModel jTableModelRight = new JTableModel();
+
         leftJTable = new JTable(jTableModelLeft);
         leftJTable.getTableHeader().setReorderingAllowed(false);
+        leftJTable.setDefaultRenderer(String.class, new DefaultTableCellRenderer(){
+
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+                Component c = super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
+                c.setForeground(((String)value).contains("(Online)")? Color.GREEN : Color.BLACK);
+                return c;
+            }
+
+        });
+
         rightJTable = new JTable(jTableModelRight);
         rightJTable.getTableHeader().setReorderingAllowed(false);
 
@@ -117,11 +131,32 @@ public class ServerAdminView extends JFrame{
      */
     public void updateUserStatus(String username, boolean status){
 
-        int selectedRow = leftJTable.getSelectedRow();
-        String selectedUser = (String) leftJTable.getValueAt(selectedRow, 0);
+        int rows = leftJTable.getModel().getRowCount();
+        JTableModel model = (JTableModel) leftJTable.getModel();
 
-        if(username.equals(selectedUser)){
-            rightJTable.setValueAt(String.valueOf(status), 0, 0);
+        int userRow = -1;
+        String selectedUser = "";
+
+        for(int i = 0; i < rows; i++){
+
+            selectedUser = (String) model.getValueAt(i, 0);
+
+            if(selectedUser.contains(username)){
+                userRow = i;
+                break;
+            }
+        }
+
+        if(userRow != -1 && selectedUser.contains(username)){
+
+            if(status) {
+                model.setValueAt(username + "(Online)", userRow, 0);
+                leftJTable.setModel(model);
+            }
+            else if(selectedUser.contains("(Online)")){
+                model.setValueAt(username, userRow, 0);
+                leftJTable.setModel(model);
+            }
         }
     }
 

@@ -40,7 +40,7 @@ public class RegisterView extends JFrame {
     public void registerController(RegisterController controller) {
 
         jbRegister.setActionCommand(RegisterController.ACTION_REG);
-        jbRegister.addActionListener(RegisterController.getInstance(this, parentView));
+        jbRegister.addActionListener(controller);
 
     }
 

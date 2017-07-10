@@ -222,12 +222,8 @@ public class GestioDades {
             while (r.next()) {
                 if(r.getString("user").equals(u.getUserName())){
                     nameExists = true;
-                    System.out.println("user repe");
                 }
                 if(r.getString("mail").equals(u.getEmail())){
-                    System.out.println("email de la base de dades: " + r.getString("mail"));
-                    System.out.println("email amb el que ens volem registrar: " + u.getEmail());
-                    System.out.println("email repe");
                     mailExists = true;
                 }
             }
@@ -240,7 +236,46 @@ public class GestioDades {
             throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
         }
 
-        return (!nameExists && !mailExists);
+        return (nameExists || mailExists);
+    }
+
+    /**
+     * Comprueba si un usuario esta conectado
+     *
+     * @param username Nombre de usuario a comprobar
+     * @return true si el usuario esta conectado en el instante
+     * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
+     */
+    public boolean userIsOnline(String username) throws BadAccessToDatabaseException{
+        if(!userExists(new User(username, "", "")))
+            return false;
+
+        boolean isOnline = false;
+        String user = username.replace("(Online)", "");
+
+        try {
+            // create a mysql database connection
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+            Statement s = c.createStatement();
+            ResultSet r = s.executeQuery("select connected from Login WHERE user = \""+username+"\"");
+            while (r.next()) {
+                if(r.getInt("connected") == 1)
+                    isOnline = true;
+            }
+
+            c.close();
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
+        }
+
+        return isOnline;
     }
 
     /**
@@ -346,6 +381,36 @@ public class GestioDades {
     }
 
     /**
+     * Actualiza el estado de conexion de un usuario a desconectad
+     * @param username Nombre de usuario a desconectar
+     *
+     * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
+     */
+    public void disconnectUser(String username) throws BadAccessToDatabaseException {
+        if(!userExists(new User(username, "", ""))){
+            return;
+        }
+
+        try {
+            // create a mysql database connection
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+            Statement s = c.createStatement();
+            s.executeQuery("update login set connected = 0 WHERE user = \""+username+"\"");
+
+            c.close();
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
+        }
+    }
+
+    /**
      * Borra un usuario de la base de datos
      *
      * @param userName Nombre de usuario
@@ -372,33 +437,6 @@ public class GestioDades {
             c.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * Deja en constancia el cambio de estado de conexion de un usuario (online/offline)
-     *
-     * @param user Usuario
-     * @param status Estado de conexion (true: online, false: offline)
-     * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
-     */
-    public void setConnectionStatus(String user, boolean status) throws BadAccessToDatabaseException {
-        try {
-            // create a mysql database connection
-            Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
-                    serverConfig.getDb_user(), serverConfig.getDb_pass());
-
-            String query = "UPDATE Login SET connected = "+ String.valueOf(status)+ " WHERE Login.user = '" + user + "';";
-            PreparedStatement preparedStmt = c.prepareStatement(query);
-            preparedStmt.execute();
-
-            c.close();
-        }catch (ClassNotFoundException cnfe){
-            cnfe.printStackTrace();
-        }
-        catch (SQLException e) {
-            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
         }
     }
 

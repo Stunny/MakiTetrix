@@ -34,12 +34,7 @@ public class ServerController implements ActionListener, MouseListener {
         this.serverAdminView = serverAdminView;
         this.gestioDades = gestioDades;
 
-        try {
-            ompleUsuaris(gestioDades.fetch("^"));
-        } catch (BadAccessToDatabaseException e) {
-            e.printMessage();
-        }
-
+        updateUserList();
     }
 
     @Override
@@ -47,7 +42,7 @@ public class ServerController implements ActionListener, MouseListener {
         if (e.getActionCommand().equals(serverAdminView.ACTION_BORRAR)){
             try{
                 gestioDades.deleteUser(selectedUser.getUserName());
-                ompleUsuaris(gestioDades.fetch("^"));
+                updateUserList();
                 selectedUser = null;
                 DefaultTableModel model = (DefaultTableModel) serverAdminView.getRightJTable().getModel();
                 model.setRowCount(0);
@@ -60,13 +55,9 @@ public class ServerController implements ActionListener, MouseListener {
 
         }else if (e.getActionCommand().equals(serverAdminView.ACTION_SEARCH)){
             if (serverAdminView.getBuscador().getText().equals("")){
-                ArrayList<String> usuaris;
-                try {
-                    usuaris = gestioDades.fetch("^");
-                    ompleUsuaris(usuaris);
-                } catch (BadAccessToDatabaseException e1) {
-                    e1.printMessage();
-                }
+
+                updateUserList();
+
             }else{
                 ArrayList<String> usuaris;
                 try {
@@ -78,27 +69,44 @@ public class ServerController implements ActionListener, MouseListener {
             }
 
         }else if (e.getActionCommand().equals(serverAdminView.UPDATE)){
-            try {
-                ompleUsuaris(gestioDades.fetch("^"));
-            } catch (BadAccessToDatabaseException e1) {
-                e1.printMessage();
-            }
+            updateUserList();
         }
     }
 
     /**
      * Fills the serverAdminView with a list of the user's names
-     * @param usuaris
+     * @param usuaris lista de usuarios almacenados en la abse de datos
      */
     public void ompleUsuaris(ArrayList<String> usuaris){
-        DefaultTableModel model = (DefaultTableModel) serverAdminView.getLeftTable().getModel();
-        model.setRowCount(0);
-        model.setColumnCount(0);
+        try {
+            DefaultTableModel model = (DefaultTableModel) serverAdminView.getLeftTable().getModel();
+            model.setRowCount(0);
+            model.setColumnCount(0);
 
-        model.addColumn("Name");
-        for (int i = 0; i < usuaris.size(); i++){
-            Vector<String> userName = new Vector<>(Arrays.asList(usuaris.get(i)));
-            model.addRow(userName);
+            model.addColumn("Name");
+            for (int i = 0; i < usuaris.size(); i++) {
+                String user = usuaris.get(i);
+                if (gestioDades.userIsOnline(user)) {
+                    user += "(Online)";
+                }
+
+                Vector<String> userName = new Vector<>();
+                userName.add(user);
+                model.addRow(userName);
+            }
+        }catch (BadAccessToDatabaseException bdb){
+            bdb.printMessage();
+        }
+    }
+
+    /**
+     * Actualiza la lista de usuarios y su estado de conexion
+     */
+    public void updateUserList(){
+        try {
+            ompleUsuaris(gestioDades.fetch("^"));
+        } catch (BadAccessToDatabaseException e) {
+            e.printMessage();
         }
     }
 
@@ -111,27 +119,17 @@ public class ServerController implements ActionListener, MouseListener {
         model.setRowCount(0);
         model.setColumnCount(0);
 
-        model.addColumn("Conectat");
         model.addColumn("Data de registre");
         model.addColumn("Ultim inici de sesio");
         model.addColumn("Nombre de partides");
         model.addColumn("Total de punts");
 
-        Vector<String> connected = new Vector<>(Arrays.asList(info.get(0)));
         Vector<String> registerDate = new Vector<>(Arrays.asList(info.get(1)));
         Vector<String> lastLogin = new Vector<>(Arrays.asList(info.get(2)));
         Vector<String> gameCount = new Vector<>(Arrays.asList(info.get(3)));
         Vector<String> totalPoints = new Vector<>(Arrays.asList(info.get(4)));
 
-        String con;
-        if (connected.get(0).equals("1")){
-            con = "Online";
-        }else{
-            con = "Offline";
-        }
-
         Vector<Object> row = new Vector<Object>();
-        row.addElement(con);
         row.addElement(registerDate.get(0));
         row.addElement(lastLogin.get(0));
         row.addElement(gameCount.get(0));
@@ -139,29 +137,16 @@ public class ServerController implements ActionListener, MouseListener {
         model.addRow(row);
     }
 
-    /**
-     * Actualiza tanto en base de datos como en la vista de administrador el estado de conexion
-     * de un usuario (online o offline)
-     * @param connected
-     */
-    public void updateUserConnectionStatus(boolean connected, String userName) {
-        try {
-            gestioDades.setConnectionStatus(userName, connected);
-            serverAdminView.updateUserStatus(userName, connected);
-        } catch (BadAccessToDatabaseException e) {
-            e.printMessage();
-        }
-    }
-
     @Override
     public void mouseClicked(MouseEvent e) {
         JTable table = (JTable) e.getSource();
-        if (e.getClickCount() == 2) {
+        if (e.getClickCount() == 1 && table == serverAdminView.getLeftTable()) {
             int row = serverAdminView.getLeftTable().getSelectedRow();
-            ArrayList<String> aux = null;
+            ArrayList<String> data = null;
             try {
-                aux = gestioDades.mostraDades(table.getValueAt(row, 0).toString());
-                ompleInformacioUsuari(aux);
+                String user = table.getModel().getValueAt(row, 0).toString().replace("(Online)", "");
+                data = gestioDades.mostraDades(user);
+                ompleInformacioUsuari(data);
                 selectedUser = gestioDades.getUser(table.getValueAt(row, 0).toString());
 
             } catch (BadAccessToDatabaseException e1) {

@@ -3,6 +3,7 @@ package Network;
 import Controller.ServerController;
 import Model.Encrypter;
 import Model.GestioDades;
+import Model.exceptions.BadAccessToDatabaseException;
 import utils.GameDataManager;
 import utils.ObserveManager;
 
@@ -70,7 +71,7 @@ public class ThreadServidorDedicat extends Thread {
                     if(loginStatus == 0){
                         //Login successful: keep username
                         connectedUser = userNameOREmail;
-                        sController.updateUserConnectionStatus(true, connectedUser);
+                        sController.updateUserList();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -93,7 +94,7 @@ public class ThreadServidorDedicat extends Thread {
                     if(registerStatus == 0){
                         //Register succesful: keep username
                         connectedUser = usuari;
-                        sController.updateUserConnectionStatus(true, connectedUser);
+                        sController.updateUserList();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -102,9 +103,12 @@ public class ThreadServidorDedicat extends Thread {
                 break;
 
             case "DISCONNECT":
-                System.out.println("disconnect");
-
-                sController.updateUserConnectionStatus(false, connectedUser);
+                try {
+                    gestioDades.disconnectUser(connectedUser);
+                } catch (BadAccessToDatabaseException e) {
+                    e.printMessage();
+                }
+                sController.updateUserList();
                 connectedUser = null;
                 break;
 
