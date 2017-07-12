@@ -149,7 +149,7 @@ public class ServerController implements ActionListener, MouseListener {
             int row = serverAdminView.getLeftTable().getSelectedRow();
             ArrayList<String> data = null;
             try {
-                String user = table.getModel().getValueAt(row, 0).toString().replace("(Online)", "");
+                String user = table.getModel().getValueAt(row, 0).toString().replace(" (Online)", "");
                 data = gestioDades.mostraDades(user);
                 ompleInformacioUsuari(data);
                 selectedUser = gestioDades.getUser(table.getValueAt(row, 0).toString());
