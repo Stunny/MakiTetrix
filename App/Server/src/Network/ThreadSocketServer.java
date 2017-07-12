@@ -30,7 +30,6 @@ public class ThreadSocketServer extends Thread{
             while (true){
                 //esperem a la conexio d'algun usuari dins d'un bucle infinit. A cada usuari li crearem un nou servidor dedicat
                 Socket sClient = serverSocket.accept();
-                //System.out.println("Client connected!");
                 generaNouServidorDedicat(sClient);
             }
         } catch (IOException e) {
@@ -40,14 +39,8 @@ public class ThreadSocketServer extends Thread{
 
     private void generaNouServidorDedicat(Socket sClient){
         //System.out.println("entro a fer un nou servidor dedicat");
-        System.out.println(sController);
         ThreadServidorDedicat tsd = new ThreadServidorDedicat(sClient, gestioDades, sController);
         tsd.start();
     }
 
-    public void controller(ServerController sController) {
-        this.sController = sController;
-        System.out.println("Valor de sController: " + sController.equals(null));
-        System.out.println("Valor de sController: " + this.sController);
-    }
 }

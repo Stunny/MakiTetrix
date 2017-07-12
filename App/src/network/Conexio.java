@@ -8,6 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by Admin on 16/05/2017.
@@ -96,7 +97,6 @@ public class Conexio extends Thread {
 
             }else{
                 //el usuario ha logueado usando el nombre de usuario
-                System.out.println("user login con userName");
                 String nameAux = encrypter.encrypt(user.getUserName());
                 String passwordAux = encrypter.encrypt(user.getPassword());
 
@@ -193,17 +193,23 @@ public class Conexio extends Thread {
         disconnect();
     }
 
-    public void getOnlineUsers() {
+    public ArrayList<String> getOnlineUsers() {
         connect();
-
+        ArrayList<String> onlineUsers = new ArrayList<>();
         try {
             doStream.writeUTF("LIVE_USERS");
-            doStream.writeUTF("PENDIENTE DE IMPLEMENTACION");
+
+            int size = diStream.readInt();
+            for (int i = 0; i < size; i++){
+                onlineUsers.add(diStream.readUTF());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         disconnect();
+        return onlineUsers;
+
     }
 
     public String getResponse() {

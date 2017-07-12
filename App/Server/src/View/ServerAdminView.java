@@ -17,13 +17,13 @@ public class ServerAdminView extends JFrame{
 
     public static final String ACTION_BORRAR = "Borrar";
     public static final String ACTION_SEARCH = "Busca";
-    public static final String UPDATE = "Actualiza";
+    public static final String GRAPHS = "Grafiques";
 
     private JTable leftJTable;
     private JButton borrar;
     private JTextField buscador;
     private JButton busca;
-    private JButton actualitza;
+    private JButton grafics;
     private JTable rightJTable;
 
     /**
@@ -56,10 +56,10 @@ public class ServerAdminView extends JFrame{
         buscador = new JTextField();
         busca = new JButton("Busca Usuari");
         busca.setActionCommand(ACTION_SEARCH);
-        actualitza = new JButton("Actualitza llistat");
-        actualitza.setActionCommand(UPDATE);
+        grafics = new JButton("Mostra grafiques");
+        grafics.setActionCommand(GRAPHS);
         aux.add(busca);
-        aux.add(actualitza);
+        aux.add(grafics);
         topPane.add(topLabel, BorderLayout.NORTH);
         topPane.add(buscador, BorderLayout.CENTER);
         topPane.add(aux, BorderLayout.SOUTH);
@@ -111,7 +111,7 @@ public class ServerAdminView extends JFrame{
         leftJTable.addMouseListener(sController);
         borrar.addActionListener(sController);
         busca.addActionListener(sController);
-        actualitza.addActionListener(sController);
+        grafics.addActionListener(sController);
     }
 
     /**

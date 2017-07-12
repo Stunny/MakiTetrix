@@ -87,10 +87,10 @@ public class GameView extends JFrame{
         //Creación panel de abajo para que se vean tus observadores
 
         JPanel observadores = new JPanel (new FlowLayout());
-        observador = new JLabel ("Observador 1");
+        observador = new JLabel ("Numero de espectadores: 0");
         observadores.add(observador);
 
-        getContentPane().add(observadores,BorderLayout.SOUTH);
+        getContentPane().add(observadores, BorderLayout.SOUTH);
 
     }
 

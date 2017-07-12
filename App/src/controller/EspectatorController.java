@@ -27,28 +27,16 @@ public class EspectatorController implements MouseListener {
 
 
     private void ompleLlistaUsuaris(){
-        //TODO: LLENAR UNA ARRAYLIST DE LiveUser Y LLENAR LA LISTA DE LA VISTA
-
-        //codigo para testear que el usuario "angel" i "farre" sale por pantalla
-        LiveUser liveUser = new LiveUser("angel", 15);
-        LiveUser liveUser2 = new LiveUser("farre", 152);
-
-        ArrayList<LiveUser> usuaris = new ArrayList<>();
-        usuaris.add(liveUser);
-        usuaris.add(liveUser2);
-//----------
-
-        conexio.getOnlineUsers();
-        //TODO: LLAMAR A FUNCION QUE DEVUELVA UNA INSTANCIA VALIDA DE LiveUser PARA POBLAR LA JTABLE
+        ArrayList<String> usuaris = conexio.getOnlineUsers();
         DefaultTableModel model = (DefaultTableModel) espectatorView.getTable().getModel();
         model.addColumn("Nombre de usuario");
         model.addColumn("Tiempo de juego");
         model.addColumn("Espectadores");
 
         for (int i = 0; i < usuaris.size(); i++){
-            Vector<String> userName = new Vector<String>(Arrays.asList(usuaris.get(i).getUserName()));
+            Vector<String> userName = new Vector<String>(Arrays.asList(usuaris.get(i)));
             Vector<String> Time = new Vector<String>(Arrays.asList("Pendiente de implementacion"));
-            Vector<String> espectators = new Vector<String>(Arrays.asList(String.valueOf(usuaris.get(i).getEspectators())));
+            Vector<String> espectators = new Vector<String>(Arrays.asList(String.valueOf(usuaris.get(i))));
 
             Vector<Object> row = new Vector<Object>();
             row.addElement(userName.get(0));

@@ -11,6 +11,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by Admin on 24/03/2017.
@@ -121,8 +122,13 @@ public class ThreadServidorDedicat extends Thread {
                 break;
 
             case "LIVE_USERS":
-                System.out.println("I want to see all ONLINE users");
-                //gestioDades.retornaOnlineUsers;
+
+                ArrayList<String> onlineUsers = sController.onlineUsers();
+                doStream.writeInt(onlineUsers.size());
+                for (int i = 0; i < onlineUsers.size(); i++){
+                    doStream.writeUTF(onlineUsers.get(i));
+                }
+
                 break;
 
             case "REPLAY"://Selected user to see replays
@@ -136,7 +142,6 @@ public class ThreadServidorDedicat extends Thread {
                 // TODO: establecer observador a la partida seleccionada
                 break;
         }
-
     }
 
     /**

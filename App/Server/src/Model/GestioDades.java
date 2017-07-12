@@ -2,6 +2,7 @@ package Model;
 
 import Model.exceptions.BadAccessToDatabaseException;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
 import java.text.DateFormat;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Scanner;
+import java.security.MessageDigest;
 
 /**
  * Clase encargada de manejar los datos del servidor contra la base de datos local
@@ -48,11 +50,11 @@ public class GestioDades {
         this.serverConfig = serverConfig;
 
         System.out.println("Accessing database...");
-        System.out.println("User: "+serverConfig.getDb_user());
+        System.out.println("User: " + serverConfig.getDb_user());
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
         }catch (ClassNotFoundException cnfe){
             cnfe.printStackTrace();
@@ -108,7 +110,7 @@ public class GestioDades {
         try {
 
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
             Statement s = c.createStatement();
@@ -290,6 +292,14 @@ public class GestioDades {
         boolean ok = false;
         boolean passko = false;
 
+        MessageDigest messageDigest = null;
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        messageDigest.update(contra.getBytes());
+        contra = new String(messageDigest.digest());
         try {
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
@@ -354,7 +364,12 @@ public class GestioDades {
                 PreparedStatement preparedStmt = c.prepareStatement(query);
                 preparedStmt.setString(1, u.getUserName());
                 preparedStmt.setString(2, u.getEmail());
-                preparedStmt.setString(3, u.getPassword());
+
+                MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+                messageDigest.update(u.getPassword().getBytes());
+                String encryptedString = new String(messageDigest.digest());
+
+                preparedStmt.setString(3, encryptedString);
                 preparedStmt.setBoolean(4, true);
 
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -375,6 +390,8 @@ public class GestioDades {
         }
         catch (SQLException e) {
             throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
 
         return userExists? 1 : 0;

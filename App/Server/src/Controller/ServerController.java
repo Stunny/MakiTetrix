@@ -3,6 +3,7 @@ package Controller;
 import Model.GestioDades;
 import Model.User;
 import Model.exceptions.BadAccessToDatabaseException;
+import View.PointsGraph;
 import View.ServerAdminView;
 
 import javax.swing.*;
@@ -23,7 +24,6 @@ public class ServerController implements ActionListener, MouseListener {
 
     private ServerAdminView serverAdminView;
     private GestioDades gestioDades;
-
     private User selectedUser;
 
     /**
@@ -68,8 +68,11 @@ public class ServerController implements ActionListener, MouseListener {
                 }
             }
 
-        }else if (e.getActionCommand().equals(serverAdminView.UPDATE)){
-            updateUserList();
+        }else if (e.getActionCommand().equals(serverAdminView.GRAPHS)){
+            System.out.println("mostra grafiques");
+            PointsGraph pointsGraph = new PointsGraph();
+            pointsGraph.PointsGraph();
+            pointsGraph.setVisible(true);
         }
     }
 
@@ -87,7 +90,7 @@ public class ServerController implements ActionListener, MouseListener {
             for (int i = 0; i < usuaris.size(); i++) {
                 String user = usuaris.get(i);
                 if (gestioDades.userIsOnline(user)) {
-                    user += "(Online)";
+                    user += " (Online)";
                 }
 
                 Vector<String> userName = new Vector<>();
@@ -177,4 +180,15 @@ public class ServerController implements ActionListener, MouseListener {
 
     }
 
+    public ArrayList<String> onlineUsers() {
+        ArrayList<String> onlineUsers = new ArrayList<>();
+        for (int i = 0; i < serverAdminView.getLeftTable().getRowCount(); i++){
+            String user = (String) serverAdminView.getLeftTable().getValueAt(i,0);
+            if (user.contains("(Online)")){
+                String[] aux = user.split(" ");
+                onlineUsers.add(aux[0]);
+            }
+        }
+        return onlineUsers;
+    }
 }
