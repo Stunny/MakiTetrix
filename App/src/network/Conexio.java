@@ -209,7 +209,36 @@ public class Conexio extends Thread {
 
         disconnect();
         return onlineUsers;
+    }
 
+    public String[] getReplays(String userName) {
+        connect();
+
+        try {
+            doStream.writeUTF("REPLAY_LIST");
+            doStream.writeUTF(userName);
+/*            String data = null;
+            int replay_number = diStream.readInt();
+
+            for (int i = 0; i < replay_number; i++){
+                //TODO: ARREGLAR LA COMUNICACION CLIENTE SERVIDOR EN ESTE PUNTO. EL CLIENTE NO LEE BIEN LOS DATOS
+                System.out.println("reading data");
+                data = diStream.readUTF();
+                System.out.println(data);
+
+            }
+  */
+String data = diStream.readUTF();
+
+            System.out.println("data: " + data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        disconnect();
+
+        //retornar lo
+        return null;
     }
 
     public String getResponse() {

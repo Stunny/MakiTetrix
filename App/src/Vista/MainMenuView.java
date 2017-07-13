@@ -87,4 +87,12 @@ public class MainMenuView extends JFrame{
         salir.addActionListener(mc);
         salir.setActionCommand("salir");
     }
+
+    public JLabel getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(JLabel usuario) {
+        this.usuario = usuario;
+    }
 }

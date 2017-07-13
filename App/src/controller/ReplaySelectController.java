@@ -1,5 +1,6 @@
 package controller;
 
+import Vista.MainMenuView;
 import Vista.ReplaySelectView;
 import model.UserReplay;
 import network.Conexio;
@@ -19,15 +20,18 @@ import java.util.Vector;
 public class ReplaySelectController implements MouseListener{
     private ReplaySelectView view;
     private Conexio conexio;
+    private String userName;
 
-    ReplaySelectController(ReplaySelectView view, Conexio conexio){
+    ReplaySelectController(ReplaySelectView view, Conexio conexio, String userName){
         this.view = view;
         this.conexio = conexio;
+        this.userName = userName;
         ompleReplays();
     }
 
 
     private void ompleReplays(){
+        String[] data = conexio.getReplays(userName);
         //codigo para testear si printa por pantalla. borrar i hacer que los datos le lleguen de la BBDD
         Date date = new Date();
 

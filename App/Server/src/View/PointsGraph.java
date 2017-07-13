@@ -8,7 +8,12 @@ import java.awt.*;
  */
 public class PointsGraph extends JPanel{
     int[] data = { 25, 60, 42, 75, 30, 30 ,30 ,30 ,30, 30 };
-    final int PAD = 30;
+    final int PAD = 50;
+    private double maxValue;
+
+    public PointsGraph(double maxValue) {
+        this.maxValue = maxValue;
+    }
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -19,7 +24,6 @@ public class PointsGraph extends JPanel{
         g2.drawLine(PAD, PAD, PAD, h-PAD);
         g2.drawLine(PAD, h-PAD, w-PAD, h-PAD);
         double xScale = (w - 2*PAD)/(data.length + 1);
-        double maxValue = 100.0;
         double yScale = (h - 2*PAD)/maxValue;
         // The origin location.
         int x0 = PAD;
@@ -32,11 +36,12 @@ public class PointsGraph extends JPanel{
         }
 
         g2.setColor(Color.GREEN);
-        g2.fillRect(x0 + (int)(xScale * 1), y0 - 1, 30, -100);
+        g2.fillRect(x0 + (int)(xScale * 1), y0 - 1, 30, 10);
 
         g2.setColor(Color.BLACK);
         g2.drawString("user1", x0 + (int)(xScale * 1), 15 + y0);
         g2.drawString("user2", x0 + (int)(xScale * 2), 15 + y0);
+        g2.drawString("user3", x0 + (int)(xScale * 3), 15 + y0);
         g2.drawString("user4", x0 + (int)(xScale * 4), 15 + y0);
         g2.drawString("user5", x0 + (int)(xScale * 5), 15 + y0);
         g2.drawString("user6", x0 + (int)(xScale * 6), 15 + y0);
@@ -44,12 +49,20 @@ public class PointsGraph extends JPanel{
         g2.drawString("user8", x0 + (int)(xScale * 8), 15 + y0);
         g2.drawString("user9", x0 + (int)(xScale * 9), 15 + y0);
         g2.drawString("user10", x0 + (int)(xScale * 10), 15 + y0);
+
+        g2.drawString(String.valueOf((int) maxValue), 10, (int) ((yScale/6)* maxValue + PAD));
+        g2.drawString(String.valueOf((int) (maxValue  * 0.8)), 10, (int) ((yScale/6)* 2 * maxValue + PAD));
+        g2.drawString(String.valueOf((int) (maxValue * 0.6)), 10, (int) ((yScale/6)* 3 * maxValue + PAD));
+        g2.drawString(String.valueOf((int) (maxValue * 0.4)), 10, (int) ((yScale/6)* 4 * maxValue + PAD));
+        g2.drawString(String.valueOf((int) (maxValue * 0.2)), 10, (int) ((yScale/6)* 5 * maxValue + PAD));
+        g2.drawString("0", 10, (int) ((yScale/6)* 6 * maxValue + PAD));
+
     }
 
     public void PointsGraph() {
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().add(new PointsGraph());
+        f.getContentPane().add(new PointsGraph(maxValue));
         f.setSize(600,600);
         f.setLocation(200,200);
         f.setVisible(true);

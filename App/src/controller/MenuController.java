@@ -22,6 +22,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
         this.mmv = mmv;
         this.conexio = conexio;
         this.currentUser = currentUser;
+        mmv.getUsuario().setText(currentUser.getUserName());
     }
 
     @Override
@@ -56,7 +57,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 //TODO: TIEMPO Y PICO MAXIMO DE ESPECTADORES
                 //Reproducir anterior
                 ReplaySelectView replay = new ReplaySelectView();
-                ReplaySelectController replayController = new ReplaySelectController(replay, conexio);
+                ReplaySelectController replayController = new ReplaySelectController(replay, conexio, currentUser.getUserName());
                 replay.registerReplay(replayController);
                 replay.setVisible(true);
                 break;

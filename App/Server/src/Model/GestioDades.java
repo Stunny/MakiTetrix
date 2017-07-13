@@ -147,7 +147,7 @@ public class GestioDades {
         try {
 
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
             Statement s = c.createStatement();
@@ -182,7 +182,7 @@ public class GestioDades {
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
             Statement s = c.createStatement();
@@ -216,7 +216,7 @@ public class GestioDades {
         try {
             // create a mysql database connection
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
             Statement s = c.createStatement();
@@ -262,7 +262,7 @@ public class GestioDades {
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
             Statement s = c.createStatement();
-            ResultSet r = s.executeQuery("select connected from Login WHERE user = \""+username+"\"");
+            ResultSet r = s.executeQuery("select connected from Login WHERE user = \"" + username + "\"");
             while (r.next()) {
                 if(r.getInt("connected") == 1)
                     isOnline = true;
@@ -414,7 +414,7 @@ public class GestioDades {
             c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
-            String query = "update login set connected = 0 where user = ?;";
+            String query = "UPDATE Login SET CONNECTED = 0 WHERE user = ?;";
 
             PreparedStatement stmt = c.prepareStatement(query);
             stmt.setString(1, username);
@@ -439,7 +439,7 @@ public class GestioDades {
     public void deleteUser(String userName) throws BadAccessToDatabaseException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
         }catch (ClassNotFoundException cnfe){
             cnfe.printStackTrace();
@@ -497,5 +497,63 @@ public class GestioDades {
         }
 
         return error;
+    }
+
+    /**
+     * Devuelve toda la informacion de todas las partidas de un usuario
+     * @param user Usuario de qual queremos saber la informacion de sus partidas
+     * @return Devuelve un ArrayList<String[]> donde cada casilla de array del string contiene la informacion de una partida
+     */
+    public ArrayList<String[]> getGameData(String user){
+        ArrayList<String[]> totalData = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+            Statement s = c.createStatement ();
+            s.executeQuery ("SELECT score, time, game_date, max_espectators FROM Partida, Login WHERE Login.user = '" + user + "';");
+            ResultSet r = s.getResultSet ();
+            while (r.next()){
+                String[] aux = new String[]{String.valueOf(r.getInt("score")), String.valueOf(r.getInt("time")),
+                        r.getString("game_date"), String.valueOf(r.getInt("max_espectators"))};
+                totalData.add(aux);
+            }
+
+            c.close();
+            return totalData;
+
+        }catch (ClassNotFoundException | SQLException cnfe){
+            cnfe.printStackTrace();
+        }
+        return totalData;
+    }
+
+    @Deprecated
+    /**
+     * Devuelve el numero de replays de un usuario
+     * @param user Usuario del qual queremos saber su numero de replays
+     * @return Devuelve un entero indicando el numero de replays
+     */
+    public int getNumberReplays(String user) {
+        int i = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+            Statement s = c.createStatement ();
+            s.executeQuery ("SELECT score, time, game_date, max_espectators FROM Partida, Login WHERE Login.user = '" + user + "';");
+            ResultSet r = s.getResultSet ();
+            while (r.next()){
+                i++;
+            }
+            c.close();
+
+            return i;
+        }catch (ClassNotFoundException | SQLException cnfe){
+            cnfe.printStackTrace();
+        }
+        return i;
     }
 }

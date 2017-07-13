@@ -70,7 +70,8 @@ public class ServerController implements ActionListener, MouseListener {
 
         }else if (e.getActionCommand().equals(serverAdminView.GRAPHS)){
             System.out.println("mostra grafiques");
-            PointsGraph pointsGraph = new PointsGraph();
+            double maxValue = 10000.0;
+            PointsGraph pointsGraph = new PointsGraph(maxValue);
             pointsGraph.PointsGraph();
             pointsGraph.setVisible(true);
         }
