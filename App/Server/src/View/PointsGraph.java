@@ -7,12 +7,15 @@ import java.awt.*;
  * Created by angel on 12/07/2017.
  */
 public class PointsGraph extends JPanel{
-    int[] data = { 25, 60, 42, 75, 30, 30 ,30 ,30 ,30, 30 };
-    final int PAD = 50;
+    private final int PAD = 50;
     private double maxValue;
+    private int[] data;
+    private String[] userNames;
 
-    public PointsGraph(double maxValue) {
+    public PointsGraph(double maxValue, int[] data, String[] userNames) {
         this.maxValue = maxValue;
+        this.data = data;
+        this.userNames = userNames;
     }
 
     protected void paintComponent(Graphics g) {
@@ -28,43 +31,46 @@ public class PointsGraph extends JPanel{
         // The origin location.
         int x0 = PAD;
         int y0 = h-PAD;
-        g2.setPaint(Color.red);
+
         for(int j = 0; j < data.length; j++) {
+            //g2.setPaint(Color.red);
             int x = x0 + (int)(xScale * (j+1));
             int y = y0 - (int)(yScale * data[j]);
-            g2.fillOval(x-2, y-2, 4, 4);
+            //g2.fillOval(x-2, y-2, 4, 4);
+
+            g2.setColor(Color.GREEN);
+            g2.fillRect(x, y, 30, h - y - PAD);
         }
 
-        g2.setColor(Color.GREEN);
-        g2.fillRect(x0 + (int)(xScale * 1), y0 - 1, 30, 10);
-
         g2.setColor(Color.BLACK);
-        g2.drawString("user1", x0 + (int)(xScale * 1), 15 + y0);
-        g2.drawString("user2", x0 + (int)(xScale * 2), 15 + y0);
-        g2.drawString("user3", x0 + (int)(xScale * 3), 15 + y0);
-        g2.drawString("user4", x0 + (int)(xScale * 4), 15 + y0);
-        g2.drawString("user5", x0 + (int)(xScale * 5), 15 + y0);
-        g2.drawString("user6", x0 + (int)(xScale * 6), 15 + y0);
-        g2.drawString("user7", x0 + (int)(xScale * 7), 15 + y0);
-        g2.drawString("user8", x0 + (int)(xScale * 8), 15 + y0);
-        g2.drawString("user9", x0 + (int)(xScale * 9), 15 + y0);
-        g2.drawString("user10", x0 + (int)(xScale * 10), 15 + y0);
+        g2.drawString(userNames[0], x0 + (int)(xScale * 1), 15 + y0);
+        g2.drawString(userNames[1], x0 + (int)(xScale * 2), 15 + y0);
+        g2.drawString(userNames[2], x0 + (int)(xScale * 3), 15 + y0);
+        g2.drawString(userNames[3], x0 + (int)(xScale * 4), 15 + y0);
+        g2.drawString(userNames[4], x0 + (int)(xScale * 5), 15 + y0);
+        g2.drawString(userNames[5], x0 + (int)(xScale * 6), 15 + y0);
+        g2.drawString(userNames[6], x0 + (int)(xScale * 7), 15 + y0);
+        g2.drawString(userNames[7], x0 + (int)(xScale * 8), 15 + y0);
+        g2.drawString(userNames[8], x0 + (int)(xScale * 9), 15 + y0);
+        g2.drawString(userNames[9], x0 + (int)(xScale * 10), 15 + y0);
 
-        g2.drawString(String.valueOf((int) maxValue), 10, (int) ((yScale/6)* maxValue + PAD));
-        g2.drawString(String.valueOf((int) (maxValue  * 0.8)), 10, (int) ((yScale/6)* 2 * maxValue + PAD));
-        g2.drawString(String.valueOf((int) (maxValue * 0.6)), 10, (int) ((yScale/6)* 3 * maxValue + PAD));
-        g2.drawString(String.valueOf((int) (maxValue * 0.4)), 10, (int) ((yScale/6)* 4 * maxValue + PAD));
-        g2.drawString(String.valueOf((int) (maxValue * 0.2)), 10, (int) ((yScale/6)* 5 * maxValue + PAD));
-        g2.drawString("0", 10, (int) ((yScale/6)* 6 * maxValue + PAD));
+        g2.drawString(String.valueOf((int) maxValue), 10, PAD);
+        g2.drawString(String.valueOf((int) (maxValue  * 0.85)), 10, (int) ((yScale/7)* 1 * maxValue + PAD));
+        g2.drawString(String.valueOf((int) (maxValue  * 0.7)), 10, (int) ((yScale/7)* 2 * maxValue + PAD));
+        g2.drawString(String.valueOf((int) (maxValue * 0.65)), 10, (int) ((yScale/7)* 3 * maxValue + PAD));
+        g2.drawString(String.valueOf((int) (maxValue * 0.5)), 10, (int) ((yScale/7)* 4 * maxValue + PAD));
+        g2.drawString(String.valueOf((int) (maxValue * 0.35)), 10, (int) ((yScale/7)* 5 * maxValue + PAD));
+        g2.drawString(String.valueOf((int) (maxValue * 0.2)), 10, (int) ((yScale/7)* 6 * maxValue + PAD));
+        g2.drawString("0", 10, (int) ((yScale/6)* 7 * maxValue + PAD));
 
     }
 
     public void PointsGraph() {
         JFrame f = new JFrame();
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().add(new PointsGraph(maxValue));
+        f.getContentPane().add(new PointsGraph(maxValue, data, userNames));
         f.setSize(600,600);
         f.setLocation(200,200);
         f.setVisible(true);
+        f.setTitle("Top 10 game scores");
     }
 }

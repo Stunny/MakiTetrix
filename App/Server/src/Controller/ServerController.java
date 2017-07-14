@@ -5,6 +5,7 @@ import Model.User;
 import Model.exceptions.BadAccessToDatabaseException;
 import View.PointsGraph;
 import View.ServerAdminView;
+import View.ViewersGraph;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -69,11 +70,19 @@ public class ServerController implements ActionListener, MouseListener {
             }
 
         }else if (e.getActionCommand().equals(serverAdminView.GRAPHS)){
-            System.out.println("mostra grafiques");
             double maxValue = 10000.0;
-            PointsGraph pointsGraph = new PointsGraph(maxValue);
+            int[] data = { 10000, 8000, 8000, 6000, 5000, 5000 , 4000, 4000 ,4000, 2000 };
+            String[] userNames = { "angel", "vogel", "ortiz", "miquel", "nat", "pedro", "test", "lol", "420", "user10" };
+            PointsGraph pointsGraph = new PointsGraph(maxValue, data, userNames);
             pointsGraph.PointsGraph();
             pointsGraph.setVisible(true);
+
+            int[] data2 = { 25, 60, 42, 75, 30 };
+            String[] userNames2 = { "angel", "vogel", "ortiz", "miquel", "nat" };
+            int maxViewers = 100;
+            ViewersGraph viewersGraph = new ViewersGraph(maxViewers, data2, userNames2);
+            viewersGraph.ViewersGraph();
+            viewersGraph.setVisible(true);
         }
     }
 
