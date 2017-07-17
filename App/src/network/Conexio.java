@@ -260,6 +260,10 @@ public class Conexio extends Thread {
                 data[i] = diStream.readUTF();
             }
 
+            //lanzamos el nuevo thread donde el servidor sera activo y el cliente el pasivo
+            ThreadClientPasiu threadClientPasiu = new ThreadClientPasiu(currentUser);
+            threadClientPasiu.start();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -277,7 +281,7 @@ public class Conexio extends Thread {
         connect();
 
         try {
-            doStream.writeUTF("GAMING");
+            doStream.writeUTF("GAMING_STATUS");
             doStream.writeUTF(userName);
             doStream.writeBoolean(status);
         } catch (IOException e) {

@@ -30,16 +30,16 @@ public class ThreadSocketServer extends Thread{
             while (true){
                 //esperem a la conexio d'algun usuari dins d'un bucle infinit. A cada usuari li crearem un nou servidor dedicat
                 Socket sClient = serverSocket.accept();
-                generaNouServidorDedicat(sClient);
+                generaNouServidorDedicat(sClient, PORT);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void generaNouServidorDedicat(Socket sClient){
+    private void generaNouServidorDedicat(Socket sClient, int PORT){
         //System.out.println("entro a fer un nou servidor dedicat");
-        ThreadServidorDedicat tsd = new ThreadServidorDedicat(sClient, gestioDades, sController);
+        ThreadServidorDedicat tsd = new ThreadServidorDedicat(sClient, gestioDades, sController, PORT);
         tsd.start();
     }
 

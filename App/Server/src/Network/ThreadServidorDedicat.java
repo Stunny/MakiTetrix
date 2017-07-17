@@ -30,10 +30,13 @@ public class ThreadServidorDedicat extends Thread {
     private GameDataManager gdm;
     private ObserveManager observeManager;
 
-    public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades, ServerController sController){
+    private static int PORT;
+
+    public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades, ServerController sController, int PORT){
         this.sClient = sClient;
         this.gestioDades = gestioDades;
         this.sController = sController;
+        this.PORT = PORT;
     }
 
     @Override
@@ -141,7 +144,7 @@ public class ThreadServidorDedicat extends Thread {
 
                 break;
 
-            case "GAMING":
+            case "GAMING_STATUS":
                 String userName = diStream.readUTF();
                 boolean status = diStream.readBoolean();
                 gestioDades.setGamingStatus(userName, status);
@@ -168,7 +171,14 @@ public class ThreadServidorDedicat extends Thread {
                 break;
 
             case "ESPECTATE": //Selected user to observe
-                System.out.println("I want to spectate: " + diStream.readUTF());
+                String selectedUser = diStream.readUTF();
+                System.out.println("I want to spectate: " + selectedUser);
+
+                //lanzamos el nuevo thread donde el servidor sera activo y el cliente el pasivo
+                ThreadServidorActiu threadServidorActiu = new ThreadServidorActiu();
+                threadServidorActiu.start();
+                //threadServidorActiu.test();
+                threadServidorActiu.getCurrentTime(selectedUser);
                 // TODO: establecer observador a la partida seleccionada
                 break;
         }
