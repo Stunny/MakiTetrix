@@ -141,15 +141,14 @@ public class ThreadServidorDedicat extends Thread {
                 for (int i = 0; i < gameInfo.size(); i++){
                     String[] aux = gameInfo.get(i);
                     String data = aux[0] + "-" + aux[1] + "-" + aux[2] + "-" + aux[3];
-                    System.out.println("aux: " + data);
-                    doStream.writeChars(data);
+                    doStream.writeUTF(data);
                 }
                 break;
 
             case "REPLAY"://Selected user's replay
                 // observeManager.beginObserve();
-                System.out.println("I want to see: " + diStream.readUTF() + "user's replays");
-                // TODO: enviar las diferentes partidas a escoger para observar
+                System.out.println("Quiero ver la replay numero: " + diStream.readInt());
+                // TODO: peticion de la replay seleccionada
                 break;
 
             case "ESPECTATE": //Selected user to observe
@@ -175,7 +174,7 @@ public class ThreadServidorDedicat extends Thread {
                 break;
             case 2:
                 doStream.writeUTF("KO");
-                doStream.writeUTF("La contrasenya no es correcta");
+                doStream.writeUTF("La contraseña no es correcta");
                 break;
             case 3:
                 doStream.writeUTF("KO");

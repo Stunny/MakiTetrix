@@ -181,11 +181,11 @@ public class Conexio extends Thread {
      * Sends the desired user
      * @param userNameReplays
      */
-    public void sendDesiredUserReplay(String userNameReplays) {
+    public void sendDesiredUserReplay(int userNameReplays) {
         connect();
         try {
-            doStream.writeUTF("ReplaySelect");
-            doStream.writeUTF(userNameReplays);
+            doStream.writeUTF("REPLAY");
+            doStream.writeInt(userNameReplays);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -219,25 +219,19 @@ public class Conexio extends Thread {
             doStream.writeUTF(userName);
             String data = null;
             int replay_number = diStream.readInt();
-
+            String[] total = new String[replay_number];
             for (int i = 0; i < replay_number; i++){
-                //TODO: ARREGLAR LA COMUNICACION CLIENTE SERVIDOR EN ESTE PUNTO. EL CLIENTE NO LEE BIEN LOS DATOS
-                System.out.println("reading data");
                 data = diStream.readUTF();
-                System.out.println(data);
-
+                total[i] = data;
             }
 
-            //String data = diStream.readUTF();
-            //System.out.println("data: " + data);
-
+            return total;
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         disconnect();
 
-        //retornar lo
         return null;
     }
 
