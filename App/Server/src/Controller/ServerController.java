@@ -70,9 +70,9 @@ public class ServerController implements ActionListener, MouseListener {
             }
 
         }else if (e.getActionCommand().equals(serverAdminView.GRAPHS)){
-            double maxValue = 10000.0;
-            int[] data = { 10000, 8000, 8000, 6000, 5000, 5000 , 4000, 4000 ,4000, 2000 };
-            String[] userNames = { "angel", "vogel", "ortiz", "miquel", "nat", "pedro", "test", "lol", "420", "user10" };
+            int [] data = gestioDades.getTopTenScores();
+            String[] userNames = gestioDades.getTopTenUsers();
+            double maxValue = data[0];
             PointsGraph pointsGraph = new PointsGraph(maxValue, data, userNames);
             pointsGraph.PointsGraph();
             pointsGraph.setVisible(true);

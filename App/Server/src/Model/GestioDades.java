@@ -556,4 +556,52 @@ public class GestioDades {
         }
         return i;
     }
+
+    public int[] getTopTenScores() {
+        int[] score = new int[10];
+        int i = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+            Statement s = c.createStatement ();
+            s.executeQuery ("SELECT user, score FROM Partida ORDER BY score DESC;");
+            ResultSet r = s.getResultSet ();
+            while (r.next() && i < 10){
+                score[i] = r.getInt("score");
+                i++;
+            }
+            c.close();
+
+            return score;
+        }catch (ClassNotFoundException | SQLException cnfe){
+            cnfe.printStackTrace();
+        }
+        return score;
+    }
+
+    public String[] getTopTenUsers() {
+        String[] unserNames = new String [10];
+        int i = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+            Statement s = c.createStatement ();
+            s.executeQuery ("SELECT user, score FROM Partida ORDER BY score DESC;");
+            ResultSet r = s.getResultSet ();
+            while (r.next() && i < 10){
+                unserNames[i] = r.getString("user");
+                i++;
+            }
+            c.close();
+
+            return unserNames;
+        }catch (ClassNotFoundException | SQLException cnfe){
+            cnfe.printStackTrace();
+        }
+        return unserNames;
+    }
 }

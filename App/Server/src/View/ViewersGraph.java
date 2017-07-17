@@ -44,11 +44,13 @@ public class ViewersGraph extends JPanel{
         }
 
         g2.setColor(Color.BLACK);
-        g2.drawString(userNames[0], x0 + (int)(xScale * 1), 15 + y0);
-        g2.drawString(userNames[1], x0 + (int)(xScale * 2), 15 + y0);
-        g2.drawString(userNames[2], x0 + (int)(xScale * 3), 15 + y0);
-        g2.drawString(userNames[3], x0 + (int)(xScale * 4), 15 + y0);
-        g2.drawString(userNames[4], x0 + (int)(xScale * 5), 15 + y0);
+        g2.setColor(Color.BLACK);
+        for (int i = 0; i < data.length; i++){
+            if (userNames[i] == null){
+                break;
+            }
+            g2.drawString(userNames[i], x0 + (int)(xScale * (i+1)), 15 + y0);
+        }
 
         g2.drawString(String.valueOf((int) maxViewers), 10, PAD);
         g2.drawString(String.valueOf((int) (maxViewers  * 0.85)), 10, (int) ((yScale/7)* 1 * maxViewers + PAD));

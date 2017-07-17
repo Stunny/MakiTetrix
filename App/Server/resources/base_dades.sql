@@ -13,15 +13,6 @@ USE MakiTetris;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
---
--- Base de dades: `MakiTetris`
---
-
--- --------------------------------------------------------
-
---
--- Estructura de la taula `Login`
---
 DROP TABLE IF EXISTS Login CASCADE;
 CREATE TABLE Login (
   user varchar(255) NOT NULL,
@@ -35,25 +26,27 @@ CREATE TABLE Login (
   PRIMARY KEY (user, mail)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
---
--- Bolcant dades de la taula `Login`
---
-
 INSERT INTO Login (user, mail, password, connected, register_date, last_login, number_games, total_points) VALUES
 ('userName1', 'email1@mail.com', 'pass1', true, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '03/06/1996', 20, 1240),
 ('angel', 'angel@mail.com', 'pass2', false, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '20/11/2020', 12, 2131),
 ('test', 'test@mail.com', 'pass3', true, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '21/05/2011', 5, 2311);
---
--- Indexos per taules bolcades
---
 
---
--- Index de la taula `Login`
---
-/*
-ALTER TABLE `Login`
-  ADD UNIQUE KEY `user` (`user`),
-  ADD UNIQUE KEY `mail` (`mail`);
-*/
+DROP TABLE IF EXISTS Partida CASCADE;
+CREATE TABLE Partida(
+	user varchar(255) NOT NULL,
+    score INT,
+    time INT,
+    game_date VARCHAR(255),
+    max_espectators VARCHAR(255),
+    FOREIGN KEY (user) REFERENCES Login (user)
+);
+
+INSERT INTO Partida(user, score, time, game_date, max_espectators) VALUES
+('angel', 500, 300, '03/06/2016 20:39', 10),
+('angel', 1000, 450, '18/10/2017 15:39', 13),
+('angel2', 1000, 450, '30/04/2015 10:39', 20),
+('angel2', 100, 450, '30/04/2015 10:39', 20);
+
   SELECT * FROM Login;
+  SELECT * FROM Partida;
   
