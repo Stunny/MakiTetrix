@@ -123,4 +123,6 @@ public class GameController implements KeyListener {
     }
 
     public PlayGame getPG (){return pg;}
+
+    //TODO: poner el booleano de "gaming" a false en la BBDD cuando el usuario termine de jugar. Llamar a la funcion gestioDades.setGamingStatus(userName, false)
 }

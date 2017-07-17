@@ -18,25 +18,31 @@ import java.util.Vector;
 public class EspectatorController implements MouseListener {
     private static EspectatorView espectatorView;
     private Conexio conexio;
+    private String currentUser;
 
-    EspectatorController(EspectatorView espectatorView, Conexio conexio){
+    EspectatorController(EspectatorView espectatorView, Conexio conexio, String currentUser){
         this.espectatorView = espectatorView;
         this.conexio = conexio;
+        this.currentUser = currentUser;
         ompleLlistaUsuaris();
     }
 
 
     private void ompleLlistaUsuaris(){
-        ArrayList<String> usuaris = conexio.getOnlineUsers();
+        String data[] = conexio.getGamingUsers(currentUser);
+        for (int i = 0; i < data.length; i++){
+            System.out.println("userName: " + data[i]);
+        }
+        //separar el
         DefaultTableModel model = (DefaultTableModel) espectatorView.getTable().getModel();
         model.addColumn("Nombre de usuario");
         model.addColumn("Tiempo de juego");
         model.addColumn("Espectadores");
 
-        for (int i = 0; i < usuaris.size(); i++){
-            Vector<String> userName = new Vector<String>(Arrays.asList(usuaris.get(i)));
-            Vector<String> Time = new Vector<String>(Arrays.asList("Pendiente de implementacion"));
-            Vector<String> espectators = new Vector<String>(Arrays.asList(String.valueOf(usuaris.get(i))));
+        for (int i = 0; i < data.length; i++){
+            Vector<String> userName = new Vector<String>(Arrays.asList(data[i]));
+            Vector<String> Time = new Vector<String>(Arrays.asList("Pendente de implementacion"));
+            Vector<String> espectators = new Vector<String>(Arrays.asList(String.valueOf(0)));
 
             Vector<Object> row = new Vector<Object>();
             row.addElement(userName.get(0));

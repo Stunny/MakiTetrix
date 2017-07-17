@@ -414,7 +414,7 @@ public class GestioDades {
             c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
-            String query = "UPDATE Login SET CONNECTED = 0 WHERE user = ?;";
+            String query = "UPDATE Login SET connected = 0 WHERE user = ?;";
 
             PreparedStatement stmt = c.prepareStatement(query);
             stmt.setString(1, username);
@@ -667,5 +667,56 @@ public class GestioDades {
             cnfe.printStackTrace();
         }
         return userNames;
+    }
+
+    /**
+     * Recupera de la BBDD todos aquellos jugadores que se hallen actualmente en partida
+     * @return Devuelve un ArrayList<String> con los nombres de los jugadores que se hallen en partida
+     * @param currentUser
+     */
+    public ArrayList<String> gamingUsers(String currentUser) {
+        ArrayList<String> userNames = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+            Statement s = c.createStatement ();
+            s.executeQuery ("SELECT user, gaming FROM Login WHERE gaming = true AND user != '" + currentUser + "' ORDER BY user DESC;");
+            ResultSet r = s.getResultSet ();
+            while (r.next()){
+                userNames.add(r.getString("user"));
+            }
+            c.close();
+
+            return userNames;
+        }catch (ClassNotFoundException | SQLException cnfe){
+            cnfe.printStackTrace();
+        }
+        return userNames;
+    }
+
+    /**
+     * Changes the user's gaming status depending on the specified parameters
+     * @param userName User name we want to modify the gaming status on
+     * @param status The status we want to set to the specified user
+     */
+    public void setGamingStatus(String userName, boolean status) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+            String query = "UPDATE Login SET gaming = ? WHERE user = ?;";
+            PreparedStatement stmt = c.prepareStatement(query);
+            stmt.setBoolean(1, status);
+            stmt.setString(2, userName);
+
+            stmt.execute();
+            c.close();
+
+        }catch (ClassNotFoundException | SQLException cnfe){
+            cnfe.printStackTrace();
+        }
     }
 }

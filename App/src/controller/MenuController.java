@@ -43,18 +43,16 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 gameView.setVisible(true);
                 gameController.startGame();
                 gameController.playGame();
+                conexio.setGaming(currentUser.getUserName(), true);
                 break;
             case "ver":
-                //TODO: IMPLEMENTAR EN LA NUEVA VISTA LAS PARTIDAS EN DIRECTO ORDENADAS POR VIEWERS
                 //Ver Partida en vivo
                 EspectatorView espectatorView = new EspectatorView();
-                EspectatorController espectatorController = new EspectatorController(espectatorView, conexio);
+                EspectatorController espectatorController = new EspectatorController(espectatorView, conexio, currentUser.getUserName());
                 espectatorView.registerEspectator(espectatorController);
                 espectatorView.setVisible(true);
                 break;
             case "anterior":
-                //TODO: IMPLEMENTAR EN LA NUEVA VISTA UN HISTORIAL DE PARTIDAS GUARDADAS CON LA FECHA, LA PUNTUACION,
-                //TODO: TIEMPO Y PICO MAXIMO DE ESPECTADORES
                 //Reproducir anterior
                 ReplaySelectView replay = new ReplaySelectView();
                 ReplaySelectController replayController = new ReplaySelectController(replay, conexio, currentUser.getUserName());

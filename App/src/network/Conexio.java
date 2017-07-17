@@ -193,6 +193,12 @@ public class Conexio extends Thread {
         disconnect();
     }
 
+
+    @Deprecated
+    /**
+     * Makes a petition for a list of all online users
+     * @return ArrayList<String> containing the names of the current online users
+     */
     public ArrayList<String> getOnlineUsers() {
         connect();
         ArrayList<String> onlineUsers = new ArrayList<>();
@@ -235,6 +241,52 @@ public class Conexio extends Thread {
         return null;
     }
 
+    /**
+     * Asks for a list of current game's time
+     * @return String array containing all user's current play time and name
+     */
+    public String[] getGamingUsers(String currentUser) {
+        connect();
+
+        String data[] = null;
+
+        try {
+            doStream.writeUTF("GAMING_USERS");
+            doStream.writeUTF(currentUser);
+            int aux = diStream.readInt();
+            data = new String[aux];
+
+            for (int i = 0 ; i < aux; i++){
+                data[i] = diStream.readUTF();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        disconnect();
+
+        return data;
+    }
+
+    /**
+     * Communicates a changes on a user's gaming status
+     * @param userName User we want to modify the status on
+     * @param status Status we want to modify to
+     */
+    public void setGaming(String userName, boolean status) {
+        connect();
+
+        try {
+            doStream.writeUTF("GAMING");
+            doStream.writeUTF(userName);
+            doStream.writeBoolean(status);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        disconnect();
+    }
+
     public String getResponse() {
         return KOMessage;
     }
@@ -242,5 +294,7 @@ public class Conexio extends Thread {
     public boolean isResponseSuccess() {
         return ResponseSuccess;
     }
+
+
 
 }
