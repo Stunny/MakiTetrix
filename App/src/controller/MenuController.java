@@ -34,7 +34,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
             case "teclas":
                 //modifica los valores de las teclasa gusto del usuario
                 KeySelectMenu keyView = new KeySelectMenu();
-                KeySelectMenuController keyContoller = new KeySelectMenuController(keyView);
+                KeySelectMenuController keyContoller = new KeySelectMenuController(keyView, currentUser);
                 keyView.registerKey(keyContoller);
                 keyView.setVisible(true);
                 break;

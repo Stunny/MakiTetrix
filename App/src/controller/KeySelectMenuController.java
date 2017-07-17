@@ -4,6 +4,7 @@ import Vista.GameView;
 import Vista.KeySelectMenu;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import model.Partida;
+import model.User;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +23,7 @@ public class KeySelectMenuController implements ActionListener {
     private String pause;
 
 
-    public KeySelectMenuController(KeySelectMenu view) {
+    public KeySelectMenuController(KeySelectMenu view, User currentUser) {
         //TODO: actulizar al tener nuevas letras, cambiar view a los nuevos valores.
         /*
         Falta añadir controlador game para coger los valores nuevos.

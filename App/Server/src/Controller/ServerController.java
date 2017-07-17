@@ -71,15 +71,15 @@ public class ServerController implements ActionListener, MouseListener {
 
         }else if (e.getActionCommand().equals(serverAdminView.GRAPHS)){
             int [] data = gestioDades.getTopTenScores();
-            String[] userNames = gestioDades.getTopTenUsers();
+            String[] userNames = gestioDades.getTopTenScoreUsers();
             double maxValue = data[0];
             PointsGraph pointsGraph = new PointsGraph(maxValue, data, userNames);
             pointsGraph.PointsGraph();
             pointsGraph.setVisible(true);
 
-            int[] data2 = { 25, 60, 42, 75, 30 };
-            String[] userNames2 = { "angel", "vogel", "ortiz", "miquel", "nat" };
-            int maxViewers = 100;
+            int[] data2 = gestioDades.getTopViewers();
+            String[] userNames2 = gestioDades.getTopViewersUsers();
+            int maxViewers = data2[0];
             ViewersGraph viewersGraph = new ViewersGraph(maxViewers, data2, userNames2);
             viewersGraph.ViewersGraph();
             viewersGraph.setVisible(true);

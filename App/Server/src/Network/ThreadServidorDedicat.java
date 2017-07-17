@@ -137,13 +137,13 @@ public class ThreadServidorDedicat extends Thread {
                 ArrayList<String[]> gameInfo = gestioDades.getGameData(userName);
                 //doStream.writeUTF(gameInfo);
 
-                // doStream.writeInt(gameInfo.size());
-                /*for (int i = 0; i < gameInfo.size(); i++){
+                doStream.writeInt(gameInfo.size());
+                for (int i = 0; i < gameInfo.size(); i++){
                     String[] aux = gameInfo.get(i);
                     String data = aux[0] + "-" + aux[1] + "-" + aux[2] + "-" + aux[3];
                     System.out.println("aux: " + data);
                     doStream.writeChars(data);
-                }*/
+                }
                 break;
 
             case "REPLAY"://Selected user's replay

@@ -557,6 +557,10 @@ public class GestioDades {
         return i;
     }
 
+    /**
+     * Recupera de la BBDD la puntuacion maxima de las 10 partidas con mas puntos
+     * @return La puntuacion maxima
+     */
     public int[] getTopTenScores() {
         int[] score = new int[10];
         int i = 0;
@@ -581,8 +585,12 @@ public class GestioDades {
         return score;
     }
 
-    public String[] getTopTenUsers() {
-        String[] unserNames = new String [10];
+    /**
+     * Recupera de la BBDD el nombre de los 10 usuarios con la puntuacion mas alta
+     * @return El nombre de los 10 usuarios con la puntuacion mas alta
+     */
+    public String[] getTopTenScoreUsers() {
+        String[] userNames = new String [10];
         int i = 0;
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -593,15 +601,71 @@ public class GestioDades {
             s.executeQuery ("SELECT user, score FROM Partida ORDER BY score DESC;");
             ResultSet r = s.getResultSet ();
             while (r.next() && i < 10){
-                unserNames[i] = r.getString("user");
+                userNames[i] = r.getString("user");
                 i++;
             }
             c.close();
 
-            return unserNames;
+            return userNames;
         }catch (ClassNotFoundException | SQLException cnfe){
             cnfe.printStackTrace();
         }
-        return unserNames;
+        return userNames;
+    }
+
+    /**
+     * Recupera de la BBDD el numero de espectadores maximos de las 5 partidas con mas espectadores
+     * @return El numero de especatores maximos
+     */
+    public int[] getTopViewers() {
+        int[] views = new int[5];
+        int i = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+            Statement s = c.createStatement ();
+            s.executeQuery ("SELECT user, max_espectators FROM Partida ORDER BY max_espectators DESC;");
+            ResultSet r = s.getResultSet ();
+            while (r.next() && i < 5){
+                views[i] = r.getInt("max_espectators");
+                i++;
+            }
+            c.close();
+
+            return views;
+        }catch (ClassNotFoundException | SQLException cnfe){
+            cnfe.printStackTrace();
+        }
+        return views;
+    }
+
+    /**
+     * Recupera de la BBDD el nombre de los 5 usuarios con la cantidad de viewers mas alta
+     * @return El nombre de los 5 usuarios con la cantidad de viewers mas alta
+     */
+    public String[] getTopViewersUsers() {
+        String[] userNames = new String [5];
+        int i = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+            Statement s = c.createStatement ();
+            s.executeQuery ("SELECT user, max_espectators FROM Partida ORDER BY max_espectators DESC;");
+            ResultSet r = s.getResultSet ();
+            while (r.next() && i < 5){
+                userNames[i] = r.getString("user");
+                i++;
+            }
+            c.close();
+
+            return userNames;
+        }catch (ClassNotFoundException | SQLException cnfe){
+            cnfe.printStackTrace();
+        }
+        return userNames;
     }
 }

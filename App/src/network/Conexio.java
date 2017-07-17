@@ -217,7 +217,7 @@ public class Conexio extends Thread {
         try {
             doStream.writeUTF("REPLAY_LIST");
             doStream.writeUTF(userName);
-/*            String data = null;
+            String data = null;
             int replay_number = diStream.readInt();
 
             for (int i = 0; i < replay_number; i++){
@@ -227,10 +227,10 @@ public class Conexio extends Thread {
                 System.out.println(data);
 
             }
-  */
-String data = diStream.readUTF();
 
-            System.out.println("data: " + data);
+            //String data = diStream.readUTF();
+            //System.out.println("data: " + data);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

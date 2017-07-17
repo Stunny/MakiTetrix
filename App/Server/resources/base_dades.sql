@@ -37,15 +37,16 @@ CREATE TABLE Partida(
     score INT,
     time INT,
     game_date VARCHAR(255),
-    max_espectators VARCHAR(255),
+    max_espectators INT,
+    replay_path VARCHAR(255),
     FOREIGN KEY (user) REFERENCES Login (user)
 );
 
-INSERT INTO Partida(user, score, time, game_date, max_espectators) VALUES
-('angel', 500, 300, '03/06/2016 20:39', 10),
-('angel', 1000, 450, '18/10/2017 15:39', 13),
-('angel2', 1000, 450, '30/04/2015 10:39', 20),
-('angel2', 100, 450, '30/04/2015 10:39', 20);
+INSERT INTO Partida(user, score, time, game_date, max_espectators, replay_path) VALUES
+('angel', 500, 300, '03/06/2016 20:39', 10, 'C/'),
+('angel', 1000, 450, '18/10/2017 15:39', 13, 'C/'),
+('angel2', 1000, 450, '30/04/2015 10:39', 20, 'C/'),
+('angel2', 100, 450, '30/04/2015 10:39', 20, 'C/');
 
   SELECT * FROM Login;
   SELECT * FROM Partida;
