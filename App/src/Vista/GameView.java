@@ -18,6 +18,9 @@ public class GameView extends JFrame{
     private JPanel[][] siguientepieza;
     private JLabel observador;
 
+    /**
+     * Genera la ventana para jugar con los valores iniciales.
+     */
     public GameView(){
 
         setTitle("MakiTetrix - Game");

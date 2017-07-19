@@ -1,6 +1,7 @@
 package model;
 
 /**
+ * Crea un movimiento para guardar la información en la repetición o enviarla al server.
  * Created by avoge on 27/04/2017.
  */
 public class Move {
@@ -14,12 +15,22 @@ public class Move {
 
     //Constructores
 
+    /**
+     * Crea un movimiento a partir de un movimiento y del tiempo en el que se hace.
+     * @param move      Tipo de movimiento.
+     * @param time      Tiempo en el que sucede dicho movimiento.
+     * @see Partida     Estan definidos los tipos de movimientos.
+     */
     public Move(int move, int time){
         this.move = move;
         this.time = time;
         option = MOVE;
     }
 
+    /**
+     * Crea un movimiento a partir de la nueva pieza generada.
+     * @param piece     Pieza que se asigna al nuevo movimiento.
+     */
     public Move (Pieza piece) {
         this.piece = piece;
         time = 0;

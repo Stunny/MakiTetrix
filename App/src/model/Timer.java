@@ -3,13 +3,15 @@ package model;
 import Vista.GameView;
 
 /**
- * Created by jorti on 17/05/2017.
+ * Cuenta los segundos que dura una partida.
+ * Created by Javier Ortiz on 17/05/2017.
  */
 public class Timer extends Thread {
     private int tiempo;
     private int espera;
     private GameView gv;
     private Partida game;
+
 
     public Timer (GameView gv, Partida game){
         tiempo = 0;
@@ -18,6 +20,12 @@ public class Timer extends Thread {
         this.game = game;
     }
 
+    /**
+     * Cada milisegundo, envia la información del tiempo a la vista de la partida.
+     * Una vez acabada la partida deja de contar.
+     * @see Partida#isEnded()
+     * @see GameView#setTemps(int)
+     */
     @Override
     public void run (){
         while (true){
@@ -34,6 +42,8 @@ public class Timer extends Thread {
             }
         }
     }
+
+    //Getters && Setter
 
     public int getTiempo (){
         return tiempo;
