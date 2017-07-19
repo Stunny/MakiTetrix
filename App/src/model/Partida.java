@@ -1,11 +1,16 @@
 package model;
 
+import network.Conexio;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
 
 /**
  * Created by jorti on 14/05/2017.
@@ -42,10 +47,11 @@ public class Partida {
     private int lineas;
     private int points;
     private Queue<Move> savegame;
+    private Conexio connect;
 
     //Constructor
 
-    public Partida(){
+    public Partida(Conexio connect){
         interfaz = new int[MAXX][MAXY];
         for (int i = 0; i < interfaz.length; i++){
             for (int j = 0; j < interfaz[i].length; j++){
@@ -57,6 +63,7 @@ public class Partida {
         lineas = 0;
         floortime = 2;
         savegame = new LinkedList<Move>();
+        this.connect = connect;
     }
 
     public Partida (Queue<Move> savedgame){
@@ -82,10 +89,13 @@ public class Partida {
      * @see #generateRandom()
      */
     public void newGame (){
+        connect.sendStartGame();
         actualpiece = new Pieza(generateRandom());
         savegame.add(new Move(actualpiece));
+        connect.sendMove(new Move(actualpiece));
         nextpiece = new Pieza(generateRandom());
         savegame.add(new Move (nextpiece));
+        connect.sendMove(new Move(nextpiece));
         end = false;
         updateInterfaz(actualpiece);
     }
@@ -107,6 +117,7 @@ public class Partida {
      */
     public void rotateRight (int time){
         savegame.add(new Move(ROTATE_RIGHT, time));
+        connect.sendMove (new Move (ROTATE_RIGHT, time));
         if (!(collision(actualpiece, ROTATE_RIGHT))) {
             clear(actualpiece);
             actualpiece.rotateRight();
@@ -138,6 +149,7 @@ public class Partida {
      */
     public void rotateLeft (int time) {
         savegame.add(new Move(ROTATE_LEFT, time));
+        connect.sendMove (new Move (ROTATE_LEFT, time));
         if (!(collision(actualpiece, ROTATE_LEFT))) {
             clear(actualpiece);
             actualpiece.rotateLeft();
@@ -166,6 +178,7 @@ public class Partida {
      */
     public void goRight (int time){
         savegame.add(new Move(MOVE_RIGHT, time));
+        connect.sendMove (new Move (MOVE_RIGHT, time));
         if (!(collision(actualpiece, MOVE_RIGHT))) {
             clear(actualpiece);
             actualpiece.setPosy(actualpiece.getPosy() + 1);
@@ -194,6 +207,7 @@ public class Partida {
      */
     public void goLeft (int time){
         savegame.add(new Move(MOVE_LEFT, time));
+        connect.sendMove (new Move (MOVE_LEFT, time));
         if (!(collision(actualpiece, MOVE_LEFT))){
             clear(actualpiece);
             actualpiece.setPosy(actualpiece.getPosy() - 1);
@@ -222,6 +236,7 @@ public class Partida {
      */
     public void goDown (int time){
         savegame.add(new Move(MOVE_DOWN, time));
+        connect.sendMove (new Move (MOVE_DOWN, time));
         if (!(collision(actualpiece, MOVE_DOWN))) {
             clear(actualpiece);
             actualpiece.setPosx(actualpiece.getPosx() + 1);
@@ -321,6 +336,8 @@ public class Partida {
         actualpiece = nextpiece.clone();
         nextpiece = new Pieza(generateRandom());
         savegame.add(new Move(nextpiece));
+        connect.sendMove (new Move (nextpiece));
+
         floortime = 2;
     }
 
@@ -331,6 +348,7 @@ public class Partida {
     }
 
     public void saveGame () {
+        connect.sendEndGame();
         System.out.println("Guardando Partida");
         Date actualdate = new Date();
         DateFormat formatoHora = new SimpleDateFormat("HH.mm");

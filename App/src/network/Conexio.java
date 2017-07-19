@@ -1,5 +1,6 @@
 package network;
 
+import model.Move;
 import model.User;
 import model.utils.Encrypter;
 
@@ -288,6 +289,36 @@ public class Conexio extends Thread {
             e.printStackTrace();
         }
 
+        disconnect();
+    }
+
+    public void sendStartGame (){
+        connect();
+        try{
+            doStream.writeUTF("GAME_START");
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        disconnect();
+    }
+
+    public void sendMove (Move m){
+        connect();
+        try{
+            doStream.writeUTF(m.toString());
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        disconnect();
+    }
+
+    public void sendEndGame (){
+        connect();
+        try{
+            doStream.writeUTF("GAME_END");
+        } catch (IOException e){
+            e.printStackTrace();
+        }
         disconnect();
     }
 

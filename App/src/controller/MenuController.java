@@ -28,7 +28,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         GameView gameView = new GameView();
-        Partida partida = new Partida();
+        Partida partida = new Partida(conexio);
         GameController gameController = new GameController(gameView, partida);
         switch (e.getActionCommand()){
             case "teclas":
