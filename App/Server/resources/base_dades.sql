@@ -56,6 +56,22 @@ INSERT INTO Partida(user, score, time, game_date, max_espectators, replay_path) 
 ('angel2', 1000, 450, '30/04/2015 10:39', 20, 'C/'),
 ('angel22', 100, 450, '30/04/2015 10:39', 20, 'C/');
 
+
+DROP TABLE IF EXISTS DefaultKeys CASCADE;
+CREATE TABLE DefaultKeys (
+  user varchar(255) NOT NULL DEFAULT '',
+  derecha int(255) NOT NULL,
+  izquierda int(255) NOT NULL,
+  abajo int(255) NOT NULL,
+  rderecha int(255) NOT NULL,
+  rizquierda int(255) NOT NULL,
+  pause int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+  ALTER TABLE `DefaultKeys`
+  ADD PRIMARY KEY (`user`);
+  
+  
   SELECT * FROM Login;
   SELECT * FROM Partida;
   SELECT user, gaming FROM Partida WHERE gaming = true ORDER BY user DESC;
