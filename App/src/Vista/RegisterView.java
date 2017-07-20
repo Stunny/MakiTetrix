@@ -22,6 +22,7 @@ public class RegisterView extends JFrame {
 
     private JPanel inputPanel;
     private JPanel formPanel;
+    private JButton backButton;
 
     private LoginView parentView;
     /**
@@ -41,7 +42,8 @@ public class RegisterView extends JFrame {
 
         jbRegister.setActionCommand(RegisterController.ACTION_REG);
         jbRegister.addActionListener(controller);
-
+        backButton.setActionCommand(RegisterController.BACK);
+        backButton.addActionListener(controller);
     }
 
     private void configFrame() {

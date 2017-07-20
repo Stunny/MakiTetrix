@@ -21,14 +21,14 @@ public class GameController implements KeyListener {
     private Timer t;
     private static int[] teclas  = new int[]{65,83,68,81,69,80};
 
-    public GameController (GameView gv, Partida game){
+    public GameController(GameView gv, Partida game){
         this.gv = gv;
         this.game = game;
         gv.addKeyListener(this);
         t = new Timer(gv,game);
     }
 
-    public void startGame (){
+    public void startGame(){
         game.newGame();
         gv.printarPantalla(game.getInterfaz());
         gv.printarNextPiece(game.getNextpiece());
@@ -122,7 +122,4 @@ public class GameController implements KeyListener {
         return gv;
     }
 
-
-    //TODO: poner el booleano de "gaming" a false en la BBDD cuando el usuario termine de jugar.
-    //TODO: Llamar a la funcion gestioDades.setGamingStatus(userName, false)
 }

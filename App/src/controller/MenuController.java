@@ -4,6 +4,8 @@ import Vista.*;
 import model.Partida;
 import model.User;
 import network.Conexio;
+import network.ThreadClientPasiu;
+import network.ThreadClientPasiuDedicat;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +32,11 @@ public class MenuController extends WindowAdapter implements ActionListener {
         GameView gameView = new GameView();
         Partida partida = new Partida(conexio);
         GameController gameController = new GameController(gameView, partida);
+        conexio.setCurrentUser(currentUser);
+
+        //lanzamos el nuevo thread donde el servidor sera activo y el cliente el pasivo
+        //ThreadClientPasiu threadClientPasiu = new ThreadClientPasiu(currentUser.getUserName(), conexio.getTime());
+
         switch (e.getActionCommand()){
             case "teclas":
                 //modifica los valores de las teclasa gusto del usuario
@@ -40,17 +47,22 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 break;
             case "jugar":
                 //Permite Jugar
+                //threadClientPasiu.start();
                 gameView.setVisible(true);
                 gameController.startGame();
                 gameController.playGame();
+                //threadClientPasiu.interrupt();
+                System.out.println("set gaming");
                 conexio.setGaming(currentUser.getUserName(), true);
                 break;
             case "ver":
                 //Ver Partida en vivo
+                //threadClientPasiu.start();
                 EspectatorView espectatorView = new EspectatorView();
                 EspectatorController espectatorController = new EspectatorController(espectatorView, conexio, currentUser.getUserName());
                 espectatorView.registerEspectator(espectatorController);
                 espectatorView.setVisible(true);
+                //threadClientPasiu.interrupt();
                 break;
             case "anterior":
                 //Reproducir anterior

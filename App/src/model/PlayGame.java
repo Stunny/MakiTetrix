@@ -75,6 +75,7 @@ public class PlayGame extends Thread {
                 System.out.println("Final del Juego");
                 game.saveGame();
             }
+            //game.sendTime(gc.getTimer().getTiempo());
         }
     }
 

@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 public class RegisterController implements ActionListener {
 
     public static final String ACTION_REG = "REGISTER";
+    public static final String BACK = "BACK";
     private static Conexio conexio;
 
     /**
@@ -110,10 +111,14 @@ public class RegisterController implements ActionListener {
 
                 if (conexio.isResponseSuccess()){
                     onRegisterOK(registerUser);
+                    view.setVisible(false);
                 }else{
                     view.displayError(conexio.getResponse());
                 }
             }
+        }else if (e.getActionCommand().equals(BACK)){
+            parent.setVisible(true);
+            view.setVisible(false);
         }
     }
 

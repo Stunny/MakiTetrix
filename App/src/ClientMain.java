@@ -22,7 +22,6 @@ public class ClientMain {
                 loginView.registerController(loginController);
                 loginView.setVisible(true);
             }
-
         });
     }
 }

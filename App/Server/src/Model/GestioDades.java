@@ -1,6 +1,7 @@
 package Model;
 
 import Model.exceptions.BadAccessToDatabaseException;
+import com.sun.xml.internal.ws.encoding.StringDataContentHandler;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
@@ -672,7 +673,7 @@ public class GestioDades {
     /**
      * Recupera de la BBDD todos aquellos jugadores que se hallen actualmente en partida
      * @return Devuelve un ArrayList<String> con los nombres de los jugadores que se hallen en partida
-     * @param currentUser
+     * @param currentUser Jugador que hace la peticion y que no debe ser añadido a la lista
      */
     public ArrayList<String> gamingUsers(String currentUser) {
         ArrayList<String> userNames = new ArrayList<>();
@@ -682,10 +683,11 @@ public class GestioDades {
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
             Statement s = c.createStatement ();
-            s.executeQuery ("SELECT user, gaming FROM Login WHERE gaming = true AND user != '" + currentUser + "' ORDER BY user DESC;");
+            s.executeQuery ("SELECT user, gaming, startingGameTime FROM Login WHERE gaming = true AND user != '" + currentUser + "' ORDER BY user DESC;");
             ResultSet r = s.getResultSet ();
             while (r.next()){
                 userNames.add(r.getString("user"));
+                userNames.add(r.getString("startingGameTime"));
             }
             c.close();
 
@@ -701,16 +703,18 @@ public class GestioDades {
      * @param userName User name we want to modify the gaming status on
      * @param status The status we want to set to the specified user
      */
-    public void setGamingStatus(String userName, boolean status) {
+    public void setGamingStatus(String userName, boolean status, String startingGameTime) {
+        System.out.println("entro a modificar la bbdd");
         try {
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
-            String query = "UPDATE Login SET gaming = ? WHERE user = ?;";
+            String query = "UPDATE Login SET gaming = ?, startingGameTime = ? WHERE user = ?;";
             PreparedStatement stmt = c.prepareStatement(query);
             stmt.setBoolean(1, status);
-            stmt.setString(2, userName);
+            stmt.setString(2, startingGameTime);
+            stmt.setString(3, userName);
 
             stmt.execute();
             c.close();

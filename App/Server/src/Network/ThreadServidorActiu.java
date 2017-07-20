@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by angel on 17/07/2017.
@@ -68,19 +69,50 @@ public class ThreadServidorActiu extends Thread {
         disconnect();
     }
 */
+
+    /**
+     * Rrtrieves selected user's current time
+     * @param selectedUser selected user
+     */
     public void getCurrentTime(String selectedUser) {
         connect();
 
+        System.out.println("get current time from " + selectedUser);
         try {
             doStream.writeUTF("TIME");
             doStream.writeUTF(selectedUser);
-            while (true){
-                int time = diStream.readInt();
-            }
+            String time = diStream.readUTF();
+            System.out.println("time: " + time);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         disconnect();
+    }
+
+    /**
+     * Retrieves a list of all GAMING users' time
+     * @param users
+     */
+    public ArrayList<Integer> getTimeList(ArrayList<String> users) {
+        connect();
+        ArrayList<Integer> times = null;
+
+        try {
+            times = new ArrayList<>();
+            for (int  i = 0; i < users.size(); i++){
+                doStream.writeUTF("TIME");
+                doStream.writeUTF(users.get(i));
+                int time = diStream.readInt();
+                times.add(time);
+            }
+
+            return times;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        disconnect();
+        return  times;
     }
 }

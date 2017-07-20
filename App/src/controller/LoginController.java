@@ -125,7 +125,7 @@ public class LoginController implements ActionListener {
         formPanel = rv.getFormPanel();
         rv.setContentPane(formPanel);
         rv.pack();
-        RegisterController rc = new RegisterController(rv, null, conexio, this);
+        RegisterController rc = new RegisterController(rv, view, conexio, this);
         rv.registerController(rc);
         rv.setVisible(true);
 

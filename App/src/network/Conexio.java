@@ -23,6 +23,8 @@ public class Conexio extends Thread {
     private String responseFlag;
     private String KOMessage;
     private boolean ResponseSuccess = true;
+    private int time;
+    private User currentUser;
 
     /**
      * Sets necesary functionalities for client-server communication
@@ -246,24 +248,19 @@ public class Conexio extends Thread {
      * Asks for a list of current game's time
      * @return String array containing all user's current play time and name
      */
-    public String[] getGamingUsers(String currentUser) {
+    public String[] getGamingUsers() {
         connect();
 
         String data[] = null;
-
         try {
             doStream.writeUTF("GAMING_USERS");
-            doStream.writeUTF(currentUser);
+            doStream.writeUTF(currentUser.getUserName());
             int aux = diStream.readInt();
             data = new String[aux];
 
             for (int i = 0 ; i < aux; i++){
                 data[i] = diStream.readUTF();
             }
-
-            //lanzamos el nuevo thread donde el servidor sera activo y el cliente el pasivo
-            ThreadClientPasiu threadClientPasiu = new ThreadClientPasiu(currentUser);
-            threadClientPasiu.start();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -316,6 +313,7 @@ public class Conexio extends Thread {
         connect();
         try{
             doStream.writeUTF("GAME_END");
+            doStream.writeUTF(currentUser.getUserName());
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -330,6 +328,43 @@ public class Conexio extends Thread {
         return ResponseSuccess;
     }
 
+    public void setTime(int time) {
+        this.time = time;
+    }
 
+    /*
+    public void getTimes() {
+        connect();
 
+        try {
+            doStream.writeUTF("GAMING_TIMES");
+            doStream.writeUTF(currentUser.getUserName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        disconnect();
+    }
+
+    public void sendTime(int time) {
+        connect();
+        try {
+            doStream.writeUTF("CURRENT_TIME");
+            doStream.writeUTF(currentUser.getUserName());
+            doStream.writeInt(time);
+            this.time = time;
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        disconnect();
+    }
+*/
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public int getTime() {
+        return time;
+    }
 }

@@ -13,7 +13,9 @@ USE MakiTetris;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+DROP TABLE IF EXISTS Partida CASCADE;
 DROP TABLE IF EXISTS Login CASCADE;
+
 CREATE TABLE Login (
   user varchar(255) NOT NULL,
   mail varchar(255) NOT NULL,
@@ -23,17 +25,20 @@ CREATE TABLE Login (
   last_login VARCHAR(255),
   number_games INT,
   total_points INT,
+  gaming BOOLEAN,
+  startingGameTime VARCHAR(255),
   PRIMARY KEY (user, mail)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 
-INSERT INTO Login (user, mail, password, connected, register_date, last_login, number_games, total_points) VALUES
-('userName1', 'email1@mail.com', 'pass1', true, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '03/06/1996', 20, 1240),
-('angel', 'angel@mail.com', 'pass2', false, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '20/11/2020', 12, 2131),
-('angel2', 'test@mail.com', 'pass3', true, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '21/05/2011', 5, 2311);
+INSERT INTO Login (user, mail, password, connected, register_date, last_login, number_games, total_points, gaming) VALUES
+('angel22', 'email1@mail.com', 'pass1', true, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '03/06/1996', 20, 1240, false),
+('angel1', 'angel@mail.com', 'pass2', false, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '20/11/2020', 12, 2131, true),
+('angel2', 'test@mail.com', 'pass3', true, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '21/05/2011', 5, 2311, true),
+('angel3', 'test@mail.com', 'pass3', true, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '21/05/2011', 5, 2311, true);
 
 
-DROP TABLE IF EXISTS Partida CASCADE;
+
 CREATE TABLE Partida(
 	user varchar(255) NOT NULL,
     score INT,
@@ -41,17 +46,20 @@ CREATE TABLE Partida(
     game_date VARCHAR(255),
     max_espectators INT,
     replay_path VARCHAR(255),
-    gaming BOOLEAN,
     FOREIGN KEY (user) REFERENCES Login (user)
 );
 
 
-INSERT INTO Partida(user, score, time, game_date, max_espectators, replay_path, gaming) VALUES
-('angel', 500, 300, '03/06/2016 20:39', 10, 'C/', false),
-('angel', 1000, 450, '18/10/2017 15:39', 13, 'C/', false),
-('angel2', 1000, 450, '30/04/2015 10:39', 20, 'C/', false),
-('angel2', 100, 450, '30/04/2015 10:39', 20, 'C/', true);
+INSERT INTO Partida(user, score, time, game_date, max_espectators, replay_path) VALUES
+('angel', 500, 300, '03/06/2016 20:39', 10, 'C/'),
+('angel1', 1000, 450, '18/10/2017 15:39', 13, 'C/'),
+('angel2', 1000, 450, '30/04/2015 10:39', 20, 'C/'),
+('angel22', 100, 450, '30/04/2015 10:39', 20, 'C/');
 
   SELECT * FROM Login;
   SELECT * FROM Partida;
+  SELECT user, gaming FROM Partida WHERE gaming = true ORDER BY user DESC;
+  UPDATE Login SET connected = false;
+  
+  UPDATE Login SET gaming = null, startingGameTime = null WHERE user = 'angel';
   

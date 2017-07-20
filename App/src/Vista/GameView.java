@@ -257,4 +257,7 @@ public class GameView extends JFrame{
         this.puntuacion.setText("Puntos: "+ puntuacion);
     }
 
+    public JLabel getTemps() {
+        return temps;
+    }
 }

@@ -321,6 +321,7 @@ public class Partida {
     public void checkEnd (){
         if (collision(nextpiece, END)){
             end = true;
+            connect.sendEndGame();
         }
     }
 
@@ -365,6 +366,12 @@ public class Partida {
             ioe.printStackTrace();
         }
     }
+
+    /*
+    public void sendTime (int time){
+        connect.sendTime(time);
+    }
+    */
 
     public void doMove (int move){
         switch (move){

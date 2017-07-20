@@ -1,65 +1,39 @@
 package network;
 
-import com.google.gson.Gson;
-
-import javax.security.auth.login.Configuration;
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Created by angel on 17/07/2017.
+ * Created by angel on 19/07/2017.
  */
-public class ThreadClientPasiu extends Thread{
-    private DataInputStream diStream;
-    private DataOutputStream doStream;
-    private Socket sClient;
-    private String currentUser;
+public class ThreadClientPasiu extends Thread {
+    private String userName;
+    private int time;
+    private static int PORT =  33334;
 
-    public ThreadClientPasiu(String currentUser) {
-        this.currentUser = currentUser;
+    public ThreadClientPasiu(String userName, int time){
+        this.userName = userName;
+        this.time = time;
     }
 
     @Override
-    public void run(){
+    public void run() {
         try {
             //creem el nostre socket
-            ServerSocket serverSocket = new ServerSocket(33334);
-
-            while (true) {
+                ServerSocket serverSocket = new ServerSocket(PORT);
+            while (true){
                 //esperem a la conexio d'algun usuari dins d'un bucle infinit. A cada usuari li crearem un nou servidor dedicat
-                sClient = serverSocket.accept();
-                startComunication();
+                Socket sClient = serverSocket.accept();
+                generaNouServidorDedicat(sClient);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void startComunication() throws IOException {
-        doStream = new DataOutputStream(sClient.getOutputStream());
-        diStream = new DataInputStream(sClient.getInputStream());
-        String request = diStream.readUTF();
-        readRequest(request);
-    }
-
-    private void readRequest(String request) {
-        switch (request){
-            case "TIME":
-                try {
-                    String selectedUser = diStream.readUTF();
-                    if (selectedUser.equals(currentUser)){
-                        while(true){
-                            //TODO: MANDAR EL TIEMPO CORRESPONDIENTE A LA PARTIDA DEL USUARIO
-                            //doStream.writeInt();
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-        }
-
-        System.out.println("request: " + request);
+    private void generaNouServidorDedicat(Socket socket){
+        ThreadClientPasiuDedicat tcpd = new ThreadClientPasiuDedicat(userName, time, socket);
+        tcpd.start();
     }
 }

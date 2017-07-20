@@ -11,7 +11,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Admin on 24/03/2017.
@@ -26,6 +28,8 @@ public class ThreadServidorDedicat extends Thread {
     private int registerStatus;
     private GestioDades gestioDades;
     private ServerController sController;
+    private String currentUser;
+    private int time;
 
     private GameDataManager gdm;
     private ObserveManager observeManager;
@@ -42,6 +46,9 @@ public class ThreadServidorDedicat extends Thread {
     @Override
     public void run(){
         try {
+            //lanzamos el nuevo thread donde el servidor sera activo y el cliente el pasivo
+            //ThreadServidorActiu threadServidorActiu = new ThreadServidorActiu();
+            //threadServidorActiu.start();
 
             doStream = new DataOutputStream(sClient.getOutputStream());
             diStream = new DataInputStream(sClient.getInputStream());
@@ -118,14 +125,16 @@ public class ThreadServidorDedicat extends Thread {
                 // TODO: almacenar nuevo movimiento en el manager
                 break;
 
-            case "EoG": //End of Game: final de partida
+            case "GAME_END": //final de partida
+                currentUser = diStream.readUTF();
+                gestioDades.setGamingStatus(currentUser, false, null);
+
                 // TODO: gdm.setFinishTime(reqData[1]);
                 // TODO: observeManager.notifyEndOfGame();
                 // TODO: ACTUALIZAR BASE DE DATOS CON LA NUEVA INFORMACION
                 break;
 
-            case "LIVE_USERS":
-
+            case "LIVE_USERS"://List of online players
                 ArrayList<String> onlineUsers = sController.onlineUsers();
                 doStream.writeInt(onlineUsers.size());
                 for (int i = 0; i < onlineUsers.size(); i++){
@@ -134,8 +143,8 @@ public class ThreadServidorDedicat extends Thread {
 
                 break;
 
-            case "GAMING_USERS":
-                String currentUser = diStream.readUTF();
+            case "GAMING_USERS"://List of players currently playing
+                currentUser = diStream.readUTF();
                 ArrayList<String> gamingUsers = gestioDades.gamingUsers(currentUser);
                 doStream.writeInt(gamingUsers.size());
                 for (int i = 0; i < gamingUsers.size(); i++){
@@ -144,16 +153,33 @@ public class ThreadServidorDedicat extends Thread {
 
                 break;
 
-            case "GAMING_STATUS":
-                String userName = diStream.readUTF();
+            case "GAMING_STATUS"://Sets desired players gaming status
+                currentUser = diStream.readUTF();
                 boolean status = diStream.readBoolean();
-                gestioDades.setGamingStatus(userName, status);
+                java.util.Date dt = new java.util.Date();
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String startingGameTime = sdf.format(dt);
+                gestioDades.setGamingStatus(currentUser, status, startingGameTime);
+                break;
+/*
+            case "CURRENT_TIME":
+                currentUser = diStream.readUTF();
+                time = diStream.readInt();
                 break;
 
-            case "REPLAY_LIST":
-                userName = diStream.readUTF();
+            case "GAMING_TIMES":
+                currentUser = diStream.readUTF();
+                ArrayList<Integer> times = threadServidorActiu.getTimeList(gestioDades.gamingUsers(currentUser));
+                for (int i = 0; i < times.size(); i++){
+                    System.out.println("User: " + gestioDades.gamingUsers(currentUser).get(i));
+                    System.out.println("Gaming time: " + times.get(i));
+                }
+                break;
+*/
+            case "REPLAY_LIST"://List of player's games
+                currentUser = diStream.readUTF();
 
-                ArrayList<String[]> gameInfo = gestioDades.getGameData(userName);
+                ArrayList<String[]> gameInfo = gestioDades.getGameData(currentUser);
                 //doStream.writeUTF(gameInfo);
 
                 doStream.writeInt(gameInfo.size());
@@ -174,11 +200,7 @@ public class ThreadServidorDedicat extends Thread {
                 String selectedUser = diStream.readUTF();
                 System.out.println("I want to spectate: " + selectedUser);
 
-                //lanzamos el nuevo thread donde el servidor sera activo y el cliente el pasivo
-                ThreadServidorActiu threadServidorActiu = new ThreadServidorActiu();
-                threadServidorActiu.start();
-                //threadServidorActiu.test();
-                threadServidorActiu.getCurrentTime(selectedUser);
+                //threadServidorActiu.getCurrentTime(selectedUser);
                 // TODO: establecer observador a la partida seleccionada
                 break;
         }
