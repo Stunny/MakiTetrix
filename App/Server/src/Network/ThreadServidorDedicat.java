@@ -66,6 +66,63 @@ public class ThreadServidorDedicat extends Thread {
      */
     public void readRequest(String request) throws IOException {
         switch(request){
+            case "setTecles": {
+               String u = diStream.readUTF();
+               int d = diStream.readInt();
+               int i = diStream.readInt();
+               int a = diStream.readInt();
+               int rd = diStream.readInt();
+               int ri = diStream.readInt();
+               int p = diStream.readInt();
+
+
+
+
+
+                try {
+
+                   gestioDades.setTecles(u, d, i, a, rd, ri, p);
+
+               }catch(BadAccessToDatabaseException e){
+                   e.printMessage();
+               }
+
+
+
+
+            }
+            break;
+            case "getTecles": {
+                String u = diStream.readUTF();
+                try {
+                    ArrayList<Integer>result = gestioDades.getTecles(u);
+
+                    if (result.size()==0){
+                        doStream.writeBoolean(false);
+                    }else{
+                        doStream.writeBoolean(true);
+                        doStream.writeInt(result.get(0));
+                        doStream.writeInt(result.get(1));
+                        doStream.writeInt(result.get(2));
+                        doStream.writeInt(result.get(3));
+                        doStream.writeInt(result.get(4));
+                        doStream.writeInt(result.get(5));
+
+
+
+                    }
+                }catch(BadAccessToDatabaseException e){
+                    e.printMessage();
+                }
+
+
+
+
+
+            }
+            System.out.println("surto6");
+
+            break;
             case "L": //Login Request
                 try {
                     String userNameOREmail = diStream.readUTF();
@@ -73,6 +130,7 @@ public class ThreadServidorDedicat extends Thread {
 
                     String decryptedUser = Encrypter.decrypt(userNameOREmail);
                     String decryptedPsswd = Encrypter.decrypt(password);
+
 
                     loginStatus = gestioDades.handleLogin(decryptedUser, decryptedPsswd);
                     enviaResposta(loginStatus);

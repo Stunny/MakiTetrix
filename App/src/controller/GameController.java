@@ -105,7 +105,7 @@ public class GameController implements KeyListener {
 
     //Getters && Setters
 
-    public static void setTeclas (int right, int left, int down, int rotateleft, int rotateright, int pause){
+    public static void setTeclas (int right, int left, int down, int rotateright, int rotateleft, int pause){
         teclas[0] = left;
         teclas[1] = down;
         teclas[2] = right;

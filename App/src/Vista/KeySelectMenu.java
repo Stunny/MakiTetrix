@@ -19,6 +19,9 @@ public class KeySelectMenu extends JFrame {
     private JTextField textRotarDerecha;
     private JTextField textPause;
 
+
+
+
     public KeySelectMenu(){
         setSize(420,500);
         setTitle("MakiTetrix - Configuración");
@@ -93,6 +96,43 @@ public class KeySelectMenu extends JFrame {
                 "ERROR AL CONFIGURAR LAS TECLAS", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
                 null, options, options[0]);
     }
+
+    public void setTextDerecha(int s) {
+
+
+        textDerecha.setText(Character.toString((char)s));
+
+    }
+
+    public void setTextIzquierda(int s) {
+
+        textIzquierda.setText(Character.toString((char)s));
+
+    }
+
+    public void setTextAbajo(int s) {
+
+        textAbajo.setText(Character.toString((char)s));
+
+    }
+
+    public void setTextRotarIzquierda(int s) {
+        textRotarIzquierda.setText(Character.toString((char)s));
+
+    }
+
+    public void setTextRotarDerecha(int s) {
+
+        textRotarDerecha.setText(Character.toString((char)s));
+
+    }
+
+    public void setTextPause(int s) {
+
+
+        textPause.setText(Character.toString((char)s));
+    }
+
 
     public JTextField getTextDerecha() {
         return textDerecha;

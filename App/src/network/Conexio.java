@@ -113,10 +113,58 @@ public class Conexio extends Thread {
         }
     }
 
-    /**
-     * Comunicates with server when a register request is done
-     * @param user User to register
-     */
+    public ArrayList<Integer> getTeclesUser(String user) {
+        ArrayList<Integer>result = new ArrayList<Integer>();
+
+        try {
+            connect();
+            doStream.writeUTF("getTecles");
+            doStream.writeUTF(user);
+            if (diStream.readBoolean()) {
+                result.add(diStream.readInt());
+                result.add(diStream.readInt());
+                result.add(diStream.readInt());
+                result.add(diStream.readInt());
+                result.add(diStream.readInt());
+                result.add(diStream.readInt());
+
+
+                disconnect();
+                return result;
+
+            }else{
+            }
+
+            System.out.println("size "+result.size());
+            disconnect();
+            return result;
+        } catch (Exception exc){
+            exc.printStackTrace();
+        }
+        return result;
+    }
+
+    public void setTeclesUser(String user, int d, int i, int a, int rd, int ri, int p) {
+        try {
+
+
+
+            connect();
+            Encrypter encrypter = new Encrypter();
+            doStream.writeUTF("setTecles");
+            doStream.writeUTF(user);
+            doStream.writeInt(d);
+            doStream.writeInt(i);
+            doStream.writeInt(a);
+            doStream.writeInt(rd);
+            doStream.writeInt(ri);
+            doStream.writeInt(p);
+            disconnect();
+        } catch (Exception exc){
+            exc.printStackTrace();
+        }
+    }
+
     public void register(User user) {
         try {
             Encrypter encrypter = new Encrypter();

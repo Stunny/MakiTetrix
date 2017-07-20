@@ -5,6 +5,8 @@ import Vista.KeySelectMenu;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import model.Partida;
 import model.User;
+import model.utils.Encrypter;
+import network.Conexio;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +16,8 @@ import java.awt.event.ActionListener;
  */
 public class KeySelectMenuController implements ActionListener {
     private KeySelectMenu view;
+    private Conexio conexio;
+    private User u;
 
     private String derecha;
     private String izquierda;
@@ -23,12 +27,14 @@ public class KeySelectMenuController implements ActionListener {
     private String pause;
 
 
-    public KeySelectMenuController(KeySelectMenu view, User currentUser) {
+    public KeySelectMenuController(Conexio c, KeySelectMenu view, User currentUser) {
         //TODO: actulizar al tener nuevas letras, cambiar view a los nuevos valores.
         /*
         Falta añadir controlador game para coger los valores nuevos.
          */
+        u = currentUser;
         this.view = view;
+        this.conexio = c;
     }
 
     @Override
@@ -59,7 +65,9 @@ public class KeySelectMenuController implements ActionListener {
 
                     if (checkRepetitions()) {
                         view.setVisible(false);
-                        GameController.setTeclas(asciiDerecha, asciiIzquierda, asciiAbajo, asciiRotarIzquierda, asciiIzquierda, asciiPause);
+
+
+                        conexio.setTeclesUser(u.getUserName(),asciiDerecha, asciiIzquierda, asciiAbajo, asciiRotarDerecha, asciiRotarIzquierda, asciiPause);
                     }else{
                         view.showKeySelectError("No se puede asignar una misma tecla para dos acciones!");
                     }
@@ -69,6 +77,7 @@ public class KeySelectMenuController implements ActionListener {
             }
         }
     }
+
 
     /**
      * Comprueba que no haya ninguna tecla asignada a dos acciones distintas

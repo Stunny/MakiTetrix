@@ -57,6 +57,7 @@ public class GestioDades {
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
+
         }catch (ClassNotFoundException cnfe){
             cnfe.printStackTrace();
         }
@@ -71,6 +72,150 @@ public class GestioDades {
      * @return Devuelve un ArrayList con todos los usuarios existentes en la BBDD
      * @unused
      */
+    public ArrayList <Integer> getTecles(String u)throws BadAccessToDatabaseException{
+        ArrayList<Integer>result = new ArrayList<Integer>();
+
+        try {
+
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+
+            Statement s = c.createStatement();
+
+            System.out.println("enviada request");
+            s.executeQuery("SELECT user FROM DefaultKeys");
+            ResultSet rs = s.getResultSet();
+
+            //Comprobamos si el usuario ya tiene teclas guardadas
+            boolean exists = false;
+            while (rs.next()) {
+                String name = rs.getString("user");
+                if (name.equals(u)) {
+                    exists = true;
+                    System.out.println("found user");
+                }
+            }
+            rs.close();
+            s.close();
+
+            if (exists){
+
+                String query = "SELECT * FROM DefaultKeys WHERE user = ?";
+                PreparedStatement preparedStmt = c.prepareStatement(query);
+                preparedStmt.setString(1, u);
+                preparedStmt.execute();
+                System.out.println(preparedStmt.getFetchSize());
+                ResultSet rs2 = preparedStmt.getResultSet();
+                while (rs2.next()) {
+                    result.add(rs2.getInt("derecha"));
+                    result.add(rs2.getInt("izquierda"));
+                    result.add(rs2.getInt("abajo"));
+                    result.add(rs2.getInt("rderecha"));
+                    result.add(rs2.getInt("rizquierda"));
+                    result.add(rs2.getInt("pause"));
+                }
+
+                preparedStmt.close();
+                c.close();
+                return result;
+
+            }else{
+
+                c.close();
+
+                return result;
+            }
+
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
+        }catch (SQLException e){
+
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+        }
+
+            return result;
+
+    }
+    public void setTecles (String u, int d, int i, int a, int rd, int ri, int p)throws BadAccessToDatabaseException {
+        try {
+
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+
+            Statement s = c.createStatement ();
+            s.executeQuery ("SELECT user FROM DefaultKeys");
+            ResultSet rs = s.getResultSet ();
+
+            //Comprobamos si el usuario ya tiene teclas guardadas
+            boolean exists = false;
+            while (rs.next ())
+            {
+                String name = rs.getString ("user");
+            if(name.equals(u)){
+                exists = true;
+            }
+            }
+            rs.close ();
+            s.close ();
+
+
+
+
+            //Insertamos fila con teclas nueva o actualizamos la vieja dependiendo de exists
+            if (exists){
+                s = c.createStatement();
+
+                String query = "update DefaultKeys set derecha = ?, izquierda = ?, abajo = ?, rderecha = ?, rizquierda = ?, pause = ? where user = ?";
+                PreparedStatement preparedStmt = c.prepareStatement(query);
+                preparedStmt.setInt(1, d);
+                preparedStmt.setInt(2, i);
+                preparedStmt.setInt(3, a);
+                preparedStmt.setInt(4, rd);
+                preparedStmt.setInt(5, ri);
+                preparedStmt.setInt(6, p);
+                preparedStmt.setString(7, u);
+
+                preparedStmt.execute();
+                System.out.println("SENT");
+                c.close();
+
+            }else {
+                s = c.createStatement();
+
+                String query = " insert into DefaultKeys (user, derecha, izquierda, abajo, rderecha, rizquierda, pause)"
+                        + " values (?, ?, ?, ?, ?, ?, ?)";
+
+                // create the mysql insert preparedstatement
+                PreparedStatement preparedStmt = c.prepareStatement(query);
+                preparedStmt.setString(1, u);
+                preparedStmt.setInt(2, d);
+                preparedStmt.setInt(3, i);
+                preparedStmt.setInt(4, a);
+                preparedStmt.setInt(5, rd);
+                preparedStmt.setInt(6, ri);
+                preparedStmt.setInt(7, p);
+
+
+                // execute the preparedstatement
+                preparedStmt.execute();
+                System.out.println("SENT");
+                c.close();
+            }
+
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
+        }catch (SQLException e){
+
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+        }
+    }
+
     public ArrayList<String> plenaUsuaris() throws BadAccessToDatabaseException {
         ArrayList<String> usuaris = new ArrayList<>();
         Encrypter encrypter = new Encrypter();
