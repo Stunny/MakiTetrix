@@ -39,16 +39,13 @@ public class KeySelectMenuController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e){
-        System.out.println("fucking shit");
         if (e.getActionCommand().equals("save")){
-            System.out.println("yes4");
             derecha = view.getTextDerecha().getText();
             izquierda = view.getTextIzquierda().getText();
             abajo = view.getTextAbajo().getText();
             rotarDerecha = view.getTextRotarDerecha().getText();
             rotarIzquierda = view.getTextRotarIzquierda().getText();
             pause = view.getTextPause().getText();
-            System.out.println("yes3");
 
             if (checkLenght(derecha, izquierda, abajo, rotarDerecha, rotarIzquierda, pause)){
                 int asciiDerecha = getAscii(derecha);

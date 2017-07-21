@@ -393,7 +393,6 @@ public class Conexio extends Thread {
 
             System.out.println("size "+result.size());
 
-            doStream.writeUTF(userName);
             doStream.writeBoolean(status);
             disconnect();
             return result;
