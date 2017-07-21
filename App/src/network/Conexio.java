@@ -113,7 +113,6 @@ public class Conexio extends Thread {
     }
 
     public ArrayList<Integer> getTeclesUser(String user) {
-        System.out.println("getTeclesUser");
         ArrayList<Integer>result = new ArrayList<>();
 
         try {
@@ -131,11 +130,11 @@ public class Conexio extends Thread {
                 disconnect();
                 return result;
 
-            }
+            }else {
 
-            System.out.println("size "+result.size());
-            disconnect();
-            return result;
+                disconnect();
+                return result;
+            }
         } catch (Exception exc){
             exc.printStackTrace();
         }
@@ -143,7 +142,6 @@ public class Conexio extends Thread {
     }
 
     public void setTeclesUser(String user, int d, int i, int a, int rd, int ri, int p) {
-        System.out.println("setTeclesUser");
         try {
             connect();
             Encrypter encrypter = new Encrypter();
@@ -389,13 +387,12 @@ public class Conexio extends Thread {
                 result.add(diStream.readInt());
                 result.add(diStream.readInt());
 
-                disconnect();
-                return result;
+
+
             }
 
             System.out.println("size "+result.size());
 
-            doStream.writeUTF(userName);
             doStream.writeBoolean(status);
             disconnect();
             return result;

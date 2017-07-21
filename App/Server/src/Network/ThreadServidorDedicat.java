@@ -31,6 +31,7 @@ public class ThreadServidorDedicat extends Thread{
     private GestioDades gestioDades;
     private ServerController sController;
     private String currentUser;
+    private boolean playing;
     private int time;
 
     private GameDataManager gdm;
@@ -43,6 +44,7 @@ public class ThreadServidorDedicat extends Thread{
         this.gestioDades = gestioDades;
         this.sController = sController;
         this.PORT = PORT;
+        this.playing = false;
     }
 
     @Override
@@ -76,7 +78,6 @@ public class ThreadServidorDedicat extends Thread{
                int rd = diStream.readInt();
                int ri = diStream.readInt();
                int p = diStream.readInt();
-
                 try {
 
                    gestioDades.setTecles(u, d, i, a, rd, ri, p);
@@ -158,6 +159,7 @@ public class ThreadServidorDedicat extends Thread{
                 } catch (BadAccessToDatabaseException e) {
                     e.printMessage();
                 }
+                sController.eliminaThread(this);
                 sController.updateUserList();
                 break;
 
@@ -219,14 +221,33 @@ public class ThreadServidorDedicat extends Thread{
 
             case "ESPECTATE": //Selected user to observe
                 String selectedUser = diStream.readUTF();
-                System.out.println("I want to spectate: " + selectedUser);
+            System.out.println("I want to spectate: " + selectedUser);
+            ArrayList<ThreadServidorDedicat> threads = sController.getThreads();
+                System.out.println("Threads size = "+threads.size());
+            ThreadServidorDedicat targetThread = new ThreadServidorDedicat(null, gestioDades,sController,PORT);
+            for(int i=0;i<threads.size();i++){
+
+                if (threads.get(i).currentUser.equals(selectedUser)){
+
+                    targetThread = threads.get(i);
+                }
+                System.out.println("començo a retransmetre");
+                while (targetThread.playing) {
+                    System.out.println("moviment retransmès");
+
+                    targetThread.readRequest("MOVE");
+                }
+                System.out.println("sacaba la transmisio");
+
+            }
+
 
                 // TODO: establecer observador a la partida seleccionada
                 break;
             case "START_PARAMETERS":
-                String u = diStream.readUTF();
+                currentUser = diStream.readUTF();
                 try {
-                    ArrayList<Integer>result = gestioDades.getTecles(u);
+                    ArrayList<Integer>result = gestioDades.getTecles(currentUser);
 
                     if (result.size()==0){
                         doStream.writeBoolean(false);
@@ -239,7 +260,6 @@ public class ThreadServidorDedicat extends Thread{
                         doStream.writeInt(result.get(4));
                         doStream.writeInt(result.get(5));
                     }
-                    currentUser = diStream.readUTF();
                     boolean status = diStream.readBoolean();
                     java.util.Date dt = new java.util.Date();
                     java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -250,7 +270,12 @@ public class ThreadServidorDedicat extends Thread{
                 }
                 break;
 
+            case "GAME_STOP":
+                playing = false;
+                break;
+
             case "GAME_START":
+                playing = true;
                 currentUser = diStream.readUTF();
                 break;
 
@@ -291,6 +316,9 @@ public class ThreadServidorDedicat extends Thread{
                 doStream.writeUTF("El email i l'usuari ja existeixen");
                 break;
         }
+    }
+    public String getCurrentUser (){
+        return currentUser;
     }
 
 }

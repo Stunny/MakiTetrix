@@ -165,7 +165,6 @@ public class GestioDades {
 
 
 
-
             //Insertamos fila con teclas nueva o actualizamos la vieja dependiendo de exists
             if (exists){
                 s = c.createStatement();
@@ -181,7 +180,6 @@ public class GestioDades {
                 preparedStmt.setString(7, u);
 
                 preparedStmt.execute();
-                System.out.println("SENT");
                 c.close();
 
             }else {
@@ -203,8 +201,8 @@ public class GestioDades {
 
                 // execute the preparedstatement
                 preparedStmt.execute();
-                System.out.println("SENT");
                 c.close();
+
             }
 
         }catch (ClassNotFoundException cnfe){

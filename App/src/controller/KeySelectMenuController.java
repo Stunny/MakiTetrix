@@ -66,8 +66,9 @@ public class KeySelectMenuController implements ActionListener {
                     if (checkRepetitions()) {
                         view.setVisible(false);
 
-
+                        System.out.println("yes");
                         conexio.setTeclesUser(u.getUserName(),asciiDerecha, asciiIzquierda, asciiAbajo, asciiRotarDerecha, asciiRotarIzquierda, asciiPause);
+                        System.out.println("yes2");
                     }else{
                         view.showKeySelectError("No se puede asignar una misma tecla para dos acciones!");
                     }

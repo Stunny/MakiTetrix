@@ -40,6 +40,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
 
                 KeySelectMenu keyView = new KeySelectMenu();
                 if (tecles.size()>0){
+
                     keyView.setTextDerecha(tecles.get(0));
                     keyView.setTextIzquierda(tecles.get(1));
                     keyView.setTextAbajo(tecles.get(2));
@@ -47,7 +48,9 @@ public class MenuController extends WindowAdapter implements ActionListener {
                     keyView.setTextRotarIzquierda(tecles.get(4));
                     keyView.setTextPause(tecles.get(5));
                 }
+
                 KeySelectMenuController keyContoller = new KeySelectMenuController(conexio, keyView, currentUser);
+
                 keyView.registerKey(keyContoller);
                 keyView.setVisible(true);
                 break;
