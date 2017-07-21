@@ -215,6 +215,15 @@ public class Conexio extends Thread {
         try {
             doStream.writeUTF("ESPECTATE");
             doStream.writeUTF(userNameToEspectate);
+            String missatge = diStream.readUTF();
+            System.out.println("Comencem espectadoria");
+            System.out.println("missatge inicial: "+missatge);
+            while(!missatge.equals("end")){
+                System.out.println("missatge rebut: "+missatge);
+                missatge = diStream.readUTF();
+
+            }
+            System.out.println("s'acaba la espectadoria");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -328,6 +337,7 @@ public class Conexio extends Thread {
 
         try{
             doStream.writeUTF("MOVE");
+            doStream.writeUTF(currentUser.getUserName());
             doStream.writeUTF(m.toString());
         } catch (IOException e){
             e.printStackTrace();

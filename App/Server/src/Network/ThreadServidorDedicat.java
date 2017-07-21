@@ -31,11 +31,12 @@ public class ThreadServidorDedicat extends Thread{
     private GestioDades gestioDades;
     private ServerController sController;
     private String currentUser;
-    private boolean playing;
     private int time;
 
     private GameDataManager gdm;
     private ObserveManager observeManager;
+    private LlistaEspectadors espectadors;
+    private ArrayList<DataOutputStream>ds;
 
     private static int PORT;
 
@@ -44,7 +45,6 @@ public class ThreadServidorDedicat extends Thread{
         this.gestioDades = gestioDades;
         this.sController = sController;
         this.PORT = PORT;
-        this.playing = false;
     }
 
     @Override
@@ -159,7 +159,6 @@ public class ThreadServidorDedicat extends Thread{
                 } catch (BadAccessToDatabaseException e) {
                     e.printMessage();
                 }
-                sController.eliminaThread(this);
                 sController.updateUserList();
                 break;
 
@@ -221,28 +220,12 @@ public class ThreadServidorDedicat extends Thread{
 
             case "ESPECTATE": //Selected user to observe
                 String selectedUser = diStream.readUTF();
-            System.out.println("I want to spectate: " + selectedUser);
-            ArrayList<ThreadServidorDedicat> threads = sController.getThreads();
-                System.out.println("Threads size = "+threads.size());
-            ThreadServidorDedicat targetThread = new ThreadServidorDedicat(null, gestioDades,sController,PORT);
-            for(int i=0;i<threads.size();i++){
+                System.out.println("I want to spectate: " + selectedUser);
+            ArrayList<LlistaEspectadors> retrans = sController.getRetrans();
 
-                if (threads.get(i).currentUser.equals(selectedUser)){
+                    //Ens afegim com a espectador de la partida del jugador user
+                    sController.afegeixEspectador(selectedUser,doStream);
 
-                    targetThread = threads.get(i);
-                }
-                System.out.println("començo a retransmetre");
-                while (targetThread.playing) {
-                    System.out.println("moviment retransmès");
-
-                    targetThread.readRequest("MOVE");
-                }
-                System.out.println("sacaba la transmisio");
-
-            }
-
-
-                // TODO: establecer observador a la partida seleccionada
                 break;
             case "START_PARAMETERS":
                 currentUser = diStream.readUTF();
@@ -271,16 +254,33 @@ public class ThreadServidorDedicat extends Thread{
                 break;
 
             case "GAME_STOP":
-                playing = false;
+                System.out.println("acaba el joc");
+                //avisem a tots els espectadors que es para la transmissio i es buida l'arraylist espectadors
+                String u = diStream.readUTF();
+                LlistaEspectadors espectadors= sController.getEspectadors(u);
+                ArrayList<DataOutputStream> ds= espectadors.getDs();
+                for (int i=0; i<ds.size();i++){
+                    System.out.println("envio END a espectador");
+                        ds.get(i).writeUTF("end");
+                }
+                sController.eliminaPartida(u);
                 break;
 
             case "GAME_START":
-                playing = true;
                 currentUser = diStream.readUTF();
+                sController.addPartida(currentUser);
                 break;
 
             case "MOVE":
-                System.out.println("moviment: " + diStream.readUTF());
+                String user = diStream.readUTF();
+                String s = diStream.readUTF();
+                System.out.println("moviment: " + s);
+                espectadors= sController.getEspectadors(user);
+                 ds= espectadors.getDs();
+                for (int i=0; i<espectadors.getDs().size();i++){
+
+                    ds.get(i).writeUTF(s);
+                }
                 break;
         }
     }
@@ -289,6 +289,11 @@ public class ThreadServidorDedicat extends Thread{
      * Returns server's answer to client
      * @throws IOException
      */
+
+
+
+
+
     public void enviaResposta(int error) throws IOException {
         switch(error){
             case 0:

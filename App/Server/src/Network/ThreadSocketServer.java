@@ -40,8 +40,8 @@ public class ThreadSocketServer extends Thread{
     private void generaNouServidorDedicat(Socket sClient, int PORT){
         //System.out.println("entro a fer un nou servidor dedicat");
         ThreadServidorDedicat tsd = new ThreadServidorDedicat(sClient, gestioDades, sController, PORT);
+
         tsd.start();
-        sController.addThread(tsd);
 
     }
 

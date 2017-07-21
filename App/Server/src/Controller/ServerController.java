@@ -3,6 +3,7 @@ package Controller;
 import Model.GestioDades;
 import Model.User;
 import Model.exceptions.BadAccessToDatabaseException;
+import Network.LlistaEspectadors;
 import Network.ThreadServidorDedicat;
 import View.PointsGraph;
 import View.ServerAdminView;
@@ -14,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
@@ -27,7 +29,7 @@ public class ServerController implements ActionListener, MouseListener {
     private ServerAdminView serverAdminView;
     private GestioDades gestioDades;
     private User selectedUser;
-    private ArrayList<ThreadServidorDedicat>threads;
+    private ArrayList<LlistaEspectadors>retrans;
 
     /**
      * @param serverAdminView
@@ -36,7 +38,7 @@ public class ServerController implements ActionListener, MouseListener {
     public ServerController(ServerAdminView serverAdminView, GestioDades gestioDades) {
         this.serverAdminView = serverAdminView;
         this.gestioDades = gestioDades;
-        this.threads = new ArrayList<ThreadServidorDedicat>();
+        this.retrans = new ArrayList<>();
 
         updateUserList();
     }
@@ -205,32 +207,50 @@ public class ServerController implements ActionListener, MouseListener {
         return onlineUsers;
     }
 
-    public void addThread (ThreadServidorDedicat t){
-        boolean exists = false;
-        System.out.println("t.nom = "+t.getCurrentUser());
-        System.out.println("afegeixo thread");
-        System.out.println("Numero threads: "+threads.size());
-        for (int i = 0; i<threads.size(); i++){
-            System.out.println("threads.get(i) nom = "+threads.get(i).getCurrentUser());
-            if(t.getCurrentUser()!=null &&threads.get(i).getCurrentUser().equals(t.getCurrentUser())){
-                System.out.println("repe");
-                exists = true;
+
+    public void eliminaPartida (String user){
+        for (int i = 0; i < retrans.size(); i++){
+            if (user.equals(retrans.get(i).getUser())){
+               retrans.remove(retrans.get(i));
+                System.out.println("partida eliminada");
+
             }
         }
 
-        if (!exists && t.getCurrentUser()!=null){
-            threads.add(t);
+    }
+    public void afegeixEspectador (String user, DataOutputStream d){
+        for (int i = 0; i < retrans.size(); i++){
+            if (user.equals(retrans.get(i).getUser())){
+                retrans.get(i).afegeixEspectador(d);
+                System.out.println("espectador afegit a partida de "+user);
+
+            }
         }
     }
 
-    public void eliminaThread (ThreadServidorDedicat tsd){
-        System.out.println("elimino thread");
-        threads.remove(tsd);
 
+
+    public void addPartida(String user){
+
+        System.out.println("nova partida emmagatzemada");
+        LlistaEspectadors l = new LlistaEspectadors(user);
+        retrans.add(l);
+    }
+    public ArrayList<LlistaEspectadors> getRetrans(){
+        return retrans;
     }
 
-    public ArrayList<ThreadServidorDedicat> getThreads(){
-        return threads;
+    public LlistaEspectadors getEspectadors (String user){
+
+        for (int i = 0; i<retrans.size();i++){
+            if (retrans.get(i).getUser().equals(user)){
+                return retrans.get(i);
+            }
+
+        }
+        return null;
+
+
     }
 
 }
