@@ -2,6 +2,9 @@ package model;
 
 import controller.GameController;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Queue;
 
 /**
@@ -18,6 +21,7 @@ public class PlayGame extends Thread {
     private boolean running;
     private GameController gc;
     private Queue<Move> toplay;
+    private Timer timer;
 
     /**
      * Inicializa una nueva partida.
@@ -90,34 +94,49 @@ public class PlayGame extends Thread {
         Pieza siguiente = toplay.peek().getPiece();
         toplay.poll();
         game.newGame(actual, siguiente);
-        while ((!toplay.isEmpty())){
-           switch (toplay.peek().getOption()){
-               case Move.PIECE:
-                   game.chargeNextPiece(toplay.peek().getPiece());
-                   gc.getGV().printarNextPiece(game.getNextpiece());
-                   gc.getGV().printarPantalla(game.getInterfaz());
-                   break;
-               case Move.MOVE:
-                   game.doMove(toplay.peek().getMove());
-                   gc.getGV().printarPantalla(game.getInterfaz());
-                   break;
-           }
-           if (toplay.peek().getTime() != 0){
-               time = toplay.peek().getTime();
-           }
-           toplay.poll();
-            try {
-                if (!toplay.isEmpty()) {
-                    System.out.println(toplay.peek().getTime() - time);
-                    Thread.sleep(toplay.peek().getTime() - time);
+        gc.getGV().printarNextPiece(game.getNextpiece());
+        gc.getGV().printarPantalla(game.getInterfaz());
+        timer = new Timer(velocidad, new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                int time = 0;
+                switch (toplay.peek().getOption()){
+                    case Move.PIECE:
+                        game.chargeNextPiece(toplay.peek().getPiece());
+                        gc.getGV().printarNextPiece(game.getNextpiece());
+                        gc.getGV().printarPantalla(game.getInterfaz());
+                        break;
+                    case Move.MOVE:
+                        game.doMove(toplay.peek().getMove());
+                        gc.getGV().printarPantalla(game.getInterfaz());
+                        break;
                 }
-            } catch (InterruptedException ie){
-                System.out.println("Final del Juego");
-                game.saveGame();
-            } catch (IllegalArgumentException iae){
-                System.out.println("Cargando Pieza");
+                game.checkLine();
+                gc.getGV().printarPantalla(game.getInterfaz());
+                gc.getGV().setNivel(game.getLevel());
+                gc.getGV().setPuntuacion(game.getPoints());
+                if (toplay.peek().getTime() != 0){
+                    time = toplay.peek().getTime();
+                }
+                toplay.poll();
+                try {
+                    if (time != 0) {
+                        timer.setDelay(toplay.peek().getTime() - time);
+                    } else {
+                        timer.setDelay(0);
+                    }
+                } catch (IllegalArgumentException iae){
+                    timer.setDelay(1);
+                    System.out.println("Cargando pieza");
+                } catch (NullPointerException npe){
+                    timer.stop();
+                }
+                System.out.println("TIME"+time);
+                System.out.println("DELAY"+timer.getDelay());
             }
-        }
+        });
+        timer.start();
     }
 
     public void setVelocidad(int v){

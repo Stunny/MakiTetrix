@@ -65,16 +65,21 @@ public class MenuController extends WindowAdapter implements ActionListener {
             case "ver":
                 //Ver Partida en vivo
                 EspectatorView espectatorView = new EspectatorView();
-                EspectatorController espectatorController = new EspectatorController(espectatorView, conexio, currentUser.getUserName());
+                EspectatorController espectatorController = new EspectatorController(espectatorView,
+                        conexio, currentUser.getUserName());
                 espectatorView.registerEspectator(espectatorController);
                 espectatorView.setVisible(true);
                 break;
             case "anterior":
                 //Reproducir anterior
                 ReplaySelectView replay = new ReplaySelectView();
-                ReplaySelectController replayController = new ReplaySelectController(replay, conexio, currentUser.getUserName());
+                ReplaySelectController replayController = new ReplaySelectController(replay, conexio,
+                        currentUser.getUserName());
                 replay.registerReplay(replayController);
                 replay.setVisible(true);
+                gameController.setStopGame(true);
+                gameView.setVisible(true);
+                gameController.startReplay("2107 _1557.txt");
                 break;
             case "salir":
                 conexio.disconnectUser(currentUser);

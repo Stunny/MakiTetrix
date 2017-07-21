@@ -21,7 +21,7 @@ public class GameController implements KeyListener {
     private GameView gv;
     private Partida game;
     private PlayGame pg;
-    private Timer t;
+    private Crono t;
     private static int[] teclas  = new int[]{65,83,68,81,69,80};
     private boolean stopgame;
     private Conexio conexio;
@@ -30,7 +30,7 @@ public class GameController implements KeyListener {
         this.gv = gv;
         this.game = game;
         gv.addKeyListener(this);
-        t = new Timer(gv,game);
+        t = new Crono(gv,game);
         this.conexio = conexio;
         gv.addWindowListener(new WindowAdapter()
         {
@@ -91,8 +91,8 @@ public class GameController implements KeyListener {
         conexio.sendEndGame();
         stopgame = true;
         if (gv.saveGame() == 0){
-            conexio.saveGameData(userName, game.getPoints(), t.getTiempo(), game.getDate(),
-                    max_espectators, game.getDate()+".txt");
+            //conexio.saveGameData(userName, game.getPoints(), t.getTiempo(), game.getDate(),
+            //        max_espectators, game.getDate()+".txt");
             game.saveGame();
         }
     }
@@ -125,13 +125,15 @@ public class GameController implements KeyListener {
                 gv.printarPantalla(game.getInterfaz());
             }
         } else if (e.getKeyCode() == teclas[5]){
-            stopgame = true;
-            pg.suspend();
-            t.suspend();
-            if (gv.pauseGame() == 0){
-                stopgame = false;
-                pg.resume();
-                t.resume();
+            if (!stopgame) {
+                stopgame = true;
+                pg.suspend();
+                t.suspend();
+                if (gv.pauseGame() == 0) {
+                    stopgame = false;
+                    pg.resume();
+                    t.resume();
+                }
             }
         } else {
             System.out.println("Tecla no válida.");
@@ -159,12 +161,14 @@ public class GameController implements KeyListener {
         teclas[5] = pause;
     }
 
-    public Timer getTimer () {
+    public Crono getTimer () {
         return t;
     }
 
     public GameView getGV (){
         return gv;
     }
+
+    public void setStopGame (boolean b) {stopgame = b;}
 
 }

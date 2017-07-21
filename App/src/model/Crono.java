@@ -6,14 +6,14 @@ import Vista.GameView;
  * Cuenta los segundos que dura una partida.
  * Created by Javier Ortiz on 17/05/2017.
  */
-public class Timer extends Thread {
+public class Crono extends Thread {
     private int tiempo;
     private int espera;
     private GameView gv;
     private Partida game;
 
 
-    public Timer (GameView gv, Partida game){
+    public Crono(GameView gv, Partida game){
         tiempo = 0;
         espera = 1;
         this.gv = gv;
