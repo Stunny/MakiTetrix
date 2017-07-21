@@ -25,7 +25,7 @@ public class ServerMain {
 
             Configuration serverConfig = null;
             try {
-                File configFile = new File("./Server/resources/config.json");
+                File configFile = new File("App/Server/resources/config.json");
                 serverConfig = new Gson().fromJson(new FileReader(configFile), Configuration.class);
             }catch (FileNotFoundException|NullPointerException|JsonIOException e){
                 System.err.println("Error: archivo \"config.json\" no encontrado.");

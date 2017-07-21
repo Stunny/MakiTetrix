@@ -3,6 +3,7 @@ package Controller;
 import Model.GestioDades;
 import Model.User;
 import Model.exceptions.BadAccessToDatabaseException;
+import Network.ThreadServidorDedicat;
 import View.PointsGraph;
 import View.ServerAdminView;
 import View.ViewersGraph;
@@ -26,6 +27,7 @@ public class ServerController implements ActionListener, MouseListener {
     private ServerAdminView serverAdminView;
     private GestioDades gestioDades;
     private User selectedUser;
+    private ArrayList<ThreadServidorDedicat>threads;
 
     /**
      * @param serverAdminView
@@ -34,6 +36,7 @@ public class ServerController implements ActionListener, MouseListener {
     public ServerController(ServerAdminView serverAdminView, GestioDades gestioDades) {
         this.serverAdminView = serverAdminView;
         this.gestioDades = gestioDades;
+        this.threads = new ArrayList<ThreadServidorDedicat>();
 
         updateUserList();
     }
@@ -200,6 +203,34 @@ public class ServerController implements ActionListener, MouseListener {
             }
         }
         return onlineUsers;
+    }
+
+    public void addThread (ThreadServidorDedicat t){
+        boolean exists = false;
+        System.out.println("t.nom = "+t.getCurrentUser());
+        System.out.println("afegeixo thread");
+        System.out.println("Numero threads: "+threads.size());
+        for (int i = 0; i<threads.size(); i++){
+            System.out.println("threads.get(i) nom = "+threads.get(i).getCurrentUser());
+            if(t.getCurrentUser()!=null &&threads.get(i).getCurrentUser().equals(t.getCurrentUser())){
+                System.out.println("repe");
+                exists = true;
+            }
+        }
+
+        if (!exists && t.getCurrentUser()!=null){
+            threads.add(t);
+        }
+    }
+
+    public void eliminaThread (ThreadServidorDedicat tsd){
+        System.out.println("elimino thread");
+        threads.remove(tsd);
+
+    }
+
+    public ArrayList<ThreadServidorDedicat> getThreads(){
+        return threads;
     }
 
 }
