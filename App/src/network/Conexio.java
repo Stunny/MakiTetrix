@@ -387,8 +387,8 @@ public class Conexio extends Thread {
                 result.add(diStream.readInt());
                 result.add(diStream.readInt());
 
-                disconnect();
-                return result;
+
+
             }
 
             System.out.println("size "+result.size());
