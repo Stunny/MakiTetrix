@@ -87,11 +87,11 @@ public class GameController implements KeyListener {
     }
 
     public void endGame (){
-        System.out.println("entro a endGame");
         new  WindowEvent (gv, WindowEvent.WINDOW_CLOSED);
         conexio.sendEndGame();
         stopgame = true;
         if (gv.saveGame() == 0){
+            conexio.saveGameData(userName, score, time, game_date, max_espectators, replay_path);
             game.saveGame();
         }
     }

@@ -349,7 +349,6 @@ public class Partida {
     }
 
     public void saveGame () {
-        connect.sendEndGame();
         System.out.println("Guardando Partida");
         Date actualdate = new Date();
         DateFormat formatoHora = new SimpleDateFormat("HH.mm");
