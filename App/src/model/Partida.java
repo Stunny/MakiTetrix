@@ -48,6 +48,7 @@ public class Partida {
     private int points;
     private Queue<Move> savegame;
     private Conexio connect;
+    private String date;
 
     //Constructor
 
@@ -351,11 +352,11 @@ public class Partida {
     public void saveGame () {
         System.out.println("Guardando Partida");
         Date actualdate = new Date();
-        DateFormat formatoHora = new SimpleDateFormat("HH.mm");
-        DateFormat formatoFecha = new SimpleDateFormat("dd.MM");
-        String nombre = formatoFecha.format(actualdate) + " - " + formatoHora.format(actualdate);
+        DateFormat formatoHora = new SimpleDateFormat("HHmm");
+        DateFormat formatoFecha = new SimpleDateFormat("ddMM");
+        date = formatoFecha.format(actualdate) + " _" + formatoHora.format(actualdate);
         try {
-            PrintWriter pw = new PrintWriter(new FileWriter(nombre + ".txt"));
+            PrintWriter pw = new PrintWriter(new FileWriter(date + ".txt"));
             while (!(savegame.isEmpty())) {
                 pw.println(savegame.peek().toString());
                 savegame.poll();
@@ -2401,5 +2402,6 @@ public class Partida {
     }
     public int getLevel() {return level;}
     public int getPoints() {return points;}
+    public String getDate() { return date;}
 
 }

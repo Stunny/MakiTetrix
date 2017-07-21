@@ -91,7 +91,8 @@ public class GameController implements KeyListener {
         conexio.sendEndGame();
         stopgame = true;
         if (gv.saveGame() == 0){
-            conexio.saveGameData(userName, score, time, game_date, max_espectators, replay_path);
+            conexio.saveGameData(userName, game.getPoints(), t.getTiempo(), game.getDate(),
+                    max_espectators, game.getDate()+".txt");
             game.saveGame();
         }
     }
