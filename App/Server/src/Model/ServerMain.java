@@ -1,22 +1,17 @@
 package Model;
 
-import javax.swing.*;
 import Controller.ServerController;
 import Model.exceptions.BadAccessToDatabaseException;
 import Network.ThreadSocketServer;
-import View.*;
+import View.ServerAdminView;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 
 /**
  * Created by Admin on 20/03/2017.
@@ -30,7 +25,7 @@ public class ServerMain {
 
             Configuration serverConfig = null;
             try {
-                File configFile = new File("./App/Server/resources/config.json");
+                File configFile = new File("./Server/resources/config.json");
                 serverConfig = new Gson().fromJson(new FileReader(configFile), Configuration.class);
             }catch (FileNotFoundException|NullPointerException|JsonIOException e){
                 System.err.println("Error: archivo \"config.json\" no encontrado.");

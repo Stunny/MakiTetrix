@@ -233,6 +233,20 @@ public class GameView extends JFrame{
 
     }
 
+    public int saveGame() {
+        Object[] options = {"Save", "Don't Save"};
+        return JOptionPane.showOptionDialog (this, "Do you want save the game?",
+                "Save Game?", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                options, options[0]);
+    }
+
+    public int pauseGame() {
+        String[] options = {"Continue"};
+        return JOptionPane.showOptionDialog(this, "Press continue for resume the game",
+                "PAUSE", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+                options, options[0]);
+    }
+
     //Getters && Setters
 
     public void setTemps (int time){
@@ -260,4 +274,5 @@ public class GameView extends JFrame{
     public JLabel getTemps() {
         return temps;
     }
+
 }

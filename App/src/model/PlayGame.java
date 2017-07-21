@@ -72,8 +72,7 @@ public class PlayGame extends Thread {
             try {
                 Thread.sleep(velocidad);
             } catch (InterruptedException ie){
-                System.out.println("Final del Juego");
-                game.saveGame();
+                gc.endGame();
             }
             //game.sendTime(gc.getTimer().getTiempo());
         }

@@ -20,6 +20,7 @@ public class GameController implements KeyListener {
     private PlayGame pg;
     private Timer t;
     private static int[] teclas  = new int[]{65,83,68,81,69,80};
+    private boolean stopgame;
 
     public GameController(GameView gv, Partida game){
         this.gv = gv;
@@ -32,6 +33,7 @@ public class GameController implements KeyListener {
         game.newGame();
         gv.printarPantalla(game.getInterfaz());
         gv.printarNextPiece(game.getNextpiece());
+        stopgame = false;
     }
 
     public void playGame () {
@@ -70,25 +72,49 @@ public class GameController implements KeyListener {
         return toreplay;
     }
 
+    public void endGame (){
+        stopgame = true;
+        if (gv.saveGame() == 0){
+            game.saveGame();
+        }
+    }
+
     @Override
     public void keyPressed (KeyEvent e){
         if (e.getKeyCode() == teclas[0]){
-            game.goLeft(t.getTiempo());
-            gv.printarPantalla(game.getInterfaz());
+            if (!stopgame) {
+                game.goLeft(t.getTiempo());
+                gv.printarPantalla(game.getInterfaz());
+            }
         } else if (e.getKeyCode() == teclas[1]){
-            game.goDown(t.getTiempo());
-            gv.printarPantalla(game.getInterfaz());
+            if (!stopgame) {
+                game.goDown(t.getTiempo());
+                gv.printarPantalla(game.getInterfaz());
+            }
         } else if (e.getKeyCode() == teclas[2]){
-            game.goRight(t.getTiempo());
-            gv.printarPantalla(game.getInterfaz());
+            if (!stopgame) {
+                game.goRight(t.getTiempo());
+                gv.printarPantalla(game.getInterfaz());
+            }
         } else if (e.getKeyCode() == teclas[3]){
-            game.rotateLeft(t.getTiempo());
-            gv.printarPantalla(game.getInterfaz());
+            if (!stopgame) {
+                game.rotateLeft(t.getTiempo());
+                gv.printarPantalla(game.getInterfaz());
+            }
         } else if (e.getKeyCode() == teclas[4]){
-            game.rotateRight(t.getTiempo());
-            gv.printarPantalla(game.getInterfaz());
+            if (!stopgame) {
+                game.rotateRight(t.getTiempo());
+                gv.printarPantalla(game.getInterfaz());
+            }
         } else if (e.getKeyCode() == teclas[5]){
-            //TODO: PAUSA DEL JUEGO
+            stopgame = true;
+            pg.suspend();
+            t.suspend();
+            if (gv.pauseGame() == 0){
+                stopgame = false;
+                pg.resume();
+                t.resume();
+            }
         } else {
             System.out.println("Tecla no válida.");
         }
