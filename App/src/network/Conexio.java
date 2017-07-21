@@ -114,7 +114,8 @@ public class Conexio extends Thread {
     }
 
     public ArrayList<Integer> getTeclesUser(String user) {
-        ArrayList<Integer>result = new ArrayList<Integer>();
+        System.out.println("getTeclesUser");
+        ArrayList<Integer>result = new ArrayList<>();
 
         try {
             connect();
@@ -128,11 +129,9 @@ public class Conexio extends Thread {
                 result.add(diStream.readInt());
                 result.add(diStream.readInt());
 
-
                 disconnect();
                 return result;
 
-            }else{
             }
 
             System.out.println("size "+result.size());
@@ -145,10 +144,8 @@ public class Conexio extends Thread {
     }
 
     public void setTeclesUser(String user, int d, int i, int a, int rd, int ri, int p) {
+        System.out.println("setTeclesUser");
         try {
-
-
-
             connect();
             Encrypter encrypter = new Encrypter();
             doStream.writeUTF("setTecles");
@@ -318,25 +315,6 @@ public class Conexio extends Thread {
         return data;
     }
 
-    /**
-     * Communicates a changes on a user's gaming status
-     * @param userName User we want to modify the status on
-     * @param status Status we want to modify to
-     */
-    public void setGaming(String userName, boolean status) {
-        connect();
-
-        try {
-            doStream.writeUTF("GAMING_STATUS");
-            doStream.writeUTF(userName);
-            doStream.writeBoolean(status);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        disconnect();
-    }
-
     public void sendStartGame (){
         connect();
         try{
@@ -349,11 +327,12 @@ public class Conexio extends Thread {
 
     public void sendMove (Move m){
         connect();
+        /*
         try{
             doStream.writeUTF(m.toString());
         } catch (IOException e){
             e.printStackTrace();
-        }
+        }*/
         disconnect();
     }
 
@@ -380,39 +359,48 @@ public class Conexio extends Thread {
         this.time = time;
     }
 
-    /*
-    public void getTimes() {
-        connect();
-
-        try {
-            doStream.writeUTF("GAMING_TIMES");
-            doStream.writeUTF(currentUser.getUserName());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        disconnect();
-    }
-
-    public void sendTime(int time) {
-        connect();
-        try {
-            doStream.writeUTF("CURRENT_TIME");
-            doStream.writeUTF(currentUser.getUserName());
-            doStream.writeInt(time);
-            this.time = time;
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        disconnect();
-    }
-*/
-
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
 
     public int getTime() {
         return time;
+    }
+
+    /**
+     * Sets players' key configuration and modifies BBDD gaming and startingGameTime
+     * @param userName Player we want to modify and set parameters for
+     * @param status BBDD gaming's status
+     * @return Array containing player's key configuration
+     */
+    public ArrayList<Integer> gameStartParameters(String userName, boolean status) {
+        System.out.println("gameStartParameters");
+        ArrayList<Integer>result = new ArrayList<>();
+        try {
+            connect();
+            doStream.writeUTF("START_PARAMETERS");
+            doStream.writeUTF(userName);
+            if (diStream.readBoolean()) {
+                result.add(diStream.readInt());
+                result.add(diStream.readInt());
+                result.add(diStream.readInt());
+                result.add(diStream.readInt());
+                result.add(diStream.readInt());
+                result.add(diStream.readInt());
+
+                disconnect();
+                return result;
+            }
+
+            System.out.println("size "+result.size());
+
+            doStream.writeUTF(userName);
+            doStream.writeBoolean(status);
+            disconnect();
+            return result;
+        } catch (Exception exc){
+            exc.printStackTrace();
+        }
+        return result;
     }
 }

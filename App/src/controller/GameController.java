@@ -52,11 +52,11 @@ public class GameController implements KeyListener {
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String aux;
-            while((aux = br.readLine())!=null) {
+            while((aux = br.readLine()) != null) {
                 String value[] = aux.split(",");
                 switch (Integer.parseInt(value[0])){
                     case Move.MOVE:
-                        toreplay.add(new Move(Integer.parseInt(value[1]),Integer.parseInt(value[2])));
+                        toreplay.add(new Move(Integer.parseInt(value[1]), Integer.parseInt(value[2])));
                         break;
                     case Move.PIECE:
                         toreplay.add(new Move (new Pieza(Integer.parseInt(value[1]))));
@@ -95,9 +95,10 @@ public class GameController implements KeyListener {
     }
 
 
-    @Override()
+    @Override
     public void keyReleased(KeyEvent e){
     }
+
     @Override
     public void keyTyped (KeyEvent e){
 

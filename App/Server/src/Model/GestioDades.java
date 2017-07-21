@@ -131,7 +131,7 @@ public class GestioDades {
         }catch (ClassNotFoundException cnfe){
             cnfe.printStackTrace();
         }catch (SQLException e){
-
+            e.printStackTrace();
             throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
 
         }
@@ -849,7 +849,7 @@ public class GestioDades {
      * @param status The status we want to set to the specified user
      */
     public void setGamingStatus(String userName, boolean status, String startingGameTime) {
-        System.out.println("entro a modificar la bbdd");
+        System.out.println("Set " + userName + " to " + status + " at the time " + startingGameTime);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
@@ -860,6 +860,37 @@ public class GestioDades {
             stmt.setBoolean(1, status);
             stmt.setString(2, startingGameTime);
             stmt.setString(3, userName);
+
+            stmt.execute();
+            c.close();
+
+        }catch (ClassNotFoundException | SQLException cnfe){
+            cnfe.printStackTrace();
+        }
+    }
+
+    /**
+     * Saves gama data into database when game is finished
+     * @param userName user who played the game
+     * @param score final score of the game
+     * @param game_date date of the game
+     * @param max_espectators number of maximum spectators during the game
+     * @param replayPath path of the replay
+     */
+    public void saveGameData(String userName, int score, String game_date, int max_espectators, String replayPath){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+            String query = "INSERT INTO Partida(user, score, time, game_date, max_espectators, replay_path) VALUES " +
+                    "('" + userName + "', " + score + ", '" + game_date + "', " + max_espectators + ", '" + replayPath + "');";
+            PreparedStatement stmt = c.prepareStatement(query);
+            stmt.setString(1, userName);
+            stmt.setInt(2, score);
+            stmt.setString(3, game_date);
+            stmt.setInt(4, max_espectators);
+            stmt.setString(5, replayPath);
 
             stmt.execute();
             c.close();

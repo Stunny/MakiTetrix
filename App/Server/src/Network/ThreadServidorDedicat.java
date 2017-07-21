@@ -75,10 +75,6 @@ public class ThreadServidorDedicat extends Thread {
                int ri = diStream.readInt();
                int p = diStream.readInt();
 
-
-
-
-
                 try {
 
                    gestioDades.setTecles(u, d, i, a, rd, ri, p);
@@ -86,10 +82,6 @@ public class ThreadServidorDedicat extends Thread {
                }catch(BadAccessToDatabaseException e){
                    e.printMessage();
                }
-
-
-
-
             }
             break;
             case "getTecles": {
@@ -107,20 +99,11 @@ public class ThreadServidorDedicat extends Thread {
                         doStream.writeInt(result.get(3));
                         doStream.writeInt(result.get(4));
                         doStream.writeInt(result.get(5));
-
-
-
                     }
                 }catch(BadAccessToDatabaseException e){
                     e.printMessage();
                 }
-
-
-
-
-
             }
-            System.out.println("surto6");
 
             break;
             case "L": //Login Request
@@ -211,29 +194,6 @@ public class ThreadServidorDedicat extends Thread {
 
                 break;
 
-            case "GAMING_STATUS"://Sets desired players gaming status
-                currentUser = diStream.readUTF();
-                boolean status = diStream.readBoolean();
-                java.util.Date dt = new java.util.Date();
-                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String startingGameTime = sdf.format(dt);
-                gestioDades.setGamingStatus(currentUser, status, startingGameTime);
-                break;
-/*
-            case "CURRENT_TIME":
-                currentUser = diStream.readUTF();
-                time = diStream.readInt();
-                break;
-
-            case "GAMING_TIMES":
-                currentUser = diStream.readUTF();
-                ArrayList<Integer> times = threadServidorActiu.getTimeList(gestioDades.gamingUsers(currentUser));
-                for (int i = 0; i < times.size(); i++){
-                    System.out.println("User: " + gestioDades.gamingUsers(currentUser).get(i));
-                    System.out.println("Gaming time: " + times.get(i));
-                }
-                break;
-*/
             case "REPLAY_LIST"://List of player's games
                 currentUser = diStream.readUTF();
 
@@ -260,6 +220,36 @@ public class ThreadServidorDedicat extends Thread {
 
                 //threadServidorActiu.getCurrentTime(selectedUser);
                 // TODO: establecer observador a la partida seleccionada
+                break;
+            case "START_PARAMETERS":
+                String u = diStream.readUTF();
+                try {
+                    ArrayList<Integer>result = gestioDades.getTecles(u);
+
+                    if (result.size()==0){
+                        doStream.writeBoolean(false);
+                    }else{
+                        doStream.writeBoolean(true);
+                        doStream.writeInt(result.get(0));
+                        doStream.writeInt(result.get(1));
+                        doStream.writeInt(result.get(2));
+                        doStream.writeInt(result.get(3));
+                        doStream.writeInt(result.get(4));
+                        doStream.writeInt(result.get(5));
+                    }
+                    currentUser = diStream.readUTF();
+                    boolean status = diStream.readBoolean();
+                    java.util.Date dt = new java.util.Date();
+                    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String startingGameTime = sdf.format(dt);
+                    System.out.println("user: " + currentUser);
+                    System.out.println("status: " + status);
+                    System.out.println("game time: " + startingGameTime);
+                    gestioDades.setGamingStatus(currentUser, status, startingGameTime);
+                }catch(BadAccessToDatabaseException e){
+                    e.printMessage();
+                }
+
                 break;
         }
     }

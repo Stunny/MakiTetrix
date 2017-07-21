@@ -61,8 +61,9 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 break;
             case "jugar":
 
-                ArrayList<Integer> t = conexio.getTeclesUser(currentUser.getUserName());
-                if (t.size()>0) {
+                //ArrayList<Integer> t = conexio.getTeclesUser(currentUser.getUserName());
+                ArrayList<Integer> t = conexio.gameStartParameters(currentUser.getUserName(), true);
+                if (t.size() > 0) {
                     GameController.setTeclas(t.get(0), t.get(1), t.get(2), t.get(3), t.get(4), t.get(5));
                 }
                 //Permite Jugar
@@ -71,8 +72,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 gameController.startGame();
                 gameController.playGame();
                 //threadClientPasiu.interrupt();
-                System.out.println("set gaming");
-                conexio.setGaming(currentUser.getUserName(), true);
+                //conexio.setGaming(currentUser.getUserName(), true);
                 break;
             case "ver":
                 //Ver Partida en vivo

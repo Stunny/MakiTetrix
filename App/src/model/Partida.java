@@ -321,7 +321,7 @@ public class Partida {
     public void checkEnd (){
         if (collision(nextpiece, END)){
             end = true;
-            connect.sendEndGame();
+            //connect.sendEndGame();
         }
     }
 
