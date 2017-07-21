@@ -43,9 +43,9 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 //modifica los valores de las teclasa gusto del usuario
                 ArrayList<Integer> tecles = conexio.getTeclesUser(currentUser.getUserName());
 
-
                 KeySelectMenu keyView = new KeySelectMenu();
                 if (tecles.size()>0){
+
                     keyView.setTextDerecha(tecles.get(0));
                     keyView.setTextIzquierda(tecles.get(1));
                     keyView.setTextAbajo(tecles.get(2));
@@ -55,7 +55,9 @@ public class MenuController extends WindowAdapter implements ActionListener {
 
 
                 }
+
                 KeySelectMenuController keyContoller = new KeySelectMenuController(conexio, keyView, currentUser);
+
                 keyView.registerKey(keyContoller);
                 keyView.setVisible(true);
                 break;

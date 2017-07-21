@@ -10,7 +10,7 @@ import java.awt.*;
  */
 public class KeySelectMenu extends JFrame {
 
-    public static String SAVE = "Save";
+    public static String SAVE = "save";
     private JButton button;
     private JTextField textDerecha;
     private JTextField textIzquierda;
