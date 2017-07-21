@@ -4,6 +4,8 @@ import Controller.ServerController;
 import Model.Encrypter;
 import Model.GestioDades;
 import Model.exceptions.BadAccessToDatabaseException;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import utils.GameDataManager;
 import utils.ObserveManager;
 
@@ -18,7 +20,7 @@ import java.util.Calendar;
 /**
  * Created by Admin on 24/03/2017.
  */
-public class ThreadServidorDedicat extends Thread {
+public class ThreadServidorDedicat extends Thread{
 
     private DataInputStream diStream;
     private DataOutputStream doStream;
@@ -84,6 +86,7 @@ public class ThreadServidorDedicat extends Thread {
                }
             }
             break;
+
             case "getTecles": {
                 String u = diStream.readUTF();
                 try {
@@ -104,8 +107,8 @@ public class ThreadServidorDedicat extends Thread {
                     e.printMessage();
                 }
             }
-
             break;
+
             case "L": //Login Request
                 try {
                     String userNameOREmail = diStream.readUTF();
@@ -218,7 +221,6 @@ public class ThreadServidorDedicat extends Thread {
                 String selectedUser = diStream.readUTF();
                 System.out.println("I want to spectate: " + selectedUser);
 
-                //threadServidorActiu.getCurrentTime(selectedUser);
                 // TODO: establecer observador a la partida seleccionada
                 break;
             case "START_PARAMETERS":
@@ -242,14 +244,18 @@ public class ThreadServidorDedicat extends Thread {
                     java.util.Date dt = new java.util.Date();
                     java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String startingGameTime = sdf.format(dt);
-                    System.out.println("user: " + currentUser);
-                    System.out.println("status: " + status);
-                    System.out.println("game time: " + startingGameTime);
                     gestioDades.setGamingStatus(currentUser, status, startingGameTime);
                 }catch(BadAccessToDatabaseException e){
                     e.printMessage();
                 }
+                break;
 
+            case "GAME_START":
+                currentUser = diStream.readUTF();
+                break;
+
+            case "MOVE":
+                System.out.println("moviment: " + diStream.readUTF());
                 break;
         }
     }

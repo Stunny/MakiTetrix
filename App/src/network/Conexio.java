@@ -20,7 +20,6 @@ public class Conexio extends Thread {
     private DataOutputStream doStream;
     private Socket sServidor;
 
-    private String responseFlag;
     private String KOMessage;
     private boolean ResponseSuccess = true;
     private int time;
@@ -319,6 +318,7 @@ public class Conexio extends Thread {
         connect();
         try{
             doStream.writeUTF("GAME_START");
+            doStream.writeUTF(currentUser.getUserName());
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -327,12 +327,14 @@ public class Conexio extends Thread {
 
     public void sendMove (Move m){
         connect();
-        /*
+
         try{
+            doStream.writeUTF("MOVE");
             doStream.writeUTF(m.toString());
         } catch (IOException e){
             e.printStackTrace();
-        }*/
+        }
+
         disconnect();
     }
 

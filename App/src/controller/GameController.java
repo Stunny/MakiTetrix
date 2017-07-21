@@ -2,9 +2,12 @@ package controller;
 
 import Vista.GameView;
 import model.*;
+import network.Conexio;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,12 +24,23 @@ public class GameController implements KeyListener {
     private Timer t;
     private static int[] teclas  = new int[]{65,83,68,81,69,80};
     private boolean stopgame;
+    private Conexio conexio;
 
-    public GameController(GameView gv, Partida game){
+    public GameController(GameView gv, Partida game, Conexio conexio){
         this.gv = gv;
         this.game = game;
         gv.addKeyListener(this);
         t = new Timer(gv,game);
+        this.conexio = conexio;
+        gv.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                endGame();
+                e.getWindow().dispose();
+            }
+        });
     }
 
     public void startGame(){
@@ -50,7 +64,7 @@ public class GameController implements KeyListener {
     }
 
     private Queue<Move> toQueue (String file){
-        Queue<Move> toreplay = new LinkedList<Move>();
+        Queue<Move> toreplay = new LinkedList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String aux;
@@ -73,6 +87,9 @@ public class GameController implements KeyListener {
     }
 
     public void endGame (){
+        System.out.println("entro a endGame");
+        new  WindowEvent (gv, WindowEvent.WINDOW_CLOSED);
+        conexio.sendEndGame();
         stopgame = true;
         if (gv.saveGame() == 0){
             game.saveGame();

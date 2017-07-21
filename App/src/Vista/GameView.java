@@ -4,6 +4,8 @@ import model.Pieza;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Ventana del juego.
@@ -26,6 +28,7 @@ public class GameView extends JFrame{
         setTitle("MakiTetrix - Game");
         setLocationRelativeTo(null);
         setSize(432,800);
+
 
         //Pantalla principal del juego
         centre = new JPanel(new GridLayout(25,10));
@@ -253,22 +256,22 @@ public class GameView extends JFrame{
         int min = time/60;
         int seg = time%60;
         if (min < 10 && seg < 10){
-            temps.setText("0"+min+":0"+seg);
+            temps.setText("0" + min + ":0" + seg);
         } else if (min < 10 && seg >= 10){
-            temps.setText("0"+min+":"+seg);
+            temps.setText("0" + min + ":" + seg);
         } else if (min >= 10 && seg < 10){
-            temps.setText(min+":0"+seg);
+            temps.setText(min + ":0" + seg);
         } else if (min >= 10 && seg >= 10){
             temps.setText(min + ":" + seg);
         }
     }
 
     public void setNivel(int nivel){
-        this.nivel.setText("Nivel: "+nivel);
+        this.nivel.setText("Nivel: " + nivel);
     }
 
     public void setPuntuacion (int puntuacion){
-        this.puntuacion.setText("Puntos: "+ puntuacion);
+        this.puntuacion.setText("Puntos: " + puntuacion);
     }
 
     public JLabel getTemps() {

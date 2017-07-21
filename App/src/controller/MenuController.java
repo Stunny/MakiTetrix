@@ -4,8 +4,6 @@ import Vista.*;
 import model.Partida;
 import model.User;
 import network.Conexio;
-import network.ThreadClientPasiu;
-import network.ThreadClientPasiuDedicat;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,17 +30,13 @@ public class MenuController extends WindowAdapter implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         GameView gameView = new GameView();
         Partida partida = new Partida(conexio);
-        GameController gameController = new GameController(gameView, partida);
+        GameController gameController = new GameController(gameView, partida, conexio);
         conexio.setCurrentUser(currentUser);
-
-        //lanzamos el nuevo thread donde el servidor sera activo y el cliente el pasivo
-        //ThreadClientPasiu threadClientPasiu = new ThreadClientPasiu(currentUser.getUserName(), conexio.getTime());
 
         switch (e.getActionCommand()){
             case "teclas":
                 //modifica los valores de las teclasa gusto del usuario
                 ArrayList<Integer> tecles = conexio.getTeclesUser(currentUser.getUserName());
-
 
                 KeySelectMenu keyView = new KeySelectMenu();
                 if (tecles.size()>0){
@@ -52,8 +46,6 @@ public class MenuController extends WindowAdapter implements ActionListener {
                     keyView.setTextRotarDerecha(tecles.get(3));
                     keyView.setTextRotarIzquierda(tecles.get(4));
                     keyView.setTextPause(tecles.get(5));
-
-
                 }
                 KeySelectMenuController keyContoller = new KeySelectMenuController(conexio, keyView, currentUser);
                 keyView.registerKey(keyContoller);
@@ -61,27 +53,21 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 break;
             case "jugar":
 
-                //ArrayList<Integer> t = conexio.getTeclesUser(currentUser.getUserName());
                 ArrayList<Integer> t = conexio.gameStartParameters(currentUser.getUserName(), true);
                 if (t.size() > 0) {
                     GameController.setTeclas(t.get(0), t.get(1), t.get(2), t.get(3), t.get(4), t.get(5));
                 }
                 //Permite Jugar
-                //threadClientPasiu.start();
                 gameView.setVisible(true);
                 gameController.startGame();
                 gameController.playGame();
-                //threadClientPasiu.interrupt();
-                //conexio.setGaming(currentUser.getUserName(), true);
                 break;
             case "ver":
                 //Ver Partida en vivo
-                //threadClientPasiu.start();
                 EspectatorView espectatorView = new EspectatorView();
                 EspectatorController espectatorController = new EspectatorController(espectatorView, conexio, currentUser.getUserName());
                 espectatorView.registerEspectator(espectatorController);
                 espectatorView.setVisible(true);
-                //threadClientPasiu.interrupt();
                 break;
             case "anterior":
                 //Reproducir anterior
@@ -95,6 +81,10 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 System.exit(1);
                 break;
         }
+    }
+
+    public void fiPartida(){
+
     }
 
     public void windowClosing(WindowEvent evt){
