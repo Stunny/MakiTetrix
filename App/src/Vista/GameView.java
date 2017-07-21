@@ -4,8 +4,6 @@ import model.Pieza;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 /**
  * Ventana del juego.

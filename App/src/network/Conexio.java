@@ -374,7 +374,6 @@ public class Conexio extends Thread {
      * @return Array containing player's key configuration
      */
     public ArrayList<Integer> gameStartParameters(String userName, boolean status) {
-        System.out.println("gameStartParameters");
         ArrayList<Integer>result = new ArrayList<>();
         try {
             connect();
@@ -402,5 +401,17 @@ public class Conexio extends Thread {
             exc.printStackTrace();
         }
         return result;
+    }
+
+    public void saveGameData(String userName, int score, int tiempo, String game_date, int max_espectators, String replay_path){
+        connect();
+
+        try {
+            doStream.writeUTF(currentUser.getUserName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        disconnect();
     }
 }
