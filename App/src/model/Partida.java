@@ -354,7 +354,7 @@ public class Partida {
         Date actualdate = new Date();
         DateFormat formatoHora = new SimpleDateFormat("HHmm");
         DateFormat formatoFecha = new SimpleDateFormat("ddMM");
-        date = formatoFecha.format(actualdate) + " _" + formatoHora.format(actualdate);
+        date = formatoFecha.format(actualdate) + "_" + formatoHora.format(actualdate);
         try {
             PrintWriter pw = new PrintWriter(new FileWriter(date + ".txt"));
             while (!(savegame.isEmpty())) {

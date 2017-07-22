@@ -89,8 +89,9 @@ public class GameController implements KeyListener {
         new  WindowEvent (gv, WindowEvent.WINDOW_CLOSED);
         stopgame = true;
         if (gv.saveGame() == 0){
-            conexio.saveGameData(game.getPoints(), t.getTiempo(),0, game.getDate() + ".txt");
             game.saveGame();
+            conexio.saveGameData(game.getPoints(), t.getTiempo(),0,
+                    game.getDate() + ".txt");
         }
         gv.setVisible(false);
         conexio.sendEndGame();
