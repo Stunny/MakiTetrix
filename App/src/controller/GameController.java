@@ -1,16 +1,17 @@
 package controller;
 
 import Vista.GameView;
-import model.*;
+import model.Crono;
+import model.Move;
+import model.Partida;
+import model.PlayGame;
 import network.Conexio;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -55,32 +56,17 @@ public class GameController implements KeyListener {
         t.start();
     }
 
-    public void startReplay (String file) {
+    public void startReplay (ArrayList<String > replay) {
         pg = new PlayGame(game, this);
-        pg.setToPlay(toQueue(file));
+        pg.setToPlay(toQueue(replay));
         pg.run();
 
     }
 
-    private Queue<Move> toQueue (String file){
+    private Queue<Move> toQueue (ArrayList<String> replay){
         Queue<Move> toreplay = new LinkedList<>();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String aux;
-            while((aux = br.readLine()) != null) {
-                String value[] = aux.split(",");
-                switch (Integer.parseInt(value[0])){
-                    case Move.MOVE:
-                        toreplay.add(new Move(Integer.parseInt(value[1]), Integer.parseInt(value[2])));
-                        break;
-                    case Move.PIECE:
-                        toreplay.add(new Move (new Pieza(Integer.parseInt(value[1]))));
-                        break;
-                }
-            }
-            br.close();
-        } catch (IOException ioe){
-            ioe.printStackTrace();
+        for (int i = 0; i < replay.size(); i++){
+            toreplay.add(new Move (replay.get(i)));
         }
         return toreplay;
     }

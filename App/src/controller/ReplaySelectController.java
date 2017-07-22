@@ -1,18 +1,16 @@
 package controller;
 
-import Vista.MainMenuView;
 import Vista.ReplaySelectView;
-import model.UserReplay;
 import network.Conexio;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Vector;
 
 /**
  * Created by angel on 25/05/2017.
@@ -21,6 +19,7 @@ public class ReplaySelectController implements MouseListener{
     private ReplaySelectView view;
     private Conexio conexio;
     private String userName;
+    private ArrayList<String> replay;
 
     ReplaySelectController(ReplaySelectView view, Conexio conexio, String userName){
         this.view = view;
@@ -76,7 +75,7 @@ public class ReplaySelectController implements MouseListener{
         JTable table = (JTable) e.getSource();
         if (e.getClickCount() == 1) {
             int row = view.getTable().getSelectedRow();
-            conexio.sendDesiredUserReplay(Integer.parseInt(table.getValueAt(row, 0).toString()));
+            replay = conexio.sendDesiredUserReplay(Integer.parseInt(table.getValueAt(row, 0).toString()));
         }
     }
 
@@ -99,4 +98,6 @@ public class ReplaySelectController implements MouseListener{
     public void mouseExited(MouseEvent e) {
 
     }
+
+    public ArrayList<String> getReplay (){return replay;}
 }

@@ -37,6 +37,19 @@ public class Move {
         option = PIECE;
     }
 
+    public Move (String aux){
+        String value[] = aux.split(",");
+        switch (Integer.parseInt(value[0])){
+            case Move.MOVE:
+                move = Integer.parseInt(value[1]);
+                time = Integer.parseInt(value[2]);
+                break;
+            case Move.PIECE:
+                piece = new Pieza (Integer.parseInt(value[1]));
+                break;
+        }
+    }
+
     //Getters && Setters
 
     public Pieza getPiece (){

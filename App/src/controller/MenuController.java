@@ -84,7 +84,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 replay.setVisible(true);
                 gameController.setStopGame(true);
                 gameView.setVisible(true);
-                gameController.startReplay("2107 _1557.txt");
+                gameController.startReplay(replayController.getReplay());
                 break;
 
             case "salir":

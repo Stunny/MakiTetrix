@@ -231,14 +231,14 @@ public class Conexio extends Thread {
      * Sends the desired user
      * @param userNameReplays
      */
-    public void sendDesiredUserReplay(int userNameReplays) {
+    public ArrayList<String> sendDesiredUserReplay(int userNameReplays) {
         connect();
+        ArrayList<String> movements = new ArrayList<>();
         try {
             doStream.writeUTF("REPLAY");
             doStream.writeInt(userNameReplays);
 
             String aux = null;
-            ArrayList<String> movements = new ArrayList<>();
             do {
                 aux = diStream.readUTF();
                 if (!aux.equals("END")){
@@ -252,8 +252,8 @@ public class Conexio extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         disconnect();
+        return movements;
     }
 
 
