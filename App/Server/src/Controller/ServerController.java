@@ -3,11 +3,9 @@ package Controller;
 import Model.GestioDades;
 import Model.User;
 import Model.exceptions.BadAccessToDatabaseException;
-import Network.ThreadServidorDedicat;
 import View.PointsGraph;
 import View.ServerAdminView;
 import View.ViewersGraph;
-import network.LlistaEspectadors;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -29,7 +27,7 @@ public class ServerController implements ActionListener, MouseListener {
     private ServerAdminView serverAdminView;
     private GestioDades gestioDades;
     private User selectedUser;
-    private ArrayList<LlistaEspectadors>retrans;
+    private ArrayList<Network.LlistaEspectadors>retrans;
 
     /**
      * @param serverAdminView
@@ -233,14 +231,14 @@ public class ServerController implements ActionListener, MouseListener {
     public void addPartida(String user){
 
         System.out.println("nova partida emmagatzemada");
-        LlistaEspectadors l = new LlistaEspectadors(user);
+        Network.LlistaEspectadors l = new Network.LlistaEspectadors(user);
         retrans.add(l);
     }
-    public ArrayList<LlistaEspectadors> getRetrans(){
+    public ArrayList<Network.LlistaEspectadors> getRetrans(){
         return retrans;
     }
 
-    public LlistaEspectadors getEspectadors (String user){
+    public Network.LlistaEspectadors getEspectadors (String user){
 
         for (int i = 0; i<retrans.size();i++){
             if (retrans.get(i).getUser().equals(user)){

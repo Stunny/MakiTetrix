@@ -45,9 +45,9 @@ public class ReplaySelectController implements MouseListener{
         model.addColumn("Pico máximo de espectadores");
 
         for (int i = 0; i < data.length; i++){
-            String [] aux = data[i].split("-");
-            String date = aux[0];
-            String score = aux[1];
+            String [] aux = data[i].split("#");
+            String score = aux[0];
+            String date = aux[1];
             String time = aux[2];
             String max_espectators = aux[3];
 
@@ -65,7 +65,6 @@ public class ReplaySelectController implements MouseListener{
             row.addElement(espectadors.get(0));
             model.addRow(row);
         }
-
     }
 
     @Override

@@ -661,7 +661,7 @@ public class GestioDades {
             s.executeQuery ("SELECT score, time, game_date, max_espectators FROM Partida, Login WHERE Login.user = '" + user + "';");
             ResultSet r = s.getResultSet ();
             while (r.next()){
-                String[] aux = new String[]{String.valueOf(r.getInt("score")), String.valueOf(r.getInt("time")),
+                String[] aux = new String[]{String.valueOf(r.getInt("score")), r.getString("time"),
                         r.getString("game_date"), String.valueOf(r.getInt("max_espectators"))};
                 totalData.add(aux);
             }

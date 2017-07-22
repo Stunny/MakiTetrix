@@ -203,7 +203,7 @@ public class ThreadServidorDedicat extends Thread{
                 doStream.writeInt(gameInfo.size());
                 for (int i = 0; i < gameInfo.size(); i++){
                     String[] aux = gameInfo.get(i);
-                    String data = aux[0] + "-" + aux[1] + "-" + aux[2] + "-" + aux[3];
+                    String data = aux[0] + "#" + aux[1] + "#" + aux[2] + "#" + aux[3];
                     doStream.writeUTF(data);
                 }
                 break;
@@ -217,7 +217,7 @@ public class ThreadServidorDedicat extends Thread{
             case "ESPECTATE": //Selected user to observe
                 String selectedUser = diStream.readUTF();
                 System.out.println("I want to spectate: " + selectedUser);
-            ArrayList<network.LlistaEspectadors> retrans = sController.getRetrans();
+                ArrayList<LlistaEspectadors> retrans = sController.getRetrans();
 
                     //Ens afegim com a espectador de la partida del jugador user
                     sController.afegeixEspectador(selectedUser,doStream);
@@ -253,7 +253,7 @@ public class ThreadServidorDedicat extends Thread{
                 System.out.println("acaba el joc");
                 //avisem a tots els espectadors que es para la transmissio i es buida l'arraylist espectadors
                 String u = diStream.readUTF();
-                network.LlistaEspectadors espectadors= sController.getEspectadors(u);
+                LlistaEspectadors espectadors= sController.getEspectadors(u);
                 ArrayList<DataOutputStream> ds= espectadors.getDs();
                 for (int i=0; i<ds.size();i++){
                     System.out.println("envio END a espectador");
