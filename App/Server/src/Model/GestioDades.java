@@ -646,7 +646,7 @@ public class GestioDades {
     }
 
     /**
-     * Devuelve toda la informacion de todas las partidas de un usuario
+     * Devuelve la informacion de todas las partidas de un usuario
      * @param user Usuario de qual queremos saber la informacion de sus partidas
      * @return Devuelve un ArrayList<String[]> donde cada casilla de array del string contiene la informacion de una partida
      */
@@ -658,7 +658,7 @@ public class GestioDades {
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
             Statement s = c.createStatement ();
-            s.executeQuery ("SELECT score, time, game_date, max_espectators FROM Partida, Login WHERE Login.user = '" + user + "';");
+            s.executeQuery ("SELECT score, time, game_date, max_espectators FROM Partida WHERE Partida.user = '" + user + "';");
             ResultSet r = s.getResultSet ();
             while (r.next()){
                 String[] aux = new String[]{String.valueOf(r.getInt("score")), r.getString("time"),
