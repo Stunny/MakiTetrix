@@ -84,7 +84,6 @@ public class GestioDades {
 
             Statement s = c.createStatement();
 
-            System.out.println("enviada request");
             s.executeQuery("SELECT user FROM DefaultKeys");
             ResultSet rs = s.getResultSet();
 
@@ -94,7 +93,6 @@ public class GestioDades {
                 String name = rs.getString("user");
                 if (name.equals(u)) {
                     exists = true;
-                    System.out.println("found user");
                 }
             }
             rs.close();
@@ -841,7 +839,6 @@ public class GestioDades {
      */
     public void setGamingStatus(String userName, boolean status, String startingGameTime) {
         this.startingGameTime = startingGameTime;
-        System.out.println("guardo aquest temps: " + this.startingGameTime);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
@@ -869,14 +866,12 @@ public class GestioDades {
      * @param replayPath path of the replay
      */
     public void saveGameData(String userName, int score, int millis, int max_espectators, String replayPath){
-        System.out.println("game time: " + startingGameTime);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
             String query = "INSERT INTO Partida(user, score, time, game_date, max_espectators, replay_path) VALUES (?, ?, ?, ?, ?, ?);";
-
 
             String tiempo = String.format("%02d:%02d:%02d",
                     TimeUnit.MILLISECONDS.toHours(millis),

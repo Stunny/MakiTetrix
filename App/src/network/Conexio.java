@@ -237,6 +237,19 @@ public class Conexio extends Thread {
         try {
             doStream.writeUTF("REPLAY");
             doStream.writeInt(userNameReplays);
+
+            String aux = null;
+            ArrayList<String> movements = new ArrayList<>();
+            do {
+                aux = diStream.readUTF();
+                if (!aux.equals("END")){
+                    movements.add(aux);
+                }
+            }while (!aux.equals("END"));
+
+            for (int i = 0; i < movements.size(); i++){
+                System.out.println("Rebo aquests moviments: " + movements.get(i));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -371,7 +384,7 @@ public class Conexio extends Thread {
 
     /**
      * Sends to the server the user replay.
-     * @param path      Path of the replay
+     * @param path Path of the replay
      */
     public void sendReplay (String path){
         connect();
@@ -383,12 +396,12 @@ public class Conexio extends Thread {
             while((aux = br.readLine()) != null) {
                 doStream.writeUTF(aux);
             }
+            doStream.writeUTF("END");
             br.close();
-            doStream.writeUTF("END_NEW_REPLAY");
+            //doStream.writeUTF("END_NEW_REPLAY");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         disconnect();
     }

@@ -33,6 +33,7 @@ public class ThreadServidorDedicat extends Thread{
     private ObserveManager observeManager;
     private LlistaEspectadors espectadors;
     private ArrayList<DataOutputStream>ds;
+    private ArrayList<ArrayList> replays = new ArrayList<>();
 
 
     public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades, ServerController sController){
@@ -205,7 +206,13 @@ public class ThreadServidorDedicat extends Thread{
 
             case "REPLAY"://Selected user's replay
                 // observeManager.beginObserve();
-                System.out.println("Quiero ver la replay numero: " + diStream.readInt());
+                int replayNumber = diStream.readInt();
+                System.out.println("Quiero ver la replay numero: " + replayNumber);
+                for (int i = 0; i < replays.get(replayNumber - 1).size(); i++){
+                    System.out.println("envio aquest moviment: " + replays.get(replayNumber - 1).get(i).toString());
+                    doStream.writeUTF(replays.get(replayNumber - 1).get(i).toString());
+                }
+                doStream.writeUTF("END");
                 // TODO: peticion de la replay seleccionada
                 break;
 
@@ -265,7 +272,7 @@ public class ThreadServidorDedicat extends Thread{
             case "MOVE":
                 String user = diStream.readUTF();
                 String s = diStream.readUTF();
-                System.out.println("moviment: " + s);
+                //System.out.println("moviment: " + s);
                 espectadors= sController.getEspectadors(user);
                  ds= espectadors.getDs();
                 for (int i=0; i<espectadors.getDs().size();i++){
@@ -281,6 +288,19 @@ public class ThreadServidorDedicat extends Thread{
                 int max_espectators  = diStream.readInt();
                 String replay_path = diStream.readUTF();
                 gestioDades.saveGameData(currentUser, score, millis, max_espectators, replay_path);
+                break;
+
+            case "NEW_REPLAY":
+                String aux = null;
+                ArrayList<String> movements = new ArrayList<>();
+                do {
+                    aux = diStream.readUTF();
+                    if (!aux.equals("END")){
+                        movements.add(aux);
+                    }
+                }while (!aux.equals("END"));
+                replays.add(movements);
+
                 break;
         }
     }
