@@ -4,9 +4,7 @@ import model.Move;
 import model.User;
 import model.utils.Encrypter;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -221,7 +219,6 @@ public class Conexio extends Thread {
             while(!missatge.equals("end")){
                 System.out.println("missatge rebut: "+missatge);
                 missatge = diStream.readUTF();
-
             }
             System.out.println("s'acaba la espectadoria");
         } catch (IOException e) {
@@ -373,6 +370,29 @@ public class Conexio extends Thread {
     }
 
     /**
+     * Sends to the server the user replay.
+     * @param path      Path of the replay
+     */
+    public void sendReplay (String path){
+        connect();
+
+        try {
+            doStream.writeUTF("NEW_REPLAY");
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            String aux;
+            while((aux = br.readLine()) != null) {
+                doStream.writeUTF(aux);
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        disconnect();
+    }
+
+    /**
      * Sets players' key configuration and modifies BBDD gaming and startingGameTime
      * @param userName Player we want to modify and set parameters for
      * @param status BBDD gaming's status
@@ -420,6 +440,7 @@ public class Conexio extends Thread {
             doStream.writeInt(tiempo);
             doStream.writeInt(max_espectators);
             doStream.writeUTF(replay_path);
+            this.sendReplay(replay_path);
         } catch (IOException e) {
             e.printStackTrace();
         }
