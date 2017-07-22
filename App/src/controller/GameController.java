@@ -37,7 +37,6 @@ public class GameController implements KeyListener {
             @Override
             public void windowClosing(WindowEvent e)
             {
-                endGame();
                 e.getWindow().dispose();
             }
         });
@@ -88,13 +87,13 @@ public class GameController implements KeyListener {
 
     public void endGame (){
         new  WindowEvent (gv, WindowEvent.WINDOW_CLOSED);
-        conexio.sendEndGame();
         stopgame = true;
         if (gv.saveGame() == 0){
-            //conexio.saveGameData(userName, game.getPoints(), t.getTiempo(), game.getDate(),
-            //        max_espectators, game.getDate()+".txt");
+            conexio.saveGameData(game.getPoints(), t.getTiempo(),0, game.getDate() + ".txt");
             game.saveGame();
         }
+        gv.setVisible(false);
+        conexio.sendEndGame();
     }
 
     @Override

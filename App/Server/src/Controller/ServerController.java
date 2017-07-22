@@ -3,11 +3,11 @@ package Controller;
 import Model.GestioDades;
 import Model.User;
 import Model.exceptions.BadAccessToDatabaseException;
-import Network.LlistaEspectadors;
 import Network.ThreadServidorDedicat;
 import View.PointsGraph;
 import View.ServerAdminView;
 import View.ViewersGraph;
+import network.LlistaEspectadors;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

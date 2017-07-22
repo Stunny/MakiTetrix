@@ -396,11 +396,7 @@ public class Conexio extends Thread {
                 result.add(diStream.readInt());
                 result.add(diStream.readInt());
                 result.add(diStream.readInt());
-
-
-
             }
-
             System.out.println("size "+result.size());
 
             doStream.writeBoolean(status);
@@ -412,11 +408,16 @@ public class Conexio extends Thread {
         return result;
     }
 
-    public void saveGameData(String userName, int score, int tiempo, String game_date, int max_espectators, String replay_path){
+    public void saveGameData(int score, int tiempo, int max_espectators, String replay_path){
         connect();
 
         try {
+            doStream.writeUTF("END_GAME_DATA");
             doStream.writeUTF(currentUser.getUserName());
+            doStream.writeInt(score);
+            doStream.writeInt(tiempo);
+            doStream.writeInt(max_espectators);
+            doStream.writeUTF(replay_path);
         } catch (IOException e) {
             e.printStackTrace();
         }

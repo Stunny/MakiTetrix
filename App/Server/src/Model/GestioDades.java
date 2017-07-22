@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Scanner;
 import java.security.MessageDigest;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Clase encargada de manejar los datos del servidor contra la base de datos local
@@ -28,6 +29,7 @@ public class GestioDades {
      * Objeto de conexion con la base de datos
      */
     private Connection c;
+    private String startingGameTime;
 
 
     /**
@@ -847,7 +849,8 @@ public class GestioDades {
      * @param status The status we want to set to the specified user
      */
     public void setGamingStatus(String userName, boolean status, String startingGameTime) {
-        System.out.println("Set " + userName + " to " + status + " at the time " + startingGameTime);
+        this.startingGameTime = startingGameTime;
+        System.out.println("guardo aquest temps: " + this.startingGameTime);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
@@ -871,28 +874,52 @@ public class GestioDades {
      * Saves gama data into database when game is finished
      * @param userName user who played the game
      * @param score final score of the game
-     * @param game_date date of the game
      * @param max_espectators number of maximum spectators during the game
      * @param replayPath path of the replay
      */
-    public void saveGameData(String userName, int score, String game_date, int max_espectators, String replayPath){
+    public void saveGameData(String userName, int score, int millis, int max_espectators, String replayPath){
+        System.out.println("game time: " + startingGameTime);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
-            String query = "INSERT INTO Partida(user, score, time, game_date, max_espectators, replay_path) VALUES " +
-                    "('" + userName + "', " + score + ", '" + game_date + "', " + max_espectators + ", '" + replayPath + "');";
+            String query = "INSERT INTO Partida(user, score, time, game_date, max_espectators, replay_path) VALUES (?, ?, ?, ?, ?, ?);";
+
+
+            String tiempo = String.format("%02d:%02d:%02d",
+                    TimeUnit.MILLISECONDS.toHours(millis),
+                    TimeUnit.MILLISECONDS.toMinutes(millis) -
+                            TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                    TimeUnit.MILLISECONDS.toSeconds(millis) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+
             PreparedStatement stmt = c.prepareStatement(query);
             stmt.setString(1, userName);
             stmt.setInt(2, score);
-            stmt.setString(3, game_date);
-            stmt.setInt(4, max_espectators);
-            stmt.setString(5, replayPath);
-
+            stmt.setString(3, tiempo);
+            stmt.setString(4, startingGameTime);
+            stmt.setInt(5, max_espectators);
+            stmt.setString(6, replayPath);
             stmt.execute();
             c.close();
+/*
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+            System.out.println("execute el update per copiar la dada");
+            Statement s = c.createStatement ();
+            s.executeQuery ("SELECT startingGameTime FROM Login WHERE user = '" + userName + "' ORDER BY user DESC;");
+            ResultSet r = s.getResultSet ();
+            if (r.next()){
+                System.out.println("mostro la data de la partida: " + r.getString("startingGameTime"));
+            }
 
+            String query2 = "UPDATE Partida SET game_date = (SELECT startingGameTime FROM Login WHERE user = ?);";
+            PreparedStatement stmt2 = c.prepareStatement(query2);
+            stmt2.setString(1, userName);
+            c.close();
+*/
         }catch (ClassNotFoundException | SQLException cnfe){
             cnfe.printStackTrace();
         }

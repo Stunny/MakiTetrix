@@ -4,8 +4,6 @@ import Controller.ServerController;
 import Model.Encrypter;
 import Model.GestioDades;
 import Model.exceptions.BadAccessToDatabaseException;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import utils.GameDataManager;
 import utils.ObserveManager;
 
@@ -13,9 +11,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by Admin on 24/03/2017.
@@ -221,7 +217,7 @@ public class ThreadServidorDedicat extends Thread{
             case "ESPECTATE": //Selected user to observe
                 String selectedUser = diStream.readUTF();
                 System.out.println("I want to spectate: " + selectedUser);
-            ArrayList<LlistaEspectadors> retrans = sController.getRetrans();
+            ArrayList<network.LlistaEspectadors> retrans = sController.getRetrans();
 
                     //Ens afegim com a espectador de la partida del jugador user
                     sController.afegeixEspectador(selectedUser,doStream);
@@ -257,7 +253,7 @@ public class ThreadServidorDedicat extends Thread{
                 System.out.println("acaba el joc");
                 //avisem a tots els espectadors que es para la transmissio i es buida l'arraylist espectadors
                 String u = diStream.readUTF();
-                LlistaEspectadors espectadors= sController.getEspectadors(u);
+                network.LlistaEspectadors espectadors= sController.getEspectadors(u);
                 ArrayList<DataOutputStream> ds= espectadors.getDs();
                 for (int i=0; i<ds.size();i++){
                     System.out.println("envio END a espectador");
@@ -281,6 +277,15 @@ public class ThreadServidorDedicat extends Thread{
 
                     ds.get(i).writeUTF(s);
                 }
+                break;
+
+            case "END_GAME_DATA":
+                currentUser = diStream.readUTF();
+                int score = diStream.readInt();
+                int millis = diStream.readInt();
+                int max_espectators  = diStream.readInt();
+                String replay_path = diStream.readUTF();
+                gestioDades.saveGameData(currentUser, score, millis, max_espectators, replay_path);
                 break;
         }
     }
