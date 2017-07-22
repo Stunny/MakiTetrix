@@ -215,7 +215,6 @@ public class Conexio extends Thread {
             doStream.writeUTF(userNameToEspectate);
             String missatge = diStream.readUTF();
             System.out.println("Comencem espectadoria");
-            System.out.println("missatge inicial: "+missatge);
             while(!missatge.equals("end")){
                 System.out.println("missatge rebut: "+missatge);
                 missatge = diStream.readUTF();
