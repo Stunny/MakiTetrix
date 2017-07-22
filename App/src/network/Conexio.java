@@ -384,6 +384,7 @@ public class Conexio extends Thread {
                 doStream.writeUTF(aux);
             }
             br.close();
+            doStream.writeUTF("END_NEW_REPLAY");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -440,7 +441,7 @@ public class Conexio extends Thread {
             doStream.writeInt(tiempo);
             doStream.writeInt(max_espectators);
             doStream.writeUTF(replay_path);
-            this.sendReplay(replay_path);
+            sendReplay(replay_path);
         } catch (IOException e) {
             e.printStackTrace();
         }
