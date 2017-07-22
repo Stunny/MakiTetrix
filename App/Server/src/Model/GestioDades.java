@@ -78,11 +78,9 @@ public class GestioDades {
         ArrayList<Integer>result = new ArrayList<Integer>();
 
         try {
-
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
-
 
             Statement s = c.createStatement();
 
@@ -103,7 +101,6 @@ public class GestioDades {
             s.close();
 
             if (exists){
-
                 String query = "SELECT * FROM DefaultKeys WHERE user = ?";
                 PreparedStatement preparedStmt = c.prepareStatement(query);
                 preparedStmt.setString(1, u);
@@ -124,9 +121,7 @@ public class GestioDades {
                 return result;
 
             }else{
-
                 c.close();
-
                 return result;
             }
 
@@ -135,12 +130,10 @@ public class GestioDades {
         }catch (SQLException e){
             e.printStackTrace();
             throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
-
         }
-
-            return result;
-
+        return result;
     }
+
     public void setTecles (String u, int d, int i, int a, int rd, int ri, int p)throws BadAccessToDatabaseException {
         try {
 
@@ -158,14 +151,12 @@ public class GestioDades {
             while (rs.next ())
             {
                 String name = rs.getString ("user");
-            if(name.equals(u)){
-                exists = true;
-            }
+                if(name.equals(u)){
+                    exists = true;
+                }
             }
             rs.close ();
             s.close ();
-
-
 
             //Insertamos fila con teclas nueva o actualizamos la vieja dependiendo de exists
             if (exists){
@@ -903,23 +894,7 @@ public class GestioDades {
             stmt.setString(6, replayPath);
             stmt.execute();
             c.close();
-/*
-            Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
-                    serverConfig.getDb_user(), serverConfig.getDb_pass());
-            System.out.println("execute el update per copiar la dada");
-            Statement s = c.createStatement ();
-            s.executeQuery ("SELECT startingGameTime FROM Login WHERE user = '" + userName + "' ORDER BY user DESC;");
-            ResultSet r = s.getResultSet ();
-            if (r.next()){
-                System.out.println("mostro la data de la partida: " + r.getString("startingGameTime"));
-            }
 
-            String query2 = "UPDATE Partida SET game_date = (SELECT startingGameTime FROM Login WHERE user = ?);";
-            PreparedStatement stmt2 = c.prepareStatement(query2);
-            stmt2.setString(1, userName);
-            c.close();
-*/
         }catch (ClassNotFoundException | SQLException cnfe){
             cnfe.printStackTrace();
         }

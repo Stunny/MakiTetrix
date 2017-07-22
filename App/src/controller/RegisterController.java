@@ -56,7 +56,7 @@ public class RegisterController implements ActionListener {
     }
 
 
-    public RegisterController(RegisterView view, LoginView parent, Conexio conexio, LoginController parentController){
+    RegisterController(RegisterView view, LoginView parent, Conexio conexio, LoginController parentController){
         this.view = view;
         this.parent = parent;
         this.parentController = parentController;
@@ -122,6 +122,10 @@ public class RegisterController implements ActionListener {
         }
     }
 
+    /**
+     * Notifies register has been completed successfully
+     * @param u User that has register successfully
+     */
     private void onRegisterOK(User u){
         parentController.onAccesOK(u);
     }

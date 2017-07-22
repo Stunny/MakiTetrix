@@ -19,7 +19,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
     private Conexio conexio;
     private User currentUser;
 
-    public MenuController(MainMenuView mmv, Conexio conexio, User currentUser){
+    MenuController(MainMenuView mmv, Conexio conexio, User currentUser){
         this.mmv = mmv;
         this.conexio = conexio;
         this.currentUser = currentUser;
@@ -54,8 +54,8 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 keyView.registerKey(keyContoller);
                 keyView.setVisible(true);
                 break;
-            case "jugar":
 
+            case "jugar":
                 ArrayList<Integer> t = conexio.gameStartParameters(currentUser.getUserName(), true);
                 if (t.size() > 0) {
                     GameController.setTeclas(t.get(0), t.get(1), t.get(2), t.get(3), t.get(4), t.get(5));
@@ -65,6 +65,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 gameController.startGame();
                 gameController.playGame();
                 break;
+
             case "ver":
                 //Ver Partida en vivo
                 EspectatorView espectatorView = new EspectatorView();
@@ -73,6 +74,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 espectatorView.registerEspectator(espectatorController);
                 espectatorView.setVisible(true);
                 break;
+
             case "anterior":
                 //Reproducir anterior
                 ReplaySelectView replay = new ReplaySelectView();
@@ -84,6 +86,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 gameView.setVisible(true);
                 gameController.startReplay("2107 _1557.txt");
                 break;
+
             case "salir":
                 conexio.disconnectUser(currentUser);
                 System.exit(1);
@@ -95,6 +98,10 @@ public class MenuController extends WindowAdapter implements ActionListener {
 
     }
 
+    /**
+     * Notifies user has disconected (closed menu window)
+     * @param evt Close event
+     */
     public void windowClosing(WindowEvent evt){
         conexio.disconnectUser(currentUser);
         super.windowClosing(evt);

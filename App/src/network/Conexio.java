@@ -271,6 +271,11 @@ public class Conexio extends Thread {
         return onlineUsers;
     }
 
+    /**
+     * Asks the server for user's replay list
+     * @param userName User we want replays from
+     * @return String[] containing all the replays info
+     */
     public String[] getReplays(String userName) {
         connect();
 
@@ -321,6 +326,9 @@ public class Conexio extends Thread {
         return data;
     }
 
+    /**
+     * Notifies the server of a game start
+     */
     public void sendStartGame (){
         connect();
         try{
@@ -332,6 +340,10 @@ public class Conexio extends Thread {
         disconnect();
     }
 
+    /**
+     * Notifies the server of a new move nad sends it
+     * @param m Move we send to the server
+     */
     public void sendMove (Move m){
         connect();
 
@@ -346,6 +358,9 @@ public class Conexio extends Thread {
         disconnect();
     }
 
+    /**
+     * Notifies the server that the user's game has ended
+     */
     public void sendEndGame (){
         connect();
         try{
@@ -355,26 +370,6 @@ public class Conexio extends Thread {
             e.printStackTrace();
         }
         disconnect();
-    }
-
-    public String getResponse() {
-        return KOMessage;
-    }
-
-    public boolean isResponseSuccess() {
-        return ResponseSuccess;
-    }
-
-    public void setTime(int time) {
-        this.time = time;
-    }
-
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
-    }
-
-    public int getTime() {
-        return time;
     }
 
     /**
@@ -408,6 +403,13 @@ public class Conexio extends Thread {
         return result;
     }
 
+    /**
+     * Notifies the server that the user desires to save the game data
+     * @param score Score of the user's game
+     * @param tiempo Time of the user's game
+     * @param max_espectators Maximum number of spectators during the user's game
+     * @param replay_path Path to the user's replay
+     */
     public void saveGameData(int score, int tiempo, int max_espectators, String replay_path){
         connect();
 
@@ -424,4 +426,26 @@ public class Conexio extends Thread {
 
         disconnect();
     }
+
+
+    public String getResponse() {
+        return KOMessage;
+    }
+
+    public boolean isResponseSuccess() {
+        return ResponseSuccess;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
 }

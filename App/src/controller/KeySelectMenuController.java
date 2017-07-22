@@ -27,7 +27,7 @@ public class KeySelectMenuController implements ActionListener {
     private String pause;
 
 
-    public KeySelectMenuController(Conexio c, KeySelectMenu view, User currentUser) {
+    KeySelectMenuController(Conexio c, KeySelectMenu view, User currentUser) {
         //TODO: actulizar al tener nuevas letras, cambiar view a los nuevos valores.
         /*
         Falta añadir controlador game para coger los valores nuevos.

@@ -34,6 +34,10 @@ public class ReplaySelectController implements MouseListener{
     }
 
 
+    /**
+     * Llena la vista de la replay con la informacion requerida.
+     * @throws ParseException
+     */
     private void ompleReplays() throws ParseException {
         String[] data = conexio.getReplays(userName);
 

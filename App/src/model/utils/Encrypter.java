@@ -14,6 +14,12 @@ public class Encrypter {
             new byte[] { 'T', 'h', 'e', 'B', 'e', 's', 't',
                     'S', 'e', 'c', 'r','e', 't', 'K', 'e', 'y' };
 
+    /**
+     * Encrypts desired plain text
+     * @param Data String we wish to encrypt
+     * @return Encripted String
+     * @throws Exception
+     */
     public String encrypt(String Data) throws Exception {
         Key key = generateKey();
         Cipher c = Cipher.getInstance(ALGO);
@@ -23,6 +29,12 @@ public class Encrypter {
         return encryptedValue;
     }
 
+    /**
+     * Decrypts an encrypted String
+     * @param encryptedData Encrypter String we want to decrypt
+     * @return Decrypted String
+     * @throws Exception
+     */
     public static String decrypt(String encryptedData) throws Exception {
         Key key = generateKey();
         Cipher c = Cipher.getInstance(ALGO);
@@ -32,6 +44,12 @@ public class Encrypter {
         String decryptedValue = new String(decValue);
         return decryptedValue;
     }
+
+    /**
+     * Generates encrypting and decrypting key
+     * @return Encrypting and decrypting key
+     * @throws Exception
+     */
     private static Key generateKey() throws Exception {
         Key key = new SecretKeySpec(keyValue, ALGO);
         return key;

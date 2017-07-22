@@ -139,8 +139,7 @@ public class GameView extends JFrame{
     /**
      * Identifica la pieza, y la representa en la matriz de
      * JPanles siguientepieza.
-     *
-     * @param piece     Pieza a representar.
+     * @param piece Pieza a representar.
      */
     public void printarNextPiece (Pieza piece){
         Pieza aux = piece.clone();

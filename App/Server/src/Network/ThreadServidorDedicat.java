@@ -34,22 +34,16 @@ public class ThreadServidorDedicat extends Thread{
     private LlistaEspectadors espectadors;
     private ArrayList<DataOutputStream>ds;
 
-    private static int PORT;
 
-    public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades, ServerController sController, int PORT){
+    public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades, ServerController sController){
         this.sClient = sClient;
         this.gestioDades = gestioDades;
         this.sController = sController;
-        this.PORT = PORT;
     }
 
     @Override
     public void run(){
         try {
-            //lanzamos el nuevo thread donde el servidor sera activo y el cliente el pasivo
-            //ThreadServidorActiu threadServidorActiu = new ThreadServidorActiu();
-            //threadServidorActiu.start();
-
             doStream = new DataOutputStream(sClient.getOutputStream());
             diStream = new DataInputStream(sClient.getInputStream());
             String request = diStream.readUTF();
@@ -74,7 +68,8 @@ public class ThreadServidorDedicat extends Thread{
                int rd = diStream.readInt();
                int ri = diStream.readInt();
                int p = diStream.readInt();
-                try {
+
+               try {
 
                    gestioDades.setTecles(u, d, i, a, rd, ri, p);
 
@@ -221,9 +216,9 @@ public class ThreadServidorDedicat extends Thread{
 
                     //Ens afegim com a espectador de la partida del jugador user
                     sController.afegeixEspectador(selectedUser,doStream);
-
                 break;
-            case "START_PARAMETERS":
+
+            case "START_PARAMETERS"://Sets player's default keys and notifies server a change in gaming status
                 currentUser = diStream.readUTF();
                 try {
                     ArrayList<Integer>result = gestioDades.getTecles(currentUser);
@@ -294,11 +289,6 @@ public class ThreadServidorDedicat extends Thread{
      * Returns server's answer to client
      * @throws IOException
      */
-
-
-
-
-
     public void enviaResposta(int error) throws IOException {
         switch(error){
             case 0:
@@ -327,6 +317,7 @@ public class ThreadServidorDedicat extends Thread{
                 break;
         }
     }
+
     public String getCurrentUser (){
         return currentUser;
     }

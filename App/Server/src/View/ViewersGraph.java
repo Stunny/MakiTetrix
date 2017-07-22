@@ -18,6 +18,10 @@ public class ViewersGraph extends JPanel{
         this.data = data;
     }
 
+    /**
+     * Displays graph
+     * @param g Abstract class necesary for all graphs
+     */
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;

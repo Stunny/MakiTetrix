@@ -2,7 +2,6 @@ package controller;
 
 import Vista.EspectatorView;
 import network.Conexio;
-import network.ThreadClientPasiuDedicat;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -22,13 +21,12 @@ public class EspectatorController implements MouseListener {
     private static EspectatorView espectatorView;
     private Conexio conexio;
     private String currentUser;
-    private ThreadClientPasiuDedicat threadClientPasiu;
 
     EspectatorController(EspectatorView espectatorView, Conexio conexio, String currentUser){
         this.espectatorView = espectatorView;
         this.conexio = conexio;
         this.currentUser = currentUser;
-        this.threadClientPasiu = threadClientPasiu;
+
         try {
             ompleLlistaUsuaris();
         } catch (ParseException e) {
@@ -36,11 +34,12 @@ public class EspectatorController implements MouseListener {
         }
     }
 
-
+    /**
+     * Llena la vista del modo espectador con la informacion necesaria
+     * @throws ParseException
+     */
     private void ompleLlistaUsuaris() throws ParseException {
         String data[] = conexio.getGamingUsers();
-
-        //conexio.getTimes();
 
         DefaultTableModel model = (DefaultTableModel) espectatorView.getTable().getModel();
         model.addColumn("Nombre de usuario");
