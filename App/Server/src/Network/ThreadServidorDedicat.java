@@ -274,7 +274,12 @@ public class ThreadServidorDedicat extends Thread{
                 String s = diStream.readUTF();
                 //System.out.println("moviment: " + s);
                 espectadors= sController.getEspectadors(user);
-                 ds= espectadors.getDs();
+
+                //afegim moviment a l'historial de la partida
+                espectadors.afegeixMoviment(s);
+
+                //Busquem tots els espectadors als que s'han d'enviar missatges
+                ds= espectadors.getDs();
                 for (int i=0; i<espectadors.getDs().size();i++){
 
                     ds.get(i).writeUTF(s);

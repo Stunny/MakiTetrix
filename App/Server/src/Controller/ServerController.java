@@ -3,6 +3,7 @@ package Controller;
 import Model.GestioDades;
 import Model.User;
 import Model.exceptions.BadAccessToDatabaseException;
+import Network.LlistaEspectadors;
 import View.PointsGraph;
 import View.ServerAdminView;
 import View.ViewersGraph;
@@ -14,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
@@ -219,9 +221,19 @@ public class ServerController implements ActionListener, MouseListener {
     public void afegeixEspectador (String user, DataOutputStream d){
         for (int i = 0; i < retrans.size(); i++){
             if (user.equals(retrans.get(i).getUser())){
-                retrans.get(i).afegeixEspectador(d);
+                LlistaEspectadors aux = retrans.get(i);
+                aux.afegeixEspectador(d);
                 System.out.println("espectador afegit a partida de "+user);
+                ArrayList<String> historial = aux.getHistorial();
 
+                //Enviamos todos los movimientos acumulados hasta ahora en la partida
+                for (int x = 0; x<historial.size(); x++){
+                    try {
+                        d.writeUTF(historial.get(x));
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
