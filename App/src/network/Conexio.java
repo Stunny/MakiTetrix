@@ -221,11 +221,12 @@ public class Conexio extends Thread {
         try {
             doStream.writeUTF("ESPECTATE");
             doStream.writeUTF(userNameToEspectate);
-            String missatge = "";
+            String missatge;
             ArrayList<String> historial = new ArrayList<>();
+            missatge = diStream.readUTF();
             while (!missatge.equals("END_HISTORIAL")){
-                missatge = diStream.readUTF();
                 historial.add(missatge);
+                missatge = diStream.readUTF();
             }
             gc.readyReplay(historial);
             gc.startReplay();

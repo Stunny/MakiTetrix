@@ -75,7 +75,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 //Ver Partida en vivo
                 EspectatorView espectatorView = new EspectatorView();
                 EspectatorController espectatorController = new EspectatorController(espectatorView,
-                        conexio, currentUser.getUserName());
+                        conexio, currentUser.getUserName(), gameController, gameView);
                 conexio.addEspectatorController(espectatorController);
                 espectatorView.registerEspectator(espectatorController);
                 espectatorView.setVisible(true);

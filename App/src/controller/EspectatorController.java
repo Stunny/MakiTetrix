@@ -1,6 +1,7 @@
 package controller;
 
 import Vista.EspectatorView;
+import Vista.GameView;
 import network.Conexio;
 
 import javax.swing.*;
@@ -22,9 +23,11 @@ public class EspectatorController implements MouseListener {
     private Conexio conexio;
     private String currentUser;
     private boolean esperant;
+    private GameController gc;
+    private GameView gv;
 
 
-    EspectatorController(EspectatorView espectatorView, Conexio conexio, String currentUser){
+    EspectatorController(EspectatorView espectatorView, Conexio conexio, String currentUser, GameController gc, GameView gv){
         this.espectatorView = espectatorView;
         this.conexio = conexio;
         this.currentUser = currentUser;
@@ -90,7 +93,7 @@ public class EspectatorController implements MouseListener {
         JTable table = (JTable) e.getSource();
         if (e.getClickCount() == 1) {
             int row = espectatorView.getTable().getSelectedRow();
-            conexio.sendUserToEspectate(table.getValueAt(row, 0).toString());
+            conexio.sendUserToEspectate(table.getValueAt(row, 0).toString(), gc, gv);
         }
     }
 
