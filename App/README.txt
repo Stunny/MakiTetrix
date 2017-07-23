@@ -22,3 +22,7 @@ LIBRERIAS NECESARIAS PARA EJECUTAR EL PROYECTO
 · commons-validator-1.6 de Apache
 · mysql-connector-java-5.1.42
 · gson-2.8.1
+
+DISCLAIMER
+
+Puede darse que se cierre un Socket mientras se esté jugando. Ignorar y seguir disfrutando del juego.
