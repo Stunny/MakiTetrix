@@ -405,7 +405,7 @@ public class Conexio extends Thread {
     public void sendEndGame (){
         connect();
         try{
-            doStream.writeUTF("GAME_END");
+            doStream.writeUTF("GAME_STOP");
             doStream.writeUTF(currentUser.getUserName());
         } catch (IOException e){
             e.printStackTrace();

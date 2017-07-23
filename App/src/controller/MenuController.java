@@ -80,15 +80,8 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 espectatorView.registerEspectator(espectatorController);
                 espectatorView.setVisible(true);
                 espectatorController.setEsperant(true);
-                mmv.setVisible(false);
-                while(espectatorController.getEsperant()){
-                    try {
-                        System.out.println("omple");
-                        espectatorController.ompleLlistaUsuaris();
-                    }catch (ParseException pe){
-                        pe.printStackTrace();
-                    }
-                }
+                mmv.setVisible(true);
+
                 break;
 
             case "anterior":

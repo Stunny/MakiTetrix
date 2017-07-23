@@ -261,6 +261,7 @@ public class ThreadServidorDedicat extends Thread{
                     System.out.println("envio END a espectador");
                         ds.get(i).writeUTF("end");
                 }
+                espectadors.eliminaEspectador(doStream);
                 sController.eliminaPartida(u);
                 break;
 
@@ -297,7 +298,6 @@ public class ThreadServidorDedicat extends Thread{
 
                 //Busquem tots els espectadors als que s'han d'enviar missatges
                 ds = espectadors.getDs();
-                System.out.println("size espectadors "+ds.size());
                 for (int i = 0; i < ds.size(); i++){
                     ds.get(i).writeUTF(s);
                 }

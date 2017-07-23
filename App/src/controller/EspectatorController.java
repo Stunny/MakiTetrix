@@ -32,6 +32,8 @@ public class EspectatorController implements MouseListener {
         this.conexio = conexio;
         this.currentUser = currentUser;
         this.esperant = true;
+        this.gc = gc;
+        this.gv = gv;
         try {
             ompleLlistaUsuaris();
         } catch (ParseException e) {
@@ -82,6 +84,11 @@ public class EspectatorController implements MouseListener {
     }
     public void setEsperant (boolean b){
         esperant = b;
+        if (b){
+            gv.setVisible(true);
+        }else{
+
+        }
     }
     public boolean getEsperant(){
         return esperant;
@@ -90,6 +97,7 @@ public class EspectatorController implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         setEsperant(false);
+
         JTable table = (JTable) e.getSource();
         if (e.getClickCount() == 1) {
             int row = espectatorView.getTable().getSelectedRow();

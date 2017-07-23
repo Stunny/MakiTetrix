@@ -87,8 +87,9 @@ public class GameController implements KeyListener {
             conexio.sendReplay(game.getDate() + ".txt");
         }else{
             System.out.println("test");
-            conexio.sendEndGame();
+
         }
+        conexio.sendEndGame();
         gv.setVisible(false);
         mmv.setVisible(true);
     }
