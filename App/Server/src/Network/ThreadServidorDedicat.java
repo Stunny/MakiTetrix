@@ -200,9 +200,13 @@ public class ThreadServidorDedicat extends Thread{
                 }
                 break;
 
-            case "REPLAY"://Selected user's replay
-                int replayNumber = diStream.readInt();
-                System.out.println("quiero ver la replay: " + replayNumber);
+            case "GET_REPLAY"://Selected user's replay
+                int replayID = diStream.readInt();
+                currentUser = diStream.readUTF();
+                ArrayList<String> replay = gestioDades.getDesiredReplay(replayID, currentUser);
+                for (int i = 0; i < replay.size(); i++){
+                    doStream.writeUTF(replay.get(i));
+                }
 
                 doStream.writeUTF("END");
                 break;

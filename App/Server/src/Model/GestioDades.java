@@ -992,6 +992,10 @@ public class GestioDades {
         return numReplays;
     }
 
+    /**
+     * Enables connection to database
+     * @return Connection to database
+     */
     public Connection connect(){
         Connection c = null;
         try {
@@ -1005,6 +1009,10 @@ public class GestioDades {
         return c;
     }
 
+    /**
+     * Closes connection to database
+     * @param c Connection to database
+     */
     public void close(Connection c){
         try {
             c.close();
@@ -1013,4 +1021,31 @@ public class GestioDades {
         }
     }
 
+    /**
+     * Retrieves desired replay from database
+     * @param replayID ID of the replay we want to retrieve
+     * @param currentUser User to whom the retrieved replay belongs to
+     * @return ArrayList<String> containing all movements of the replay
+     */
+    public ArrayList<String> getDesiredReplay(int replayID, String currentUser) {
+        ArrayList<String> replay = new ArrayList<>();
+        try{
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+            Class.forName("com.mysql.jdbc.Driver");
+            Statement s = c.createStatement ();
+            System.out.println("current user: " + currentUser);
+            System.out.println("replay id: " + replayID);
+            s.executeQuery ("SELECT move FROM Replay WHERE user = '" + currentUser + "' AND ID = " + replayID + " ORDER BY Order_ ASC;");
+            ResultSet r = s.getResultSet ();
+            while (r.next()){
+                replay.add(r.getString("move"));
+            }
+            c.close();
+            return replay;
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return replay;
+    }
 }

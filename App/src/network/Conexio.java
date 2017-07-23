@@ -229,15 +229,16 @@ public class Conexio extends Thread {
 
     /**
      * Sends the desired user
-     * @param userNameReplays
+     * @param replayID
      */
-    public ArrayList<String> sendDesiredUserReplay(int userNameReplays) {
+    public ArrayList<String> getDesiredUserReplay(int replayID) {
         connect();
         ArrayList<String> movements = new ArrayList<>();
         try {
-            doStream.writeUTF("REPLAY");
-            doStream.writeInt(userNameReplays);
-            System.out.println("sendDesiredUserReplay");
+            doStream.writeUTF("GET_REPLAY");
+            doStream.writeInt(replayID);
+            doStream.writeUTF(currentUser.getUserName());
+            System.out.println("getDesiredUserReplay");
             String aux = null;
             do {
                 aux = diStream.readUTF();
@@ -245,10 +246,6 @@ public class Conexio extends Thread {
                     movements.add(aux);
                 }
             }while (!aux.equals("END"));
-
-            for (int i = 0; i < movements.size(); i++){
-                System.out.println("Rebo aquests moviments: " + movements.get(i));
-            }
 
         } catch (IOException e) {
             e.printStackTrace();

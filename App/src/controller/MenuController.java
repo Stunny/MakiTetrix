@@ -86,6 +86,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
                         currentUser.getUserName());
                 replay.registerReplay(replayController);
                 replay.setVisible(true);
+                /*
                 timer = new Timer(1, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -99,7 +100,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 while(replayController.getReplay() != null){
                     gameView.setVisible(true);
                     gameController.startReplay(replayController.getReplay());
-                }
+                }*/
                 break;
 
             case "salir":
