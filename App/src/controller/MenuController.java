@@ -5,6 +5,7 @@ import model.Partida;
 import model.User;
 import network.Conexio;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -18,6 +19,8 @@ public class MenuController extends WindowAdapter implements ActionListener {
     private MainMenuView mmv;
     private Conexio conexio;
     private User currentUser;
+    private ReplaySelectController replayController;
+    private Timer timer;
 
     MenuController(MainMenuView mmv, Conexio conexio, User currentUser){
         this.mmv = mmv;
@@ -78,10 +81,19 @@ public class MenuController extends WindowAdapter implements ActionListener {
             case "anterior":
                 //Reproducir anterior
                 ReplaySelectView replay = new ReplaySelectView();
-                ReplaySelectController replayController = new ReplaySelectController(replay, conexio,
+                replayController = new ReplaySelectController(replay, conexio,
                         currentUser.getUserName());
                 replay.registerReplay(replayController);
                 replay.setVisible(true);
+                timer = new Timer(1, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (replayController.getReplay().size() != 0){
+                            timer.stop();
+                        }
+                    }
+                });
+                timer.start();
                 gameController.setStopGame(true);
                 gameView.setVisible(true);
                 gameController.startReplay(replayController.getReplay());

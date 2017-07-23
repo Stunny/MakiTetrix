@@ -22,6 +22,9 @@ public class PlayGame extends Thread {
     private GameController gc;
     private Queue<Move> toplay;
     private Timer timer;
+    private boolean direct;
+    private boolean newMove;
+    private Move move;
 
     /**
      * Inicializa una nueva partida.
@@ -33,6 +36,9 @@ public class PlayGame extends Thread {
         running = false;
         this.gc = gc;
         this.velocidad = 1200;
+        direct = false;
+        newMove = false;
+        move = null;
     }
 
     /**
@@ -41,8 +47,10 @@ public class PlayGame extends Thread {
      */
     @Override
     public void run (){
-        if (toplay == null){
+        if (toplay == null) {
             game();
+        } else if (direct = true){
+            directGame();
         } else {
             replay();
         }
@@ -86,7 +94,6 @@ public class PlayGame extends Thread {
      * A partir de los Moves que hay en la cola reproduce una partida jugada con anterioridad.
      * @see Move
      */
-    //TODO: Mirar como trabajar con alarmas.
     public void replay (){
         int time = 0;
         Pieza actual = toplay.peek().getPiece();
@@ -132,11 +139,28 @@ public class PlayGame extends Thread {
                 } catch (NullPointerException npe){
                     timer.stop();
                 }
-                System.out.println("TIME"+time);
-                System.out.println("DELAY"+timer.getDelay());
             }
         });
         timer.start();
+    }
+
+    public void directGame(){
+        while (true){
+            while (newMove){
+                switch (move.getOption()){
+                    case Move.PIECE:
+                        game.chargeNextPiece(move.getPiece());
+                        gc.getGV().printarNextPiece(game.getNextpiece());
+                        gc.getGV().printarPantalla(game.getInterfaz());
+                        break;
+                    case Move.MOVE:
+                        game.doMove(move.getMove());
+                        gc.getGV().printarPantalla(game.getInterfaz());
+                        break;
+                }
+                newMove = false;
+            }
+        }
     }
 
     public void setVelocidad(int v){
@@ -147,6 +171,13 @@ public class PlayGame extends Thread {
 
     public void setToPlay (Queue<Move> toplay){
         this.toplay = toplay;
+    }
+
+    public void setDirect (boolean direct) {this.direct = direct;}
+
+    public void setPiece (Move move) {
+        this.move = move;
+        this.newMove = true;
     }
 
 

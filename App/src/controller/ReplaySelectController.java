@@ -30,6 +30,7 @@ public class ReplaySelectController implements MouseListener{
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        replay = new ArrayList<>();
     }
 
 
