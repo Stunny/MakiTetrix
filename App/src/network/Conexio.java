@@ -1,6 +1,8 @@
 package network;
 
+import Vista.GameView;
 import controller.EspectatorController;
+import controller.GameController;
 import model.Move;
 import model.User;
 import model.utils.Encrypter;
@@ -9,7 +11,6 @@ import java.io.*;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -215,13 +216,20 @@ public class Conexio extends Thread {
      * Sends the desired user to espectate
      * @param userNameToEspectate User to spectate name
      */
-    public void sendUserToEspectate(String userNameToEspectate) {
+    public void sendUserToEspectate(String userNameToEspectate, GameController gc, GameView gv) {
         connect();
         try {
             doStream.writeUTF("ESPECTATE");
             doStream.writeUTF(userNameToEspectate);
-            String missatge = diStream.readUTF();
-
+            String missatge = "";
+            ArrayList<String> historial = new ArrayList<>();
+            while (!missatge.equals("END_HISTORIAL")){
+                missatge = diStream.readUTF();
+                historial.add(missatge);
+            }
+            gc.readyReplay(historial);
+            gc.startReplay();
+            gv.setVisible(true);
             System.out.println("Comencem espectadoria");
             while(!missatge.equals("end")){
                 System.out.println("missatge rebut: " + missatge);
