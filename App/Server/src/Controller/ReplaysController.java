@@ -37,7 +37,6 @@ public class ReplaysController implements MouseListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch(e.getActionCommand()){
-
             case "DELETE":
                 try {
                     System.out.println("entro a borrar la replay " + selectedReplay);
@@ -48,24 +47,24 @@ public class ReplaysController implements MouseListener, ActionListener {
                 }
 
                 break;
-
         }
-
     }
 
     private void actualitzaVista(String selectedReplay) {
         replays.remove(selectedReplay);
+        DefaultTableModel model = (DefaultTableModel) replaysView.getTable().getModel();
+        model.setRowCount(0);
 
+        for (int i = 0; i < replays.size(); i++){
+            Vector<String> paths = new Vector<>(Arrays.asList(String.valueOf(replays.get(i))));
+            Vector<Object> row = new Vector<Object>();
+            row.addElement(paths.get(0));
+            model.addRow(row);
+        }
     }
 
     private void ompleLlistaReplays() {
-
         replays = gestioDades.getReplays(selectedUser);
-        System.out.println("lenght: " + replays.size());
-        for (int i = 0; i < replays.size(); i++){
-            System.out.println("rebo aquestes replays: " + replays.get(i));
-        }
-
         DefaultTableModel model = (DefaultTableModel) replaysView.getTable().getModel();
         model.addColumn("Archivos de replay");
 
