@@ -17,12 +17,14 @@ public class GameView extends JFrame{
     private JLabel puntuacion;
     private JPanel[][] siguientepieza;
     private JLabel observador;
+    private int nespectadors;
 
     /**
      * Genera la ventana para jugar con los valores iniciales.
      */
     public GameView(){
 
+        nespectadors = 0;
         setTitle("MakiTetrix - Game");
         setLocationRelativeTo(null);
         setSize(432,800);
@@ -91,7 +93,7 @@ public class GameView extends JFrame{
         //Creación panel de abajo para que se vean tus observadores
 
         JPanel observadores = new JPanel (new FlowLayout());
-        observador = new JLabel ("Numero de espectadores: 0");
+        observador = new JLabel ("Numero de espectadores:"+nespectadors);
         observadores.add(observador);
 
         getContentPane().add(observadores, BorderLayout.SOUTH);
@@ -273,6 +275,10 @@ public class GameView extends JFrame{
 
     public JLabel getTemps() {
         return temps;
+    }
+
+    public void setNespectadors (int e){
+        nespectadors = e;
     }
 
 }

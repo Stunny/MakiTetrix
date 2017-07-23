@@ -69,6 +69,7 @@ public class PlayGame extends Thread {
             gc.getGV().printarPantalla(game.getInterfaz());
             if (game.hadFloor() && game.getFloortime() == 0){
                 game.checkLine();
+                gc.getGV().setNespectadors(game.getNespectadors());
                 gc.getGV().printarPantalla(game.getInterfaz());
                 gc.getGV().setNivel(game.getLevel());
                 gc.getGV().setPuntuacion(game.getPoints());

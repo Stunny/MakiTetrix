@@ -36,7 +36,6 @@ public class Conexio extends Thread {
             //Socket sServidor = new Socket("172.20.31.90", 33333);
             sServidor = new Socket (String.valueOf(IP), 33333);
             doStream = new DataOutputStream(sServidor.getOutputStream());
-            diStream = new DataInputStream(sServidor.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -353,18 +352,21 @@ public class Conexio extends Thread {
      * Notifies the server of a new move nad sends it
      * @param m Move we send to the server
      */
-    public void sendMove (Move m){
+    public int sendMove (Move m){
         connect();
 
         try{
             doStream.writeUTF("MOVE");
             doStream.writeUTF(currentUser.getUserName());
             doStream.writeUTF(m.toString());
+            System.out.println("enviat nespectadors");
+            return diStream.readInt();
+
         } catch (IOException e){
             e.printStackTrace();
         }
-
         disconnect();
+        return 0;
     }
 
     /**

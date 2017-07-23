@@ -272,6 +272,9 @@ public class ThreadServidorDedicat extends Thread{
             case "MOVE":
                 String user = diStream.readUTF();
                 String s = diStream.readUTF();
+                System.out.println("envio nespectadors desde tsd");
+                System.out.println("envio nespectadors desde tsd "+sController.getEspectadors(currentUser).getDs().size());
+                doStream.writeInt(sController.getEspectadors(currentUser).getDs().size());
                 //System.out.println("moviment: " + s);
                 espectadors= sController.getEspectadors(user);
 
