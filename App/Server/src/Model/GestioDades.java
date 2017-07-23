@@ -446,7 +446,12 @@ public class GestioDades {
             while (r.next ()) {
                 if(r.getString("user").equals(nom)||r.getString("mail").equals(nom)){
                     if(r.getString("password").equals(contra)){
-                        String query = "UPDATE Login SET connected = true WHERE Login.user = '" + nom + "';";
+
+                        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                        Date date = new Date(System.currentTimeMillis());
+                        System.out.println("fico aquesta data: " + dateFormat.format(date));
+
+                        String query = "UPDATE Login SET connected = true, last_login = '" + dateFormat.format(date) + "' WHERE Login.user = '" + nom + "';";
                         PreparedStatement preparedStmt = c.prepareStatement(query);
                         preparedStmt.execute();
                         ok = true;
@@ -932,10 +937,11 @@ public class GestioDades {
             c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
-            String query = "UPDATE Login SET total_points = (SELECT SUM(score) FROM Partida AS p WHERE p.user = ?), number_games = (SELECT COUNT(score) FROM Partida AS p WHERE p.user = ?);";
+            String query = "UPDATE Login SET total_points = (SELECT SUM(score) FROM Partida AS p WHERE p.user = ?), number_games = (SELECT COUNT(score) FROM Partida AS p WHERE p.user = ?) WHERE user = ?;";
             PreparedStatement stmt = c.prepareStatement(query);
             stmt.setString(1, userName);
             stmt.setString(2, userName);
+            stmt.setString(3, userName);
 
             stmt.execute();
             c.close();
@@ -992,6 +998,10 @@ public class GestioDades {
         return numReplays;
     }
 
+    /**
+     * Enables connection to database
+     * @return Connection to database
+     */
     public Connection connect(){
         Connection c = null;
         try {
@@ -1005,6 +1015,10 @@ public class GestioDades {
         return c;
     }
 
+    /**
+     * Closes connection to database
+     * @param c Connection to database
+     */
     public void close(Connection c){
         try {
             c.close();
@@ -1013,4 +1027,31 @@ public class GestioDades {
         }
     }
 
+    /**
+     * Retrieves desired replay from database
+     * @param replayID ID of the replay we want to retrieve
+     * @param currentUser User to whom the retrieved replay belongs to
+     * @return ArrayList<String> containing all movements of the replay
+     */
+    public ArrayList<String> getDesiredReplay(int replayID, String currentUser) {
+        ArrayList<String> replay = new ArrayList<>();
+        try{
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+            Class.forName("com.mysql.jdbc.Driver");
+            Statement s = c.createStatement ();
+            System.out.println("current user: " + currentUser);
+            System.out.println("replay id: " + replayID);
+            s.executeQuery ("SELECT move FROM Replay WHERE user = '" + currentUser + "' AND ID = " + replayID + " ORDER BY Order_ ASC;");
+            ResultSet r = s.getResultSet ();
+            while (r.next()){
+                replay.add(r.getString("move"));
+            }
+            c.close();
+            return replay;
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return replay;
+    }
 }
