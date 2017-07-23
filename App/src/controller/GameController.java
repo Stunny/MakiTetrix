@@ -140,6 +140,9 @@ public class GameController implements KeyListener {
         }
     }
 
+    public void setPGDirect (boolean bol){
+        PlayGame.setDirect(bol);
+    }
 
     @Override
     public void keyReleased(KeyEvent e){
@@ -181,5 +184,29 @@ public class GameController implements KeyListener {
 
     public void setEndRepetetion (boolean end){
         endRepetetion = end;
+    }
+
+    public void startDirect() {
+        gv.setVisible(true);
+        System.out.println("EMPIEZA EL DIRECTO");
+        String aux;
+        while ((aux = conexio.readMove()).equals("end")){
+            Move m = new Move(aux);
+            switch (m.getOption()){
+                case Move.PIECE:
+                    game.chargeNextPiece(m.getPiece());
+                    gv.printarNextPiece(game.getNextpiece());
+                    gv.printarPantalla(game.getInterfaz());
+                    break;
+                case Move.MOVE:
+                    game.doMove(m.getMove());
+                    gv.printarPantalla(game.getInterfaz());
+                    break;
+            }
+            game.checkLine();
+            gv.printarPantalla(game.getInterfaz());
+            gv.setNivel(game.getLevel());
+            gv.setPuntuacion(game.getPoints());
+        }
     }
 }

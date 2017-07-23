@@ -22,7 +22,7 @@ public class PlayGame extends Thread {
     private GameController gc;
     private Queue<Move> toplay;
     private Timer timer;
-    private boolean direct;
+    private static boolean direct;
     private boolean newMove;
     private Move move;
 
@@ -49,8 +49,6 @@ public class PlayGame extends Thread {
     public void run (){
         if (toplay == null) {
             game();
-        } else if (direct){
-            directGame();
         } else {
             System.out.println("REPLAY");
             replay();
@@ -130,7 +128,7 @@ public class PlayGame extends Thread {
                 }
                 toplay.poll();
                 try {
-                    if (time != 0) {
+                    if (time != 0 && !direct) {
                         timer.setDelay(toplay.peek().getTime() - time);
                     } else {
                         timer.setDelay(0);
@@ -144,25 +142,8 @@ public class PlayGame extends Thread {
             }
         });
         timer.start();
-        gc.setEndRepetetion(true);
-    }
-
-    public void directGame(){
-        while (true){
-            while (newMove){
-                switch (move.getOption()){
-                    case Move.PIECE:
-                        game.chargeNextPiece(move.getPiece());
-                        gc.getGV().printarNextPiece(game.getNextpiece());
-                        gc.getGV().printarPantalla(game.getInterfaz());
-                        break;
-                    case Move.MOVE:
-                        game.doMove(move.getMove());
-                        gc.getGV().printarPantalla(game.getInterfaz());
-                        break;
-                }
-                newMove = false;
-            }
+        if (direct) {
+            gc.startDirect();
         }
     }
 
@@ -176,7 +157,7 @@ public class PlayGame extends Thread {
         this.toplay = toplay;
     }
 
-    public void setDirect (boolean direct) {this.direct = direct;}
+    public static void setDirect (boolean di) {direct = di;}
 
     public void setPiece (Move move) {
         this.move = move;

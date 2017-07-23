@@ -222,10 +222,12 @@ public class Conexio extends Thread {
         try {
             doStream.writeUTF("ESPECTATE");
             doStream.writeUTF(userNameToEspectate);
+            gc.setPGDirect(true);
             String missatge;
             ArrayList<String> historial = new ArrayList<>();
             missatge = diStream.readUTF();
             while (!missatge.equals("END_HISTORIAL")){
+                System.out.println("PARTE HISTORIAL MOVIMIENTOS: " + missatge);
                 historial.add(missatge);
                 missatge = diStream.readUTF();
             }
@@ -270,6 +272,7 @@ public class Conexio extends Thread {
         String missatge = "";
         try {
             missatge = diStream.readUTF();
+            System.out.println("MOVIMIENTOS: " + missatge);
         } catch (IOException ioe){
             ioe.printStackTrace();
         }
