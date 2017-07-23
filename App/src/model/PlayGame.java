@@ -144,6 +144,7 @@ public class PlayGame extends Thread {
             }
         });
         timer.start();
+        gc.setEndRepetetion(true);
     }
 
     public void directGame(){

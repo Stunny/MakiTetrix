@@ -28,6 +28,7 @@ public class GameController implements KeyListener {
     private boolean stopgame;
     private Conexio conexio;
     private MainMenuView mmv;
+    private boolean endRepetetion;
 
     public GameController(GameView gv, Partida game, Conexio conexio, MainMenuView mmv){
         this.gv = gv;
@@ -45,6 +46,7 @@ public class GameController implements KeyListener {
                 e.getWindow().dispose();
             }
         });
+        endRepetetion = false;
     }
 
     public void startGame(){
@@ -170,5 +172,13 @@ public class GameController implements KeyListener {
 
     public PlayGame getPG() {
         return pg;
+    }
+
+    public boolean endRepetetion() {
+        return endRepetetion;
+    }
+
+    public void setEndRepetetion (boolean end){
+        endRepetetion = end;
     }
 }

@@ -230,13 +230,6 @@ public class Conexio extends Thread {
             }
             gc.readyReplay(historial);
             gc.startReplay();
-            gv.setVisible(true);
-            System.out.println("Comencem espectadoria");
-            while(!missatge.equals("end")){
-                System.out.println("missatge rebut: " + missatge);
-                missatge = diStream.readUTF();
-            }
-            System.out.println("s'acaba la espectadoria");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -271,6 +264,17 @@ public class Conexio extends Thread {
         return movements;
     }
 
+    public String readMove (){
+        connect();
+        String missatge = "";
+        try {
+            missatge = diStream.readUTF();
+        } catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+        disconnect();
+        return missatge;
+    }
 
     @Deprecated
     /**

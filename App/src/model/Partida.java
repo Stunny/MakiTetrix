@@ -95,8 +95,10 @@ public class Partida {
         connect.sendStartGame();
         actualpiece = new Pieza(generateRandom());
         savegame.add(new Move(actualpiece));
+        connect.sendMove (new Move (actualpiece));
         nextpiece = new Pieza(generateRandom());
         savegame.add(new Move (nextpiece));
+        connect.sendMove (new Move (nextpiece));
         end = false;
         updateInterfaz(actualpiece);
     }
@@ -118,6 +120,7 @@ public class Partida {
      */
     public void rotateRight (int time){
         savegame.add(new Move(ROTATE_RIGHT, time));
+        connect.sendMove (new Move (ROTATE_RIGHT, time));
         if (!(collision(actualpiece, ROTATE_RIGHT))) {
             clear(actualpiece);
             actualpiece.rotateRight();
@@ -149,6 +152,7 @@ public class Partida {
      */
     public void rotateLeft (int time) {
         savegame.add(new Move(ROTATE_LEFT, time));
+        connect.sendMove (new Move (ROTATE_LEFT, time));
         if (!(collision(actualpiece, ROTATE_LEFT))) {
             clear(actualpiece);
             actualpiece.rotateLeft();
