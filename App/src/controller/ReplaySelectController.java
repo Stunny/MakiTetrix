@@ -76,7 +76,8 @@ public class ReplaySelectController implements MouseListener{
         JTable table = (JTable) e.getSource();
         if (e.getClickCount() == 1) {
             int row = view.getTable().getSelectedRow();
-            replay = conexio.sendDesiredUserReplay(Integer.parseInt(table.getValueAt(row, 0).toString()));
+            //TODO:REPRODUCIR LA PARTIDA CON EL ID QUE EL USUARIO HA SELECCIONADO
+            //replay = conexio.sendDesiredUserReplay(Integer.parseInt(table.getValueAt(row, 0).toString()));
         }
     }
 

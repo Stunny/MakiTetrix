@@ -33,7 +33,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         GameView gameView = new GameView();
         Partida partida = new Partida(conexio);
-        GameController gameController = new GameController(gameView, partida, conexio);
+        GameController gameController = new GameController(gameView, partida, conexio, mmv);
         conexio.setCurrentUser(currentUser);
 
         switch (e.getActionCommand()){
@@ -67,6 +67,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 gameView.setVisible(true);
                 gameController.startGame();
                 gameController.playGame();
+                mmv.setVisible(false);
                 break;
 
             case "ver":
@@ -95,8 +96,10 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 });
                 timer.start();
                 gameController.setStopGame(true);
-                gameView.setVisible(true);
-                gameController.startReplay(replayController.getReplay());
+                while(replayController.getReplay() != null){
+                    gameView.setVisible(true);
+                    gameController.startReplay(replayController.getReplay());
+                }
                 break;
 
             case "salir":
