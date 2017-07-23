@@ -35,6 +35,7 @@ public class ThreadServidorDedicat extends Thread{
     private LlistaEspectadors espectadors;
     private ArrayList<DataOutputStream>ds;
 
+
     public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades, ServerController sController){
         this.sClient = sClient;
         this.gestioDades = gestioDades;
@@ -321,13 +322,14 @@ public class ThreadServidorDedicat extends Thread{
             case "NEW_REPLAY":
                 String move = null;
                 String userName = diStream.readUTF();
+                String path = diStream.readUTF();
                 int order = 0;
                 int numGame = gestioDades.gestNumGames(userName);
                 Connection c = gestioDades.connect();
                 do {
                     move = diStream.readUTF();
                     if (!move.equals("END")){
-                        gestioDades.addMove(userName, move, order, numGame, c);
+                        gestioDades.addMove(userName, move, order, numGame, c, path);
                         order++;
                     }
                 }while (!move.equals("END"));

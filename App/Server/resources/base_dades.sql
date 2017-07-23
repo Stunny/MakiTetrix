@@ -36,6 +36,7 @@ CREATE TABLE Replay(
 	ID INT DEFAULT 0,
 	Order_ INT,
     move VARCHAR(255),
+    path VARCHAR(255),
     FOREIGN KEY (user) REFERENCES Login (user)
 );
 

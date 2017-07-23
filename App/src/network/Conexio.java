@@ -421,6 +421,7 @@ public class Conexio extends Thread {
         try {
             doStream.writeUTF("NEW_REPLAY");
             doStream.writeUTF(currentUser.getUserName());
+            doStream.writeUTF(path);
             BufferedReader br = new BufferedReader(new FileReader(path));
             String aux;
             while((aux = br.readLine()) != null) {
