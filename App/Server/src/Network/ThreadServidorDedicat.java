@@ -312,7 +312,8 @@ public class ThreadServidorDedicat extends Thread{
                 String replay_path = diStream.readUTF();
 
                 //int numGame = gestioDades.gestNumGames(currentUser);
-                gestioDades.saveGameData(currentUser, score, millis, max_espectators, replay_path/*, moves, numGame*/);
+                System.out.println("guardo aquesta score: " + score);
+                gestioDades.saveGameData(currentUser, score, millis, max_espectators, replay_path);
                 gestioDades.setGamingStatus(currentUser, false, null);
                 break;
 
