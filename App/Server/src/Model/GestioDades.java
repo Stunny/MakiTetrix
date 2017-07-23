@@ -1,7 +1,7 @@
 package Model;
 
 import Model.exceptions.BadAccessToDatabaseException;
-import com.sun.xml.internal.ws.encoding.StringDataContentHandler;
+import network.Conexio;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
@@ -482,16 +482,12 @@ public class GestioDades {
      * @throws BadAccessToDatabaseException Se lanza si algo impide el acceso a la base de datos o si no se ha podido realizar la query
      */
     private int addUser(User u) throws BadAccessToDatabaseException {
-
         boolean userExists = userExists(u);
-
         try {
-
             if (!userExists) {
-
                 Class.forName("com.mysql.jdbc.Driver");
-                c = DriverManager.getConnection("jdbc:mysql://"+serverConfig.getDb_ip()+":"+serverConfig.getDb_port()+"/"+serverConfig.getDb_name()+"?autoReconnect=true&useSSL=false",
-                        serverConfig.getDb_user(), serverConfig.getDb_pass());
+                c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/"
+                                + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false", serverConfig.getDb_user(), serverConfig.getDb_pass());
 
                 String query = "INSERT INTO Login (user, mail, password, connected, register_date, last_login, number_games, total_points)"
                         + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
@@ -865,14 +861,12 @@ public class GestioDades {
      * @param max_espectators number of maximum spectators during the game
      * @param replayPath path of the replay
      */
-    public void saveGameData(String userName, int score, int millis, int max_espectators, String replayPath){
+    public void saveGameData(String userName, int score, int millis, int max_espectators, String replayPath/*, ArrayList<String> moves, int numGame*/){
         try {
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
-
             String query = "INSERT INTO Partida(user, score, time, game_date, max_espectators, replay_path) VALUES (?, ?, ?, ?, ?, ?);";
-
             String tiempo = String.format("%02d:%02d:%02d",
                     TimeUnit.MILLISECONDS.toHours(millis),
                     TimeUnit.MILLISECONDS.toMinutes(millis) -
@@ -880,13 +874,69 @@ public class GestioDades {
                     TimeUnit.MILLISECONDS.toSeconds(millis) -
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
 
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
             PreparedStatement stmt = c.prepareStatement(query);
             stmt.setString(1, userName);
             stmt.setInt(2, score);
             stmt.setString(3, tiempo);
-            stmt.setString(4, startingGameTime);
+            stmt.setString(4, this.startingGameTime);
             stmt.setInt(5, max_espectators);
             stmt.setString(6, replayPath);
+            stmt.execute();
+            //c.close();
+
+        }catch (ClassNotFoundException | SQLException cnfe){
+            cnfe.printStackTrace();
+        }
+
+        updateMainServerViewInfo(userName);
+    }
+
+    @Deprecated
+    /**
+     * Gets selected user's total score
+     * @param userName User we want to know the total points of
+     * @return Total points
+     */
+    private int getTotalScore(String userName) {
+        int totalScore = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+            Statement s = c.createStatement ();
+            s.executeQuery ("SELECT total_points FROM Login WHERE user = '" + userName + "';");
+            ResultSet r = s.getResultSet ();
+            if (r.next()){
+                totalScore = r.findColumn("total_points");
+            }
+            c.close();
+
+            return totalScore;
+        }catch (ClassNotFoundException | SQLException cnfe){
+            cnfe.printStackTrace();
+        }
+        return totalScore;
+    }
+
+    /**
+     * Updates server main view with new saved game data
+     * @param userName
+     */
+    private void updateMainServerViewInfo(String userName) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+
+            String query = "UPDATE Login SET total_points = (SELECT SUM(score) FROM Partida AS p WHERE p.user = ?), number_games = (SELECT COUNT(score) FROM Partida AS p WHERE p.user = ?);";
+            PreparedStatement stmt = c.prepareStatement(query);
+            stmt.setString(1, userName);
+            stmt.setString(2, userName);
+
             stmt.execute();
             c.close();
 
@@ -894,4 +944,73 @@ public class GestioDades {
             cnfe.printStackTrace();
         }
     }
+
+    /**
+     * Adds a move that will be part of the replay to the database
+     * @param move Move we want to save into the database
+     * @param order ID that specifies the order in which the moves must be read
+     * @param numGame The replay to which the moves belong to
+     * @param c
+     */
+    public void addMove(String currentUser, String move, int order, int numGame, Connection c) {
+        try {
+            String query = "INSERT INTO Replay(user, move, ID, Order_) VALUES (?, ?, ?, ?);";
+
+            PreparedStatement stmt = c.prepareStatement(query);
+            stmt.setString(1, currentUser);
+            stmt.setString(2, move);
+            stmt.setInt(3, numGame + 1);
+            stmt.setInt(4, order);
+            stmt.execute();
+
+        }catch (SQLException cnfe){
+            cnfe.printStackTrace();
+        }
+    }
+
+    /**
+     * Retrieves the number of replays a user has saved
+     * @param currentUser User from which we want to read the number of replays from
+     * @return The number of replays
+     */
+    public int gestNumGames(String currentUser) {
+        int numReplays = 0;
+        try{
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+            Class.forName("com.mysql.jdbc.Driver");
+            Statement s = c.createStatement ();
+            s.executeQuery ("SELECT ID FROM Replay WHERE user = '" + currentUser + "' ORDER BY ID DESC LIMIT 1;");
+            ResultSet r = s.getResultSet ();
+            if (r.next()){
+                numReplays = r.findColumn("ID");
+            }
+            c.close();
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return numReplays;
+    }
+
+    public Connection connect(){
+        Connection c = null;
+        try {
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+            Class.forName("com.mysql.jdbc.Driver");
+            return c;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return c;
+    }
+
+    public void close(Connection c){
+        try {
+            c.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

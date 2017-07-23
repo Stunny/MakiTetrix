@@ -29,7 +29,6 @@ public class GameView extends JFrame{
         setLocationRelativeTo(null);
         setSize(432,800);
 
-
         //Pantalla principal del juego
         centre = new JPanel(new GridLayout(25,10));
         centre.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));

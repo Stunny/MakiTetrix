@@ -11,6 +11,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -33,8 +34,6 @@ public class ThreadServidorDedicat extends Thread{
     private ObserveManager observeManager;
     private LlistaEspectadors espectadors;
     private ArrayList<DataOutputStream>ds;
-    private ArrayList<ArrayList> replays = new ArrayList<>();
-
 
     public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades, ServerController sController){
         this.sClient = sClient;
@@ -192,10 +191,7 @@ public class ThreadServidorDedicat extends Thread{
 
             case "REPLAY_LIST"://List of player's games
                 currentUser = diStream.readUTF();
-
                 ArrayList<String[]> gameInfo = gestioDades.getGameData(currentUser);
-                //doStream.writeUTF(gameInfo);
-
                 doStream.writeInt(gameInfo.size());
                 for (int i = 0; i < gameInfo.size(); i++){
                     String[] aux = gameInfo.get(i);
@@ -205,15 +201,10 @@ public class ThreadServidorDedicat extends Thread{
                 break;
 
             case "REPLAY"://Selected user's replay
-                // observeManager.beginObserve();
                 int replayNumber = diStream.readInt();
-                System.out.println("Quiero ver la replay numero: " + replayNumber);
-                for (int i = 0; i < replays.get(replayNumber - 1).size(); i++){
-                    System.out.println("envio aquest moviment: " + replays.get(replayNumber - 1).get(i).toString());
-                    doStream.writeUTF(replays.get(replayNumber - 1).get(i).toString());
-                }
+                System.out.println("quiero ver la replay: " + replayNumber);
+
                 doStream.writeUTF("END");
-                // TODO: peticion de la replay seleccionada
                 break;
 
             case "ESPECTATE": //Selected user to observe
@@ -282,8 +273,8 @@ public class ThreadServidorDedicat extends Thread{
                 espectadors.afegeixMoviment(s);
 
                 //Busquem tots els espectadors als que s'han d'enviar missatges
-                ds= espectadors.getDs();
-                for (int i=0; i<espectadors.getDs().size();i++){
+                ds = espectadors.getDs();
+                for (int i = 0; i < espectadors.getDs().size(); i++){
 
                     ds.get(i).writeUTF(s);
                 }
@@ -295,20 +286,26 @@ public class ThreadServidorDedicat extends Thread{
                 int millis = diStream.readInt();
                 int max_espectators  = diStream.readInt();
                 String replay_path = diStream.readUTF();
-                gestioDades.saveGameData(currentUser, score, millis, max_espectators, replay_path);
+
+                //int numGame = gestioDades.gestNumGames(currentUser);
+                gestioDades.saveGameData(currentUser, score, millis, max_espectators, replay_path/*, moves, numGame*/);
+                gestioDades.setGamingStatus(currentUser, false, null);
                 break;
 
             case "NEW_REPLAY":
-                String aux = null;
-                ArrayList<String> movements = new ArrayList<>();
+                String move = null;
+                String userName = diStream.readUTF();
+                int order = 0;
+                int numGame = gestioDades.gestNumGames(userName);
+                Connection c = gestioDades.connect();
                 do {
-                    aux = diStream.readUTF();
-                    if (!aux.equals("END")){
-                        movements.add(aux);
+                    move = diStream.readUTF();
+                    if (!move.equals("END")){
+                        gestioDades.addMove(userName, move, order, numGame, c);
+                        order++;
                     }
-                }while (!aux.equals("END"));
-                replays.add(movements);
-
+                }while (!move.equals("END"));
+                gestioDades.close(c);
                 break;
         }
     }
