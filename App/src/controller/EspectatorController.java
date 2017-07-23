@@ -87,6 +87,7 @@ public class EspectatorController implements MouseListener {
         if (b){
             gv.setVisible(true);
         }else{
+            gv.setVisible(false);
 
         }
     }

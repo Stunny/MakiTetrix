@@ -68,7 +68,6 @@ public class Move {
 
     @Override
     public String toString (){
-        System.out.println("O:"+option);
         switch (option){
             case MOVE:
                 return (option + "," + move + "," + time);
