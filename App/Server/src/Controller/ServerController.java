@@ -234,6 +234,11 @@ public class ServerController implements ActionListener, MouseListener {
                         e.printStackTrace();
                     }
                 }
+                try {
+                    d.writeUTF("END_HISTORIAL");
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
             }
         }
     }

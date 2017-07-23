@@ -41,6 +41,7 @@ public class GameController implements KeyListener {
             @Override
             public void windowClosing(WindowEvent e)
             {
+                endGame();
                 e.getWindow().dispose();
             }
         });
