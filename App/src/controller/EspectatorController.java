@@ -22,6 +22,7 @@ public class EspectatorController implements MouseListener {
     private Conexio conexio;
     private String currentUser;
 
+
     EspectatorController(EspectatorView espectatorView, Conexio conexio, String currentUser){
         this.espectatorView = espectatorView;
         this.conexio = conexio;
@@ -38,7 +39,7 @@ public class EspectatorController implements MouseListener {
      * Llena la vista del modo espectador con la informacion necesaria
      * @throws ParseException
      */
-    private void ompleLlistaUsuaris() throws ParseException {
+    public void ompleLlistaUsuaris() throws ParseException {
         String data[] = conexio.getGamingUsers();
 
         DefaultTableModel model = (DefaultTableModel) espectatorView.getTable().getModel();

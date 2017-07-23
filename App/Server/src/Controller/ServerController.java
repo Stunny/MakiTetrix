@@ -7,6 +7,7 @@ import Network.LlistaEspectadors;
 import View.PointsGraph;
 import View.ServerAdminView;
 import View.ViewersGraph;
+import com.sun.tools.internal.ws.wsdl.document.soap.SOAPUse;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -30,6 +31,7 @@ public class ServerController implements ActionListener, MouseListener {
     private GestioDades gestioDades;
     private User selectedUser;
     private ArrayList<LlistaEspectadors>retrans;
+    private ArrayList<DataOutputStream>lobbyds;
 
     /**
      * @param serverAdminView
@@ -39,6 +41,7 @@ public class ServerController implements ActionListener, MouseListener {
         this.serverAdminView = serverAdminView;
         this.gestioDades = gestioDades;
         this.retrans = new ArrayList<>();
+        this.lobbyds = new ArrayList<>();
 
         updateUserList();
     }
@@ -223,7 +226,6 @@ public class ServerController implements ActionListener, MouseListener {
             if (user.equals(retrans.get(i).getUser())){
                 LlistaEspectadors aux = retrans.get(i);
                 aux.afegeixEspectador(d);
-                System.out.println("espectador afegit a partida de "+user);
                 ArrayList<String> historial = aux.getHistorial();
 
                 //Enviamos todos los movimientos acumulados hasta ahora en la partida
@@ -242,7 +244,6 @@ public class ServerController implements ActionListener, MouseListener {
 
     public void addPartida(String user){
 
-        System.out.println("nova partida emmagatzemada");
         Network.LlistaEspectadors l = new Network.LlistaEspectadors(user);
         retrans.add(l);
     }
@@ -250,6 +251,11 @@ public class ServerController implements ActionListener, MouseListener {
         return retrans;
     }
 
+
+    /**
+     * Searches for the current game that as certain player is playing
+     * @param user player
+     */
     public Network.LlistaEspectadors getEspectadors (String user){
         for (int i = 0; i<retrans.size();i++){
             if (retrans.get(i).getUser().equals(user)){
@@ -261,5 +267,22 @@ public class ServerController implements ActionListener, MouseListener {
 
 
     }
+public void afegeixLobby (DataOutputStream d){
+    System.out.println("afegeix lobby");
+        lobbyds.add(d);
+}
+    public void actualitzaLlistesEspectadors (){
+        System.out.println("entra a actualitza llistes");
+            for(int i = 0;i<lobbyds.size();i++){
+                try {
+                    System.out.println("escric renova desde server");
+                    lobbyds.get(i).writeUTF("renova");
+
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+
 
 }

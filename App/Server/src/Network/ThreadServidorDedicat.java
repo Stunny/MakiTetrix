@@ -189,8 +189,15 @@ public class ThreadServidorDedicat extends Thread{
 
                 break;
 
-            case "REPLAY_LIST"://List of player's games
+            case "NEW_LOBBY" :
+
+                System.out.println("new lobby a server");
                 currentUser = diStream.readUTF();
+                sController.afegeixLobby(doStream);
+
+                break;
+            case "REPLAY_LIST"://List of player's games
+
                 ArrayList<String[]> gameInfo = gestioDades.getGameData(currentUser);
                 doStream.writeInt(gameInfo.size());
                 for (int i = 0; i < gameInfo.size(); i++){
@@ -260,16 +267,15 @@ public class ThreadServidorDedicat extends Thread{
                 break;
 
             case "GAME_START":
+                System.out.println("entro a game start");
                 currentUser = diStream.readUTF();
                 sController.addPartida(currentUser);
+                sController.actualitzaLlistesEspectadors();
                 break;
 
             case "GIVESPEC":
                 currentUser = diStream.readUTF();
-                System.out.println("entro a givespec");
                 LlistaEspectadors aux = sController.getEspectadors(currentUser);
-                System.out.println("aux "+aux);
-                System.out.println("tamany espectadors a givespec "+sController.getEspectadors(currentUser).getDs().size());
 
 
                 if (aux == null){
@@ -295,7 +301,6 @@ public class ThreadServidorDedicat extends Thread{
                 //Busquem tots els espectadors als que s'han d'enviar missatges
                 ds = espectadors.getDs();
                 for (int i = 0; i < espectadors.getDs().size(); i++){
-                    System.out.println("envio missatge");
                     ds.get(i).writeUTF(s);
                 }
 
