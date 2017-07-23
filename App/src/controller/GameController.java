@@ -1,6 +1,7 @@
 package controller;
 
 import Vista.GameView;
+import Vista.MainMenuView;
 import model.Crono;
 import model.Move;
 import model.Partida;
@@ -26,13 +27,15 @@ public class GameController implements KeyListener {
     private static int[] teclas  = new int[]{65,83,68,81,69,80};
     private boolean stopgame;
     private Conexio conexio;
+    private MainMenuView mmv;
 
-    public GameController(GameView gv, Partida game, Conexio conexio){
+    public GameController(GameView gv, Partida game, Conexio conexio, MainMenuView mmv){
         this.gv = gv;
         this.game = game;
         gv.addKeyListener(this);
         t = new Crono(gv,game);
         this.conexio = conexio;
+        this.mmv = mmv;
         gv.addWindowListener(new WindowAdapter()
         {
             @Override
@@ -72,15 +75,19 @@ public class GameController implements KeyListener {
     }
 
     public void endGame (){
-        new  WindowEvent (gv, WindowEvent.WINDOW_CLOSED);
+        new WindowEvent (gv, WindowEvent.WINDOW_CLOSED);
         stopgame = true;
         if (gv.saveGame() == 0){
             game.saveGame();
             conexio.saveGameData(game.getPoints(), t.getTiempo(),0,
                     game.getDate() + ".txt");
+            conexio.sendReplay(game.getDate() + ".txt");
+        }else{
+            System.out.println("test");
+            conexio.sendEndGame();
         }
         gv.setVisible(false);
-        conexio.sendEndGame();
+        mmv.setVisible(true);
     }
 
     @Override

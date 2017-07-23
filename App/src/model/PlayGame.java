@@ -66,6 +66,8 @@ public class PlayGame extends Thread {
         running = true;
         while (running){
             game.goDown(gc.getTimer().getTiempo());
+            gc.getGV().setNespectadors(game.getNespectadors());
+
             gc.getGV().printarPantalla(game.getInterfaz());
             if (game.hadFloor() && game.getFloortime() == 0){
                 game.checkLine();

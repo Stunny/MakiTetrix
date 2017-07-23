@@ -27,7 +27,6 @@ public class GameView extends JFrame{
         setLocationRelativeTo(null);
         setSize(432,800);
 
-
         //Pantalla principal del juego
         centre = new JPanel(new GridLayout(25,10));
         centre.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
@@ -256,6 +255,7 @@ public class GameView extends JFrame{
             temps.setText("0" + min + ":0" + seg);
         } else if (min < 10 && seg >= 10){
             temps.setText("0" + min + ":" + seg);
+
         } else if (min >= 10 && seg < 10){
             temps.setText(min + ":0" + seg);
         } else if (min >= 10 && seg >= 10){
@@ -273,6 +273,10 @@ public class GameView extends JFrame{
 
     public JLabel getTemps() {
         return temps;
+    }
+
+    public void setNespectadors (int e){
+        observador.setText("Numero de espectadores: "+e);
     }
 
 }

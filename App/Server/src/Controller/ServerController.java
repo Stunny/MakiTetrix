@@ -29,7 +29,7 @@ public class ServerController implements ActionListener, MouseListener {
     private ServerAdminView serverAdminView;
     private GestioDades gestioDades;
     private User selectedUser;
-    private ArrayList<Network.LlistaEspectadors>retrans;
+    private ArrayList<LlistaEspectadors>retrans;
 
     /**
      * @param serverAdminView
@@ -251,7 +251,6 @@ public class ServerController implements ActionListener, MouseListener {
     }
 
     public Network.LlistaEspectadors getEspectadors (String user){
-
         for (int i = 0; i<retrans.size();i++){
             if (retrans.get(i).getUser().equals(user)){
                 return retrans.get(i);

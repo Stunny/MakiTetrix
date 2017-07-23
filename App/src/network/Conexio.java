@@ -216,7 +216,7 @@ public class Conexio extends Thread {
             String missatge = diStream.readUTF();
             System.out.println("Comencem espectadoria");
             while(!missatge.equals("end")){
-                System.out.println("missatge rebut: "+missatge);
+                System.out.println("missatge rebut: " + missatge);
                 missatge = diStream.readUTF();
             }
             System.out.println("s'acaba la espectadoria");
@@ -229,15 +229,16 @@ public class Conexio extends Thread {
 
     /**
      * Sends the desired user
-     * @param userNameReplays
+     * @param replayID
      */
-    public ArrayList<String> sendDesiredUserReplay(int userNameReplays) {
+    public ArrayList<String> getDesiredUserReplay(int replayID) {
         connect();
         ArrayList<String> movements = new ArrayList<>();
         try {
-            doStream.writeUTF("REPLAY");
-            doStream.writeInt(userNameReplays);
-
+            doStream.writeUTF("GET_REPLAY");
+            doStream.writeInt(replayID);
+            doStream.writeUTF(currentUser.getUserName());
+            System.out.println("getDesiredUserReplay");
             String aux = null;
             do {
                 aux = diStream.readUTF();
@@ -246,9 +247,6 @@ public class Conexio extends Thread {
                 }
             }while (!aux.equals("END"));
 
-            for (int i = 0; i < movements.size(); i++){
-                System.out.println("Rebo aquests moviments: " + movements.get(i));
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -349,10 +347,28 @@ public class Conexio extends Thread {
         disconnect();
     }
 
+
+
+    public int pideEspectadores (){
+        connect();
+        int espectadors = 0;
+
+        try{
+            doStream.writeUTF("GIVESPEC");
+            doStream.writeUTF(currentUser.getUserName());
+            espectadors = diStream.readInt();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        System.out.println("salgo de pide");
+        disconnect();
+        return espectadors;
+    }
     /**
      * Notifies the server of a new move nad sends it
      * @param m Move we send to the server
      */
+
     public void sendMove (Move m){
         connect();
 
@@ -390,6 +406,7 @@ public class Conexio extends Thread {
 
         try {
             doStream.writeUTF("NEW_REPLAY");
+            doStream.writeUTF(currentUser.getUserName());
             BufferedReader br = new BufferedReader(new FileReader(path));
             String aux;
             while((aux = br.readLine()) != null) {
@@ -397,13 +414,37 @@ public class Conexio extends Thread {
             }
             doStream.writeUTF("END");
             br.close();
-            //doStream.writeUTF("END_NEW_REPLAY");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         disconnect();
     }
+
+    /**
+     * Notifies the server that the user desires to save the game data
+     * @param score Score of the user's game
+     * @param tiempo Time of the user's game
+     * @param max_espectators Maximum number of spectators during the user's game
+     * @param replay_path Path to the user's replay
+     */
+    public void saveGameData(int score, int tiempo, int max_espectators, String replay_path){
+        connect();
+
+        try {
+            doStream.writeUTF("END_GAME_DATA");
+            doStream.writeUTF(currentUser.getUserName());
+            doStream.writeInt(score);
+            doStream.writeInt(tiempo);
+            doStream.writeInt(max_espectators);
+            doStream.writeUTF(replay_path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        disconnect();
+    }
+
 
     /**
      * Sets players' key configuration and modifies BBDD gaming and startingGameTime
@@ -425,7 +466,6 @@ public class Conexio extends Thread {
                 result.add(diStream.readInt());
                 result.add(diStream.readInt());
             }
-            System.out.println("size "+result.size());
 
             doStream.writeBoolean(status);
             disconnect();
@@ -435,32 +475,6 @@ public class Conexio extends Thread {
         }
         return result;
     }
-
-    /**
-     * Notifies the server that the user desires to save the game data
-     * @param score Score of the user's game
-     * @param tiempo Time of the user's game
-     * @param max_espectators Maximum number of spectators during the user's game
-     * @param replay_path Path to the user's replay
-     */
-    public void saveGameData(int score, int tiempo, int max_espectators, String replay_path){
-        connect();
-
-        try {
-            doStream.writeUTF("END_GAME_DATA");
-            doStream.writeUTF(currentUser.getUserName());
-            doStream.writeInt(score);
-            doStream.writeInt(tiempo);
-            doStream.writeInt(max_espectators);
-            doStream.writeUTF(replay_path);
-            sendReplay(replay_path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        disconnect();
-    }
-
 
     public String getResponse() {
         return KOMessage;

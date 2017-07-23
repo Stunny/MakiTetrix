@@ -31,11 +31,6 @@ CREATE TABLE Login (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 
-INSERT INTO Login (user, mail, password, connected, register_date, last_login, number_games, total_points, gaming) VALUES
-('angel22', 'email1@mail.com', 'pass1', true, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '03/06/1996', 20, 1240, false),
-('angel1', 'angel@mail.com', 'pass2', false, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '20/11/2020', 12, 2131, true),
-('angel2', 'test@mail.com', 'pass3', true, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '21/05/2011', 5, 2311, true),
-('angel3', 'test@mail.com', 'pass3', true, (SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y') AS your_date), '21/05/2011', 5, 2311, true);
 
 
 
@@ -50,11 +45,7 @@ CREATE TABLE Partida(
 );
 
 
-INSERT INTO Partida(user, score, time, game_date, max_espectators, replay_path) VALUES
-('angel', 500, 300, '03/06/2016 20:39', 10, 'C/'),
-('angel1', 1000, 450, '18/10/2017 15:39', 13, 'C/'),
-('angel2', 1000, 450, '30/04/2015 10:39', 20, 'C/'),
-('angel22', 100, 450, '30/04/2015 10:39', 20, 'C/');
+
 
 
 DROP TABLE IF EXISTS DefaultKeys CASCADE;

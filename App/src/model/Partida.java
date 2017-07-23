@@ -49,10 +49,12 @@ public class Partida {
     private Queue<Move> savegame;
     private Conexio connect;
     private String date;
+    private int nespectadors;
 
     //Constructor
 
     public Partida(Conexio connect){
+        nespectadors = 0;
         interfaz = new int[MAXX][MAXY];
         for (int i = 0; i < interfaz.length; i++){
             for (int j = 0; j < interfaz[i].length; j++){
@@ -93,10 +95,8 @@ public class Partida {
         connect.sendStartGame();
         actualpiece = new Pieza(generateRandom());
         savegame.add(new Move(actualpiece));
-        connect.sendMove(new Move(actualpiece));
         nextpiece = new Pieza(generateRandom());
         savegame.add(new Move (nextpiece));
-        connect.sendMove(new Move(nextpiece));
         end = false;
         updateInterfaz(actualpiece);
     }
@@ -118,7 +118,6 @@ public class Partida {
      */
     public void rotateRight (int time){
         savegame.add(new Move(ROTATE_RIGHT, time));
-        connect.sendMove (new Move (ROTATE_RIGHT, time));
         if (!(collision(actualpiece, ROTATE_RIGHT))) {
             clear(actualpiece);
             actualpiece.rotateRight();
@@ -150,7 +149,6 @@ public class Partida {
      */
     public void rotateLeft (int time) {
         savegame.add(new Move(ROTATE_LEFT, time));
-        connect.sendMove (new Move (ROTATE_LEFT, time));
         if (!(collision(actualpiece, ROTATE_LEFT))) {
             clear(actualpiece);
             actualpiece.rotateLeft();
@@ -208,7 +206,6 @@ public class Partida {
      */
     public void goLeft (int time){
         savegame.add(new Move(MOVE_LEFT, time));
-        connect.sendMove (new Move (MOVE_LEFT, time));
         if (!(collision(actualpiece, MOVE_LEFT))){
             clear(actualpiece);
             actualpiece.setPosy(actualpiece.getPosy() - 1);
@@ -233,13 +230,14 @@ public class Partida {
      *
      * @see #collision(Pieza, int)
      * @see #clear(Pieza)
+     *
      * @see #updateInterfaz(Pieza)
      */
     public void goDown (int time){
         savegame.add(new Move(MOVE_DOWN, time));
-        connect.sendMove (new Move (MOVE_DOWN, time));
         if (!(collision(actualpiece, MOVE_DOWN))) {
             clear(actualpiece);
+            nespectadors = connect.pideEspectadores();
             actualpiece.setPosx(actualpiece.getPosx() + 1);
             updateInterfaz(actualpiece);
             return;
@@ -338,7 +336,6 @@ public class Partida {
         actualpiece = nextpiece.clone();
         nextpiece = new Pieza(generateRandom());
         savegame.add(new Move(nextpiece));
-        connect.sendMove (new Move (nextpiece));
 
         floortime = 2;
     }
@@ -2403,5 +2400,8 @@ public class Partida {
     public int getLevel() {return level;}
     public int getPoints() {return points;}
     public String getDate() { return date;}
+    public int getNespectadors(){
+        return nespectadors;
+    }
 
 }
