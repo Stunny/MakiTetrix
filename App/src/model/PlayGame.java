@@ -98,7 +98,6 @@ public class PlayGame extends Thread {
      * @see Move
      */
     public void replay (){
-        int time = 0;
         Pieza actual = toplay.peek().getPiece();
         toplay.poll();
         Pieza siguiente = toplay.peek().getPiece();
@@ -184,4 +183,7 @@ public class PlayGame extends Thread {
     }
 
 
+    public void setRunning(Boolean running) {
+        this.running = running;
+    }
 }
