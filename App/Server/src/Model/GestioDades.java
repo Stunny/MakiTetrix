@@ -446,7 +446,12 @@ public class GestioDades {
             while (r.next ()) {
                 if(r.getString("user").equals(nom)||r.getString("mail").equals(nom)){
                     if(r.getString("password").equals(contra)){
-                        String query = "UPDATE Login SET connected = true WHERE Login.user = '" + nom + "';";
+
+                        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                        Date date = new Date(System.currentTimeMillis());
+                        System.out.println("fico aquesta data: " + dateFormat.format(date));
+
+                        String query = "UPDATE Login SET connected = true, last_login = '" + dateFormat.format(date) + "' WHERE Login.user = '" + nom + "';";
                         PreparedStatement preparedStmt = c.prepareStatement(query);
                         preparedStmt.execute();
                         ok = true;
@@ -932,10 +937,11 @@ public class GestioDades {
             c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
-            String query = "UPDATE Login SET total_points = (SELECT SUM(score) FROM Partida AS p WHERE p.user = ?), number_games = (SELECT COUNT(score) FROM Partida AS p WHERE p.user = ?);";
+            String query = "UPDATE Login SET total_points = (SELECT SUM(score) FROM Partida AS p WHERE p.user = ?), number_games = (SELECT COUNT(score) FROM Partida AS p WHERE p.user = ?) WHERE user = ?;";
             PreparedStatement stmt = c.prepareStatement(query);
             stmt.setString(1, userName);
             stmt.setString(2, userName);
+            stmt.setString(3, userName);
 
             stmt.execute();
             c.close();
