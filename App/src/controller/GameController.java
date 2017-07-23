@@ -49,7 +49,9 @@ public class GameController implements KeyListener {
         endRepetetion = false;
     }
 
-
+    /**
+     * Empieza a preparar el juego
+     */
     public void startGame(){
         game.newGame();
         gv.printarPantalla(game.getInterfaz());
@@ -57,6 +59,9 @@ public class GameController implements KeyListener {
         stopgame = false;
     }
 
+    /**
+     * Ejecuta el juego
+     */
     public void playGame () {
         pg = new PlayGame(game,this);
         pg.start();

@@ -44,10 +44,7 @@ public class Crono extends Thread {
     }
 
     //Getters && Setter
-    /**
-     * Devuelve el tiempo
-     *
-     */
+
     public int getTiempo (){
         return tiempo;
     }
