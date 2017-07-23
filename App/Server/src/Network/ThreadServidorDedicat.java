@@ -214,10 +214,10 @@ public class ThreadServidorDedicat extends Thread{
             case "ESPECTATE": //Selected user to observe
                 String selectedUser = diStream.readUTF();
                 System.out.println("I want to spectate: " + selectedUser);
-                ArrayList<LlistaEspectadors> retrans = sController.getRetrans();
-
                     //Ens afegim com a espectador de la partida del jugador user
                     sController.afegeixEspectador(selectedUser,doStream);
+                System.out.println("tamany espectadors a espectate "+sController.getEspectadors(selectedUser));
+
                 break;
 
             case "START_PARAMETERS"://Sets player's default keys and notifies server a change in gaming status
@@ -264,12 +264,28 @@ public class ThreadServidorDedicat extends Thread{
                 sController.addPartida(currentUser);
                 break;
 
+            case "GIVESPEC":
+                currentUser = diStream.readUTF();
+                System.out.println("entro a givespec");
+                LlistaEspectadors aux = sController.getEspectadors(currentUser);
+                System.out.println("aux "+aux);
+                System.out.println("tamany espectadors a givespec "+sController.getEspectadors(currentUser).getDs().size());
+
+
+                if (aux == null){
+                    doStream.writeInt(0);
+
+                }else {
+                    doStream.writeInt(aux.getDs().size());
+                }
+
+                break;
             case "MOVE":
+
                 String user = diStream.readUTF();
                 String s = diStream.readUTF();
-                System.out.println("envio nespectadors desde tsd");
-                System.out.println("envio nespectadors desde tsd "+sController.getEspectadors(currentUser).getDs().size());
-                doStream.writeInt(sController.getEspectadors(currentUser).getDs().size());
+
+
                 //System.out.println("moviment: " + s);
                 espectadors= sController.getEspectadors(user);
 
@@ -279,9 +295,10 @@ public class ThreadServidorDedicat extends Thread{
                 //Busquem tots els espectadors als que s'han d'enviar missatges
                 ds = espectadors.getDs();
                 for (int i = 0; i < espectadors.getDs().size(); i++){
-
+                    System.out.println("envio missatge");
                     ds.get(i).writeUTF(s);
                 }
+
                 break;
 
             case "END_GAME_DATA":

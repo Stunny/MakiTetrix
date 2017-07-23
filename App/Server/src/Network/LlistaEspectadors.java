@@ -25,7 +25,6 @@ public class LlistaEspectadors {
 
     public void afegeixEspectador(DataOutputStream d){
         ds.add(d);
-        System.out.println("tamany espectadors: "+ds.size());
 
     }
     public void afegeixMoviment(String s){

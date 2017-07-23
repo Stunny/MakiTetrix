@@ -1,7 +1,7 @@
 package Model;
 
 import Model.exceptions.BadAccessToDatabaseException;
-import network.Conexio;
+
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;

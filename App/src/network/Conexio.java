@@ -36,6 +36,7 @@ public class Conexio extends Thread {
             //Socket sServidor = new Socket("172.20.31.90", 33333);
             sServidor = new Socket (String.valueOf(IP), 33333);
             doStream = new DataOutputStream(sServidor.getOutputStream());
+            diStream = new DataInputStream(sServidor.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -346,25 +347,40 @@ public class Conexio extends Thread {
         disconnect();
     }
 
+
+
+    public int pideEspectadores (){
+        connect();
+        int espectadors = 0;
+
+        try{
+            doStream.writeUTF("GIVESPEC");
+            doStream.writeUTF(currentUser.getUserName());
+            espectadors = diStream.readInt();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        System.out.println("salgo de pide");
+        disconnect();
+        return espectadors;
+    }
     /**
      * Notifies the server of a new move nad sends it
      * @param m Move we send to the server
      */
-    public int sendMove (Move m){
+
+    public void sendMove (Move m){
         connect();
 
         try{
             doStream.writeUTF("MOVE");
             doStream.writeUTF(currentUser.getUserName());
             doStream.writeUTF(m.toString());
-            System.out.println("enviat nespectadors");
-            return diStream.readInt();
-
         } catch (IOException e){
             e.printStackTrace();
         }
+
         disconnect();
-        return 0;
     }
 
     /**
