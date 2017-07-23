@@ -59,11 +59,13 @@ public class GameController implements KeyListener {
         t.start();
     }
 
-    public void startReplay (ArrayList<String > replay) {
+    public void readyReplay (ArrayList<String > replay) {
         pg = new PlayGame(game, this);
         pg.setToPlay(toQueue(replay));
-        pg.run();
+    }
 
+    public void startReplay () {
+        pg.run();
     }
 
     private Queue<Move> toQueue (ArrayList<String> replay){

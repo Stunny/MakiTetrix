@@ -85,22 +85,9 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 replayController = new ReplaySelectController(replay, conexio,
                         currentUser.getUserName());
                 replay.registerReplay(replayController);
+                replayController.setGc(gameController);
+                replayController.setGv(gameView);
                 replay.setVisible(true);
-                /*
-                timer = new Timer(1, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (replayController.getReplay().size() != 0){
-                            timer.stop();
-                        }
-                    }
-                });
-                timer.start();
-                gameController.setStopGame(true);
-                while(replayController.getReplay() != null){
-                    gameView.setVisible(true);
-                    gameController.startReplay(replayController.getReplay());
-                }*/
                 break;
 
             case "salir":

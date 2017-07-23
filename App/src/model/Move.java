@@ -39,6 +39,7 @@ public class Move {
 
     public Move (String aux){
         String value[] = aux.split(",");
+        option = Integer.parseInt(value[0]);
         switch (Integer.parseInt(value[0])){
             case Move.MOVE:
                 move = Integer.parseInt(value[1]);
@@ -67,6 +68,7 @@ public class Move {
 
     @Override
     public String toString (){
+        System.out.println("O:"+option);
         switch (option){
             case MOVE:
                 return (option + "," + move + "," + time);

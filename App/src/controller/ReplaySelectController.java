@@ -1,5 +1,6 @@
 package controller;
 
+import Vista.GameView;
 import Vista.ReplaySelectView;
 import network.Conexio;
 
@@ -20,6 +21,8 @@ public class ReplaySelectController implements MouseListener{
     private Conexio conexio;
     private String userName;
     private ArrayList<String> replay;
+    private GameController gc;
+    private GameView gv;
 
     ReplaySelectController(ReplaySelectView view, Conexio conexio, String userName){
         this.view = view;
@@ -77,7 +80,9 @@ public class ReplaySelectController implements MouseListener{
         if (e.getClickCount() == 1) {
             int row = view.getTable().getSelectedRow();
             replay = conexio.getDesiredUserReplay(Integer.parseInt(table.getValueAt(row, 0).toString()));
-            //AQUI TIENES LA REPLAY
+            gc.readyReplay(replay);
+            gv.setVisible(true);
+            gc.startReplay();
         }
     }
 
@@ -102,4 +107,7 @@ public class ReplaySelectController implements MouseListener{
     }
 
     public ArrayList<String> getReplay (){return replay;}
+
+    public void setGc (GameController gc){this.gc = gc;}
+    public void setGv (GameView gv){this.gv = gv;}
 }

@@ -49,9 +49,10 @@ public class PlayGame extends Thread {
     public void run (){
         if (toplay == null) {
             game();
-        } else if (direct = true){
+        } else if (direct){
             directGame();
         } else {
+            System.out.println("REPLAY");
             replay();
         }
     }
