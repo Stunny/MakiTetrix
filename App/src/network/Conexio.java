@@ -1,10 +1,12 @@
 package network;
 
+import controller.EspectatorController;
 import model.Move;
 import model.User;
 import model.utils.Encrypter;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class Conexio extends Thread {
     private boolean ResponseSuccess = true;
     private int time;
     private User currentUser;
+    private EspectatorController espectatorController;
 
     /**
      * Sets necesary functionalities for client-server communication
@@ -37,6 +40,9 @@ public class Conexio extends Thread {
             sServidor = new Socket (String.valueOf(IP), 33333);
             doStream = new DataOutputStream(sServidor.getOutputStream());
             diStream = new DataInputStream(sServidor.getInputStream());
+        } catch (ConnectException c){
+            System.err.println("Error! El servidor no esta disponible!");
+            System.exit(0);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -496,4 +502,7 @@ public class Conexio extends Thread {
         return time;
     }
 
+    public void addEspectatorController(EspectatorController espectatorController) {
+        this.espectatorController = espectatorController;
+    }
 }

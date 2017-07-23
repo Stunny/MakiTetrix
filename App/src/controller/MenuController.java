@@ -75,6 +75,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 EspectatorView espectatorView = new EspectatorView();
                 EspectatorController espectatorController = new EspectatorController(espectatorView,
                         conexio, currentUser.getUserName());
+                conexio.addEspectatorController(espectatorController);
                 espectatorView.registerEspectator(espectatorController);
                 espectatorView.setVisible(true);
                 break;
