@@ -867,7 +867,7 @@ public class GestioDades {
      * @param max_espectators number of maximum spectators during the game
      * @param replayPath path of the replay
      */
-    public void saveGameData(String userName, int score, int millis, int max_espectators, String replayPath/*, ArrayList<String> moves, int numGame*/){
+    public void saveGameData(String userName, int score, int millis, int max_espectators, String replayPath){
         try {
             Class.forName("com.mysql.jdbc.Driver");
             c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
@@ -1063,7 +1063,7 @@ public class GestioDades {
      * @param selectedUser usuario del que se desean recuperar las repeticiones
      * @return lista de rutas de los archivos de repeticion del usuario
      */
-    public String[] getReplays(String selectedUser) {
+    public ArrayList<String> getReplays(String selectedUser) {
         ArrayList<String> paths;
         System.out.println("vull les replays de: " + selectedUser);
         try{
@@ -1081,7 +1081,7 @@ public class GestioDades {
             }
             c.close();
 
-            return paths.toArray(new String[]{});
+            return paths;
         }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }

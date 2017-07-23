@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -21,6 +22,8 @@ public class ReplaysController implements MouseListener, ActionListener {
     private String selectedUser;
     private GestioDades gestioDades;
     private ReplaysView replaysView;
+    private String selectedReplay;
+    private ArrayList<String> replays;
 
 
     public ReplaysController(String selectedUser, GestioDades gestioDades, ReplaysView replaysView){
@@ -36,11 +39,10 @@ public class ReplaysController implements MouseListener, ActionListener {
         switch(e.getActionCommand()){
 
             case "DELETE":
-                JTable table = replaysView.getTable();
-                int row = table.getSelectedRow();
-                String replayPath = (String) table.getValueAt(row, 0);
                 try {
-                    gestioDades.deleteReplay(replayPath);
+                    System.out.println("entro a borrar la replay " + selectedReplay);
+                    gestioDades.deleteReplay(selectedReplay);
+                    actualitzaVista(selectedReplay);
                 } catch (BadAccessToDatabaseException e1) {
                     e1.printStackTrace();
                 }
@@ -51,19 +53,24 @@ public class ReplaysController implements MouseListener, ActionListener {
 
     }
 
+    private void actualitzaVista(String selectedReplay) {
+        replays.remove(selectedReplay);
+
+    }
+
     private void ompleLlistaReplays() {
 
-        String replays[] = gestioDades.getReplays(selectedUser);
-        System.out.println("lenght: " + replays.length);
-        for (int i = 0; i < replays.length; i++){
-            System.out.println("rebo aquestes replays: " + replays[i]);
+        replays = gestioDades.getReplays(selectedUser);
+        System.out.println("lenght: " + replays.size());
+        for (int i = 0; i < replays.size(); i++){
+            System.out.println("rebo aquestes replays: " + replays.get(i));
         }
 
         DefaultTableModel model = (DefaultTableModel) replaysView.getTable().getModel();
         model.addColumn("Archivos de replay");
 
-        for (int i = 0; i < replays.length; i++){
-            Vector<String> paths = new Vector<>(Arrays.asList(String.valueOf(replays[i])));
+        for (int i = 0; i < replays.size(); i++){
+            Vector<String> paths = new Vector<>(Arrays.asList(String.valueOf(replays.get(i))));
             Vector<Object> row = new Vector<Object>();
             row.addElement(paths.get(0));
             model.addRow(row);
@@ -72,7 +79,18 @@ public class ReplaysController implements MouseListener, ActionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        JTable table = (JTable) e.getSource();
+        if (e.getClickCount() == 1 && table == replaysView.getTable()) {
+            int row = replaysView.getTable().getSelectedRow();
+            try {
+                selectedReplay = table.getValueAt(row, 0).toString();
 
+                System.out.println("selecciono la replay: " + selectedReplay);
+                gestioDades.deleteReplay(selectedReplay);
+            } catch (BadAccessToDatabaseException e1) {
+                e1.printMessage();
+            }
+        }
     }
 
     @Override

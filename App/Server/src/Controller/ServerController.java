@@ -8,7 +8,7 @@ import View.PointsGraph;
 import View.ReplaysView;
 import View.ServerAdminView;
 import View.ViewersGraph;
-import com.sun.tools.internal.ws.wsdl.document.soap.SOAPUse;
+
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -96,6 +96,7 @@ public class ServerController implements ActionListener, MouseListener {
             ReplaysView replaysView = new ReplaysView();
             replaysView.setVisible(true);
             ReplaysController replaysController = new ReplaysController(selectedUser, gestioDades, replaysView);
+            replaysView.registerReplay(replaysController);
         }
     }
 
