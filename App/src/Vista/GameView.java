@@ -232,6 +232,10 @@ public class GameView extends JFrame{
 
     }
 
+    /**
+     * Muestra un mensaje para poder guardar la partida.
+     * @return      0: para guardar, 1: para no guarda
+     */
     public int saveGame() {
         Object[] options = {"Save", "Don't Save"};
         return JOptionPane.showOptionDialog (this, "Do you want save the game?",
@@ -239,6 +243,10 @@ public class GameView extends JFrame{
                 options, options[0]);
     }
 
+    /**
+     * Muestra un mensaje para contuniar la partida
+     * @return      0: para continuar.
+     */
     public int pauseGame() {
         String[] options = {"Continue"};
         return JOptionPane.showOptionDialog(this, "Press continue for resume the game",

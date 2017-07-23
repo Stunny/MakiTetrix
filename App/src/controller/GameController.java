@@ -49,7 +49,9 @@ public class GameController implements KeyListener {
         endRepetetion = false;
     }
 
-
+    /**
+     * Inicializa Partida para empezar un partida.
+     */
     public void startGame(){
         game.newGame();
         gv.printarPantalla(game.getInterfaz());
@@ -57,21 +59,38 @@ public class GameController implements KeyListener {
         stopgame = false;
     }
 
+    /**
+     * Activa el Thread para poder jugar una partida
+     */
     public void playGame () {
         pg = new PlayGame(game,this);
         pg.start();
         t.start();
     }
 
+    /**
+     * Prepara un repetición para ser jugada
+     * @param replay        Array de Move (repeticion)
+     * @see Move
+     */
     public void readyReplay (ArrayList<String > replay) {
         pg = new PlayGame(game, this);
         pg.setToPlay(toQueue(replay));
     }
 
+    /**
+     * Da visto bueno al thread para empezar un repetición
+     */
     public void startReplay () {
         pg.run();
     }
 
+    /**
+     * Pasa un array de string a un array de Move
+     * @param replay        Array de String
+     * @return              Array de Move
+     * @see Move
+     */
     private Queue<Move> toQueue (ArrayList<String> replay){
         Queue<Move> toreplay = new LinkedList<>();
         for (int i = 0; i < replay.size(); i++){
@@ -80,6 +99,9 @@ public class GameController implements KeyListener {
         return toreplay;
     }
 
+    /**
+     * Procedimientos que se deben ejecutar cuando se acaba la partida.
+     */
     public void endGame (){
         pg.setRunning(false);
         stopgame = true;
@@ -186,6 +208,9 @@ public class GameController implements KeyListener {
         endRepetetion = end;
     }
 
+    /**
+     * Tras carga su historia empieza a reproduccir una partida en directo.
+     */
     public void startDirect() {
         gv.setVisible(true);
         System.out.println("EMPIEZA EL DIRECTO");
