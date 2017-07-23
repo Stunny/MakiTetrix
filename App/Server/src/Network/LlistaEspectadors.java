@@ -20,32 +20,57 @@ public class LlistaEspectadors {
         ds = new ArrayList<>();
         historial = new ArrayList<>();
     }
+    /**
+     * Retorna tota la llista d'espectadors en una partida
+     */
     public ArrayList <DataOutputStream> getDs(){
         return ds;
     }
+
+    /**
+     * Retorna l'usuari que està jugant una partida
+     */
     public String getUser(){
         return user;
     }
 
+    /**
+     * Inclou una espectador a llista d'espectadors de la partida
+     * @param d el DataOutputStream de l'espectador
+     */
     public void afegeixEspectador(DataOutputStream d) {
         ds.add(d);
         if (ds.size() > maxEspec) {
             maxEspec = ds.size();
         }
     }
+
+    /**
+     * Retorna el maxim valor d'espectadors que hi ha hagut mirant la partida
+     */
     public int getMaxEspec(){
             return maxEspec;
     }
 
+    /**
+     * Elimina l'espectador especificat de la llista
+     * @param d el DataOutputStream de l'espectador
+     */
     public void eliminaEspectador(DataOutputStream d) {
         ds.remove(d);
     }
 
-
+    /**
+     * Afegeix un moviment en l'historial dels moviments que s'han fet en una partida
+     * @param s String del moviment
+     */
     public void afegeixMoviment(String s){
         historial.add(s);
 
     }
+    /**
+     * Retorna tots els moviments que s'han fet al llarg de la partida
+     */
     public ArrayList<String> getHistorial (){
         return historial;
     }

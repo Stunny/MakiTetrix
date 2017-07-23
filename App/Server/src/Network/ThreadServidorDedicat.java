@@ -30,7 +30,6 @@ public class ThreadServidorDedicat extends Thread{
     private String currentUser;
     private int time;
 
-    private GameDataManager gdm;
     private ObserveManager observeManager;
     private LlistaEspectadors espectadors;
     private ArrayList<DataOutputStream>ds;
@@ -154,9 +153,7 @@ public class ThreadServidorDedicat extends Thread{
                 sController.updateUserList();
                 break;
 
-            case "NG": //New Game Start Request
-                gdm = new GameDataManager();
-                break;
+
 
             case "MV": //New Move on Game
                 // TODO: almacenar nuevo movimiento en el manager
@@ -310,12 +307,12 @@ public class ThreadServidorDedicat extends Thread{
                 currentUser = diStream.readUTF();
                 int score = diStream.readInt();
                 int millis = diStream.readInt();
-                int max_espectators  = diStream.readInt();
                 String replay_path = diStream.readUTF();
 
                 //int numGame = gestioDades.gestNumGames(currentUser);
                 System.out.println("guardo aquesta score: " + score);
-                gestioDades.saveGameData(currentUser, score, millis, max_espectators, replay_path);
+
+                gestioDades.saveGameData(currentUser, score, millis, sController.getEspectadors(currentUser).getMaxEspec(), replay_path);
                 gestioDades.setGamingStatus(currentUser, false, null);
                 break;
 
@@ -371,8 +368,5 @@ public class ThreadServidorDedicat extends Thread{
         }
     }
 
-    public String getCurrentUser (){
-        return currentUser;
-    }
 
 }

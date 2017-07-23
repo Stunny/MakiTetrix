@@ -49,6 +49,7 @@ public class GameController implements KeyListener {
         endRepetetion = false;
     }
 
+
     public void startGame(){
         game.newGame();
         gv.printarPantalla(game.getInterfaz());
@@ -84,7 +85,7 @@ public class GameController implements KeyListener {
         stopgame = true;
         if (gv.saveGame() == 0){
             game.saveGame();
-            conexio.saveGameData(game.getPoints(), t.getTiempo(),0,
+            conexio.saveGameData(game.getPoints(), t.getTiempo(),
                     game.getDate() + ".txt");
             conexio.sendReplay(game.getDate() + ".txt");
         }else{

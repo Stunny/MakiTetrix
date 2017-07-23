@@ -101,9 +101,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
         }
     }
 
-    public void fiPartida(){
 
-    }
 
     /**
      * Notifies user has disconected (closed menu window)

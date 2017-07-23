@@ -454,10 +454,9 @@ public class Conexio extends Thread {
      * Notifies the server that the user desires to save the game data
      * @param score Score of the user's game
      * @param tiempo Time of the user's game
-     * @param max_espectators Maximum number of spectators during the user's game
      * @param replay_path Path to the user's replay
      */
-    public void saveGameData(int score, int tiempo, int max_espectators, String replay_path){
+    public void saveGameData(int score, int tiempo, String replay_path){
         connect();
 
         try {
@@ -465,7 +464,6 @@ public class Conexio extends Thread {
             doStream.writeUTF(currentUser.getUserName());
             doStream.writeInt(score);
             doStream.writeInt(tiempo);
-            doStream.writeInt(max_espectators);
             doStream.writeUTF(replay_path);
         } catch (IOException e) {
             e.printStackTrace();
