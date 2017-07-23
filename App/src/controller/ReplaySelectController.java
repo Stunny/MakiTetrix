@@ -45,6 +45,7 @@ public class ReplaySelectController implements MouseListener{
      */
     private void ompleReplays() throws ParseException {
         String[] data = conexio.getReplays(userName);
+        System.out.println("data length: " + data.length);
 
         DefaultTableModel model = (DefaultTableModel) view.getTable().getModel();
         model.addColumn("Identificador");

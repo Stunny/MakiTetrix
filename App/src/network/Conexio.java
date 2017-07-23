@@ -305,6 +305,7 @@ public class Conexio extends Thread {
 
         try {
             doStream.writeUTF("REPLAY_LIST");
+            doStream.writeUTF(currentUser.getUserName());
             String data = null;
             int replay_number = diStream.readInt();
             String[] total = new String[replay_number];

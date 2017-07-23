@@ -104,7 +104,6 @@ public class GestioDades {
                 PreparedStatement preparedStmt = c.prepareStatement(query);
                 preparedStmt.setString(1, u);
                 preparedStmt.execute();
-                System.out.println(preparedStmt.getFetchSize());
                 ResultSet rs2 = preparedStmt.getResultSet();
                 while (rs2.next()) {
                     result.add(rs2.getInt("derecha"));
@@ -450,7 +449,6 @@ public class GestioDades {
 
                         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                         Date date = new Date(System.currentTimeMillis());
-                        System.out.println("fico aquesta data: " + dateFormat.format(date));
 
                         String query = "UPDATE Login SET connected = true, last_login = '" + dateFormat.format(date) + "' WHERE Login.user = '" + nom + "';";
                         PreparedStatement preparedStmt = c.prepareStatement(query);
@@ -1044,8 +1042,6 @@ public class GestioDades {
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
             Class.forName("com.mysql.jdbc.Driver");
             Statement s = c.createStatement ();
-            System.out.println("current user: " + currentUser);
-            System.out.println("replay id: " + replayID);
             s.executeQuery ("SELECT move FROM Replay WHERE user = '" + currentUser + "' AND ID = " + replayID + " ORDER BY Order_ ASC;");
             ResultSet r = s.getResultSet ();
             while (r.next()){
@@ -1065,7 +1061,6 @@ public class GestioDades {
      */
     public ArrayList<String> getReplays(String selectedUser) {
         ArrayList<String> paths;
-        System.out.println("vull les replays de: " + selectedUser);
         try{
             c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
                     serverConfig.getDb_user(), serverConfig.getDb_pass());

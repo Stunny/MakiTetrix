@@ -197,7 +197,7 @@ public class ThreadServidorDedicat extends Thread{
 
                 break;
             case "REPLAY_LIST"://List of player's games
-
+                currentUser = diStream.readUTF();
                 ArrayList<String[]> gameInfo = gestioDades.getGameData(currentUser);
                 doStream.writeInt(gameInfo.size());
                 for (int i = 0; i < gameInfo.size(); i++){

@@ -39,7 +39,6 @@ public class ReplaysController implements MouseListener, ActionListener {
         switch(e.getActionCommand()){
             case "DELETE":
                 try {
-                    System.out.println("entro a borrar la replay " + selectedReplay);
                     gestioDades.deleteReplay(selectedReplay);
                     actualitzaVista(selectedReplay);
                 } catch (BadAccessToDatabaseException e1) {
@@ -81,14 +80,9 @@ public class ReplaysController implements MouseListener, ActionListener {
         JTable table = (JTable) e.getSource();
         if (e.getClickCount() == 1 && table == replaysView.getTable()) {
             int row = replaysView.getTable().getSelectedRow();
-            try {
-                selectedReplay = table.getValueAt(row, 0).toString();
+            selectedReplay = table.getValueAt(row, 0).toString();
 
-                System.out.println("selecciono la replay: " + selectedReplay);
-                gestioDades.deleteReplay(selectedReplay);
-            } catch (BadAccessToDatabaseException e1) {
-                e1.printMessage();
-            }
+            //gestioDades.deleteReplay(selectedReplay);
         }
     }
 

@@ -87,8 +87,7 @@ public class MenuController extends WindowAdapter implements ActionListener {
             case "anterior":
                 //Reproducir anterior
                 ReplaySelectView replay = new ReplaySelectView();
-                replayController = new ReplaySelectController(replay, conexio,
-                        currentUser.getUserName());
+                replayController = new ReplaySelectController(replay, conexio, currentUser.getUserName());
                 replay.registerReplay(replayController);
                 replayController.setGc(gameController);
                 replayController.setGv(gameView);
