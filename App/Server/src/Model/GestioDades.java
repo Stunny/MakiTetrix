@@ -3,6 +3,7 @@ package Model;
 import Model.exceptions.BadAccessToDatabaseException;
 
 
+import java.io.File;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
@@ -957,16 +958,19 @@ public class GestioDades {
      * @param order ID that specifies the order in which the moves must be read
      * @param numGame The replay to which the moves belong to
      * @param c
+     * @param path
      */
-    public void addMove(String currentUser, String move, int order, int numGame, Connection c) {
+    //todo: añadir path a la query
+    public void addMove(String currentUser, String move, int order, int numGame, Connection c, String path) {
         try {
-            String query = "INSERT INTO Replay(user, move, ID, Order_) VALUES (?, ?, ?, ?);";
+            String query = "INSERT INTO Replay(user, move, ID, Order_, path) VALUES (?, ?, ?, ?, ?);";
 
             PreparedStatement stmt = c.prepareStatement(query);
             stmt.setString(1, currentUser);
             stmt.setString(2, move);
             stmt.setInt(3, numGame + 1);
             stmt.setInt(4, order);
+            stmt.setString(5, path);
             stmt.execute();
 
         }catch (SQLException cnfe){
@@ -1053,5 +1057,66 @@ public class GestioDades {
             e.printStackTrace();
         }
         return replay;
+    }
+
+    /**
+     * @param selectedUser usuario del que se desean recuperar las repeticiones
+     * @return lista de rutas de los archivos de repeticion del usuario
+     */
+    public String[] getReplays(String selectedUser) {
+        ArrayList<String> paths;
+        System.out.println("vull les replays de: " + selectedUser);
+        try{
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+            Class.forName("com.mysql.jdbc.Driver");
+            Statement s = c.createStatement ();
+
+            s.executeQuery ("SELECT DISTINCT path FROM Replay WHERE user = '" + selectedUser + "';");
+            ResultSet r = s.getResultSet ();
+
+            paths = new ArrayList<>();
+            while (r.next()){
+                paths.add(r.getString("path"));
+            }
+            c.close();
+
+            return paths.toArray(new String[]{});
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Elimina una replay de la base de datos, asi como su archivo de informacion
+     * @param replayPath Ruta del archivo a eliminar
+     */
+    public void deleteReplay(String replayPath) throws BadAccessToDatabaseException {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://" + serverConfig.getDb_ip() + ":" + serverConfig.getDb_port() + "/" + serverConfig.getDb_name() + "?autoReconnect=true&useSSL=false",
+                    serverConfig.getDb_user(), serverConfig.getDb_pass());
+        }catch (ClassNotFoundException cnfe){
+            cnfe.printStackTrace();
+        }
+        catch (SQLException e) {
+            throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
+        }
+
+        String query = "DELETE FROM Replay WHERE path = '" + replayPath + "';";
+        PreparedStatement preparedStmt = null;
+
+        try {
+            preparedStmt = c.prepareStatement(query);
+            preparedStmt.execute();
+            c.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        File replayFile = new File(replayPath);
+
+        replayFile.delete();
     }
 }

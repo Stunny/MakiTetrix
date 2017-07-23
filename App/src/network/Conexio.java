@@ -1,12 +1,15 @@
 package network;
 
+import controller.EspectatorController;
 import model.Move;
 import model.User;
 import model.utils.Encrypter;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -22,6 +25,7 @@ public class Conexio extends Thread {
     private boolean ResponseSuccess = true;
     private int time;
     private User currentUser;
+    private EspectatorController espectatorController;
 
     /**
      * Sets necesary functionalities for client-server communication
@@ -37,6 +41,9 @@ public class Conexio extends Thread {
             sServidor = new Socket (String.valueOf(IP), 33333);
             doStream = new DataOutputStream(sServidor.getOutputStream());
             diStream = new DataInputStream(sServidor.getInputStream());
+        } catch (ConnectException c){
+            System.err.println("Error! El servidor no esta disponible!");
+            System.exit(0);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -214,6 +221,7 @@ public class Conexio extends Thread {
             doStream.writeUTF("ESPECTATE");
             doStream.writeUTF(userNameToEspectate);
             String missatge = diStream.readUTF();
+
             System.out.println("Comencem espectadoria");
             while(!missatge.equals("end")){
                 System.out.println("missatge rebut: " + missatge);
@@ -288,7 +296,6 @@ public class Conexio extends Thread {
 
         try {
             doStream.writeUTF("REPLAY_LIST");
-            doStream.writeUTF(userName);
             String data = null;
             int replay_number = diStream.readInt();
             String[] total = new String[replay_number];
@@ -347,7 +354,9 @@ public class Conexio extends Thread {
         disconnect();
     }
 
-
+    /**
+     * Asks the server for the number of spectators that are watching the game the current user is playing
+     */
 
     public int pideEspectadores (){
         connect();
@@ -360,7 +369,6 @@ public class Conexio extends Thread {
         } catch (IOException e){
             e.printStackTrace();
         }
-        System.out.println("salgo de pide");
         disconnect();
         return espectadors;
     }
@@ -371,7 +379,6 @@ public class Conexio extends Thread {
 
     public void sendMove (Move m){
         connect();
-
         try{
             doStream.writeUTF("MOVE");
             doStream.writeUTF(currentUser.getUserName());
@@ -407,6 +414,7 @@ public class Conexio extends Thread {
         try {
             doStream.writeUTF("NEW_REPLAY");
             doStream.writeUTF(currentUser.getUserName());
+            doStream.writeUTF(path);
             BufferedReader br = new BufferedReader(new FileReader(path));
             String aux;
             while((aux = br.readLine()) != null) {
@@ -494,6 +502,22 @@ public class Conexio extends Thread {
 
     public int getTime() {
         return time;
+    }
+
+
+
+    public void addEspectatorController(EspectatorController espectatorController) {
+        System.out.println("add espectator controller");
+        this.espectatorController = espectatorController;
+        connect();
+        try{
+            doStream.writeUTF("NEW_LOBBY");
+
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        disconnect();
     }
 
 }

@@ -35,6 +35,7 @@ public class ThreadServidorDedicat extends Thread{
     private LlistaEspectadors espectadors;
     private ArrayList<DataOutputStream>ds;
 
+
     public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades, ServerController sController){
         this.sClient = sClient;
         this.gestioDades = gestioDades;
@@ -189,8 +190,14 @@ public class ThreadServidorDedicat extends Thread{
 
                 break;
 
+            case "NEW_LOBBY" :
+
+                System.out.println("new lobby a server");
+                sController.afegeixLobby(doStream);
+
+                break;
             case "REPLAY_LIST"://List of player's games
-                currentUser = diStream.readUTF();
+
                 ArrayList<String[]> gameInfo = gestioDades.getGameData(currentUser);
                 doStream.writeInt(gameInfo.size());
                 for (int i = 0; i < gameInfo.size(); i++){
@@ -213,10 +220,8 @@ public class ThreadServidorDedicat extends Thread{
 
             case "ESPECTATE": //Selected user to observe
                 String selectedUser = diStream.readUTF();
-                System.out.println("I want to spectate: " + selectedUser);
                     //Ens afegim com a espectador de la partida del jugador user
                     sController.afegeixEspectador(selectedUser,doStream);
-                System.out.println("tamany espectadors a espectate "+sController.getEspectadors(selectedUser));
 
                 break;
 
@@ -260,16 +265,15 @@ public class ThreadServidorDedicat extends Thread{
                 break;
 
             case "GAME_START":
+                System.out.println("entro a game start");
                 currentUser = diStream.readUTF();
                 sController.addPartida(currentUser);
+                sController.actualitzaLlistesEspectadors();
                 break;
 
             case "GIVESPEC":
                 currentUser = diStream.readUTF();
-                System.out.println("entro a givespec");
                 LlistaEspectadors aux = sController.getEspectadors(currentUser);
-                System.out.println("aux "+aux);
-                System.out.println("tamany espectadors a givespec "+sController.getEspectadors(currentUser).getDs().size());
 
 
                 if (aux == null){
@@ -285,7 +289,6 @@ public class ThreadServidorDedicat extends Thread{
                 String user = diStream.readUTF();
                 String s = diStream.readUTF();
 
-
                 //System.out.println("moviment: " + s);
                 espectadors= sController.getEspectadors(user);
 
@@ -294,8 +297,8 @@ public class ThreadServidorDedicat extends Thread{
 
                 //Busquem tots els espectadors als que s'han d'enviar missatges
                 ds = espectadors.getDs();
-                for (int i = 0; i < espectadors.getDs().size(); i++){
-                    System.out.println("envio missatge");
+                System.out.println("size espectadors "+ds.size());
+                for (int i = 0; i < ds.size(); i++){
                     ds.get(i).writeUTF(s);
                 }
 
@@ -316,13 +319,14 @@ public class ThreadServidorDedicat extends Thread{
             case "NEW_REPLAY":
                 String move = null;
                 String userName = diStream.readUTF();
+                String path = diStream.readUTF();
                 int order = 0;
                 int numGame = gestioDades.gestNumGames(userName);
                 Connection c = gestioDades.connect();
                 do {
                     move = diStream.readUTF();
                     if (!move.equals("END")){
-                        gestioDades.addMove(userName, move, order, numGame, c);
+                        gestioDades.addMove(userName, move, order, numGame, c, path);
                         order++;
                     }
                 }while (!move.equals("END"));

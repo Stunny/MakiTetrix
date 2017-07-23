@@ -206,6 +206,7 @@ public class Partida {
      */
     public void goLeft (int time){
         savegame.add(new Move(MOVE_LEFT, time));
+        connect.sendMove (new Move (MOVE_LEFT, time));
         if (!(collision(actualpiece, MOVE_LEFT))){
             clear(actualpiece);
             actualpiece.setPosy(actualpiece.getPosy() - 1);
@@ -235,6 +236,7 @@ public class Partida {
      */
     public void goDown (int time){
         savegame.add(new Move(MOVE_DOWN, time));
+        connect.sendMove (new Move (MOVE_DOWN, time));
         if (!(collision(actualpiece, MOVE_DOWN))) {
             clear(actualpiece);
             nespectadors = connect.pideEspectadores();

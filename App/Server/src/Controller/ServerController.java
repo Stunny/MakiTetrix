@@ -5,8 +5,10 @@ import Model.User;
 import Model.exceptions.BadAccessToDatabaseException;
 import Network.LlistaEspectadors;
 import View.PointsGraph;
+import View.ReplaysView;
 import View.ServerAdminView;
 import View.ViewersGraph;
+import com.sun.tools.internal.ws.wsdl.document.soap.SOAPUse;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -28,8 +30,9 @@ public class ServerController implements ActionListener, MouseListener {
 
     private ServerAdminView serverAdminView;
     private GestioDades gestioDades;
-    private User selectedUser;
+    private String selectedUser;
     private ArrayList<LlistaEspectadors>retrans;
+    private ArrayList<DataOutputStream>lobbyds;
 
     /**
      * @param serverAdminView
@@ -39,6 +42,7 @@ public class ServerController implements ActionListener, MouseListener {
         this.serverAdminView = serverAdminView;
         this.gestioDades = gestioDades;
         this.retrans = new ArrayList<>();
+        this.lobbyds = new ArrayList<>();
 
         updateUserList();
     }
@@ -47,7 +51,7 @@ public class ServerController implements ActionListener, MouseListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals(serverAdminView.ACTION_BORRAR)){
             try{
-                gestioDades.deleteUser(selectedUser.getUserName());
+                gestioDades.deleteUser(selectedUser);
                 updateUserList();
                 selectedUser = null;
                 DefaultTableModel model = (DefaultTableModel) serverAdminView.getRightJTable().getModel();
@@ -88,6 +92,10 @@ public class ServerController implements ActionListener, MouseListener {
             ViewersGraph viewersGraph = new ViewersGraph(maxViewers, data2, userNames2);
             viewersGraph.ViewersGraph();
             viewersGraph.setVisible(true);
+        }else if(e.getActionCommand().equals(serverAdminView.ACTION_REPLAY) && !(selectedUser == null)){
+            ReplaysView replaysView = new ReplaysView();
+            replaysView.setVisible(true);
+            ReplaysController replaysController = new ReplaysController(selectedUser, gestioDades, replaysView);
         }
     }
 
@@ -164,10 +172,16 @@ public class ServerController implements ActionListener, MouseListener {
             int row = serverAdminView.getLeftTable().getSelectedRow();
             ArrayList<String> data = null;
             try {
+                String aux = table.getValueAt(row, 0).toString();
+                String [] aux2 = aux.split(" ");
+                selectedUser = aux2[0];
+
+                //selectedUser = gestioDades.getUser(table.getValueAt(row, 0).toString());
+                System.out.println("asigno selected user: " + selectedUser);
                 String user = table.getModel().getValueAt(row, 0).toString().replace(" (Online)", "");
                 data = gestioDades.mostraDades(user);
                 ompleInformacioUsuari(data);
-                selectedUser = gestioDades.getUser(table.getValueAt(row, 0).toString());
+                //selectedUser = gestioDades.getUser(table.getValueAt(row, 0).toString());
 
             } catch (BadAccessToDatabaseException e1) {
                 e1.printMessage();
@@ -223,7 +237,6 @@ public class ServerController implements ActionListener, MouseListener {
             if (user.equals(retrans.get(i).getUser())){
                 LlistaEspectadors aux = retrans.get(i);
                 aux.afegeixEspectador(d);
-                System.out.println("espectador afegit a partida de "+user);
                 ArrayList<String> historial = aux.getHistorial();
 
                 //Enviamos todos los movimientos acumulados hasta ahora en la partida
@@ -247,7 +260,6 @@ public class ServerController implements ActionListener, MouseListener {
 
     public void addPartida(String user){
 
-        System.out.println("nova partida emmagatzemada");
         Network.LlistaEspectadors l = new Network.LlistaEspectadors(user);
         retrans.add(l);
     }
@@ -255,6 +267,11 @@ public class ServerController implements ActionListener, MouseListener {
         return retrans;
     }
 
+
+    /**
+     * Searches for the current game that as certain player is playing
+     * @param user player
+     */
     public Network.LlistaEspectadors getEspectadors (String user){
         for (int i = 0; i<retrans.size();i++){
             if (retrans.get(i).getUser().equals(user)){
@@ -266,5 +283,21 @@ public class ServerController implements ActionListener, MouseListener {
 
 
     }
+public void afegeixLobby (DataOutputStream d){
+    System.out.println("afegeix lobby");
+        lobbyds.add(d);
+}
+    public void actualitzaLlistesEspectadors (){
+        System.out.println("entra a actualitza llistes");
+            for(int i = 0;i<lobbyds.size();i++){
+                try {
+                    lobbyds.get(i).writeUTF("renova");
+
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+
 
 }

@@ -14,6 +14,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS Partida CASCADE;
+DROP TABLE IF EXISTS Replay CASCADE;
 DROP TABLE IF EXISTS Login CASCADE;
 
 CREATE TABLE Login (
@@ -30,23 +31,24 @@ CREATE TABLE Login (
   PRIMARY KEY (user, mail)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
-
-
-
+CREATE TABLE Replay(
+	user VARCHAR(255),
+	ID INT DEFAULT 0,
+	Order_ INT,
+    move VARCHAR(255),
+    path VARCHAR(255),
+    FOREIGN KEY (user) REFERENCES Login (user)
+);
 
 CREATE TABLE Partida(
 	user varchar(255) NOT NULL,
     score INT,
-    time INT,
+    time VARCHAR(255),
     game_date VARCHAR(255),
     max_espectators INT,
     replay_path VARCHAR(255),
     FOREIGN KEY (user) REFERENCES Login (user)
 );
-
-
-
-
 
 DROP TABLE IF EXISTS DefaultKeys CASCADE;
 CREATE TABLE DefaultKeys (
@@ -56,17 +58,31 @@ CREATE TABLE DefaultKeys (
   abajo int(255) NOT NULL,
   rderecha int(255) NOT NULL,
   rizquierda int(255) NOT NULL,
-  pause int(255) NOT NULL
+  pause int(255) NOT NULL,
+  FOREIGN KEY (user) REFERENCES Login (user)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-  ALTER TABLE `DefaultKeys`
-  ADD PRIMARY KEY (`user`);
+  ALTER TABLE DefaultKeys
+  ADD PRIMARY KEY (user);
   
+  
+  ----------
+  TRUNCATE Partida;
+  TRUNCATE Replay;
   
   SELECT * FROM Login;
   SELECT * FROM Partida;
+  SELECT * FROM Replay;
+  
+  
+	SELECT move FROM Replay WHERE user = 'angel' AND ID = 2 ORDER BY Order_ ASC;
+    
+    UPDATE Login SET connected = true, last_login = " + String.valueOf(dateFormat.format(date)) + " WHERE Login.user = 'angel';
+    
   SELECT user, gaming FROM Partida WHERE gaming = true ORDER BY user DESC;
   UPDATE Login SET connected = false;
+  DELETE FROM Partida WHERE game_date is null;
+
+  UPDATE Login SET gaming = null, startingGameTime = null, connected = false WHERE user = 'angel';
   
-  UPDATE Login SET gaming = null, startingGameTime = null WHERE user = 'angel';
-  
+  SELECT score, time, game_date, max_espectators FROM Partida WHERE Partida.user = 'angel';

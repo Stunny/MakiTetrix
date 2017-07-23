@@ -17,6 +17,7 @@ public class ServerAdminView extends JFrame{
 
     public static final String ACTION_BORRAR = "Borrar";
     public static final String ACTION_SEARCH = "Busca";
+    public static final String ACTION_REPLAY = "Replay";
     public static final String GRAPHS = "Grafiques";
 
     private JTable leftJTable;
@@ -24,6 +25,7 @@ public class ServerAdminView extends JFrame{
     private JTextField buscador;
     private JButton busca;
     private JButton grafics;
+    private JButton replays;
     private JTable rightJTable;
 
     /**
@@ -89,8 +91,11 @@ public class ServerAdminView extends JFrame{
 
         borrar = new JButton("Borrar");
         borrar.setActionCommand(ACTION_BORRAR);
+        replays = new JButton("Mostra replays");
+        replays.setActionCommand(ACTION_REPLAY);
         final JScrollPane rightScroll = new JScrollPane(rightJTable);
         final JScrollPane leftScroll = new JScrollPane(leftJTable);
+        rightPane.add(replays, BorderLayout.NORTH);
         rightPane.add(borrar, BorderLayout.SOUTH);
         rightPane.add(rightScroll, BorderLayout.CENTER);
         leftPane.add(leftScroll, BorderLayout.CENTER);
@@ -112,6 +117,7 @@ public class ServerAdminView extends JFrame{
         borrar.addActionListener(sController);
         busca.addActionListener(sController);
         grafics.addActionListener(sController);
+        replays.addActionListener(sController);
     }
 
     /**
