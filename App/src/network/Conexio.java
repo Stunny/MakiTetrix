@@ -11,6 +11,7 @@ import java.io.*;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -306,7 +307,7 @@ public class Conexio extends Thread {
      */
     public String[] getReplays(String userName) {
         connect();
-
+        String aux = null;
         try {
             doStream.writeUTF("REPLAY_LIST");
             doStream.writeUTF(currentUser.getUserName());
@@ -317,6 +318,11 @@ public class Conexio extends Thread {
                 data = diStream.readUTF();
                 total[i] = data;
             }
+            do {
+                aux = diStream.readUTF();
+            }while (aux.equals("KO"));
+
+
 
             return total;
         } catch (IOException e) {
@@ -362,6 +368,7 @@ public class Conexio extends Thread {
         try{
             doStream.writeUTF("GAME_START");
             doStream.writeUTF(currentUser.getUserName());
+
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -526,6 +533,7 @@ public class Conexio extends Thread {
         connect();
         try{
             doStream.writeUTF("NEW_LOBBY");
+
 
 
         } catch (IOException e){

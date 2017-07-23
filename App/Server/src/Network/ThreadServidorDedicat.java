@@ -205,6 +205,7 @@ public class ThreadServidorDedicat extends Thread{
                     String data = aux[0] + "#" + aux[1] + "#" + aux[2] + "#" + aux[3];
                     doStream.writeUTF(data);
                 }
+
                 break;
 
             case "GET_REPLAY"://Selected user's replay
@@ -269,7 +270,8 @@ public class ThreadServidorDedicat extends Thread{
                 System.out.println("entro a game start");
                 currentUser = diStream.readUTF();
                 sController.addPartida(currentUser);
-                sController.actualitzaLlistesEspectadors();
+                //sController.actualitzaLlistesEspectadors();
+
                 break;
 
             case "GIVESPEC":
