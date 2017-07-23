@@ -1,7 +1,6 @@
 package View;
 
 import Controller.ReplaysController;
-import controller.ReplaySelectController;
 import Model.JTableModel;
 
 import javax.swing.*;

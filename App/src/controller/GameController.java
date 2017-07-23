@@ -167,4 +167,7 @@ public class GameController implements KeyListener {
 
     public void setStopGame (boolean b) {stopgame = b;}
 
+    public PlayGame getPG() {
+        return pg;
+    }
 }
