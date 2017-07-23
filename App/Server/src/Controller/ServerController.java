@@ -292,7 +292,7 @@ public void afegeixLobby (DataOutputStream d){
         System.out.println("entra a actualitza llistes");
             for(int i = 0;i<lobbyds.size();i++){
                 try {
-                    lobbyds.get(i).writeUTF("renova");
+                    lobbyds.get(i).writeUTF("KO");
 
                 }catch (IOException e){
                     e.printStackTrace();
