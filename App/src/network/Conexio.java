@@ -225,16 +225,10 @@ public class Conexio extends Thread {
             System.out.println("Comencem espectadoria");
             while(!missatge.equals("end")){
                 System.out.println("missatge rebut: " + missatge);
-                if (missatge.equals("renova")){
-                    System.out.println("ha arribat renova");
-                    espectatorController.ompleLlistaUsuaris();
-                }
                 missatge = diStream.readUTF();
             }
             System.out.println("s'acaba la espectadoria");
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
             e.printStackTrace();
         }
 
@@ -385,7 +379,6 @@ public class Conexio extends Thread {
 
     public void sendMove (Move m){
         connect();
-
         try{
             doStream.writeUTF("MOVE");
             doStream.writeUTF(currentUser.getUserName());
@@ -511,13 +504,15 @@ public class Conexio extends Thread {
         return time;
     }
 
+
+
     public void addEspectatorController(EspectatorController espectatorController) {
         System.out.println("add espectator controller");
         this.espectatorController = espectatorController;
         connect();
         try{
             doStream.writeUTF("NEW_LOBBY");
-            doStream.writeUTF(currentUser.getUserName());
+
 
         } catch (IOException e){
             e.printStackTrace();

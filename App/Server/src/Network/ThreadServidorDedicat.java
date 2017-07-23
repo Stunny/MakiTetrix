@@ -193,7 +193,6 @@ public class ThreadServidorDedicat extends Thread{
             case "NEW_LOBBY" :
 
                 System.out.println("new lobby a server");
-                currentUser = diStream.readUTF();
                 sController.afegeixLobby(doStream);
 
                 break;
@@ -221,10 +220,8 @@ public class ThreadServidorDedicat extends Thread{
 
             case "ESPECTATE": //Selected user to observe
                 String selectedUser = diStream.readUTF();
-                System.out.println("I want to spectate: " + selectedUser);
                     //Ens afegim com a espectador de la partida del jugador user
                     sController.afegeixEspectador(selectedUser,doStream);
-                System.out.println("tamany espectadors a espectate "+sController.getEspectadors(selectedUser));
 
                 break;
 
@@ -292,7 +289,6 @@ public class ThreadServidorDedicat extends Thread{
                 String user = diStream.readUTF();
                 String s = diStream.readUTF();
 
-
                 //System.out.println("moviment: " + s);
                 espectadors= sController.getEspectadors(user);
 
@@ -301,7 +297,8 @@ public class ThreadServidorDedicat extends Thread{
 
                 //Busquem tots els espectadors als que s'han d'enviar missatges
                 ds = espectadors.getDs();
-                for (int i = 0; i < espectadors.getDs().size(); i++){
+                System.out.println("size espectadors "+ds.size());
+                for (int i = 0; i < ds.size(); i++){
                     ds.get(i).writeUTF(s);
                 }
 

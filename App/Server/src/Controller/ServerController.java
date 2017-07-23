@@ -286,7 +286,6 @@ public void afegeixLobby (DataOutputStream d){
         System.out.println("entra a actualitza llistes");
             for(int i = 0;i<lobbyds.size();i++){
                 try {
-                    System.out.println("escric renova desde server");
                     lobbyds.get(i).writeUTF("renova");
 
                 }catch (IOException e){

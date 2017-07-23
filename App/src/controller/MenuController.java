@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -78,6 +79,16 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 conexio.addEspectatorController(espectatorController);
                 espectatorView.registerEspectator(espectatorController);
                 espectatorView.setVisible(true);
+                espectatorController.setEsperant(true);
+                mmv.setVisible(false);
+                while(espectatorController.getEsperant()){
+                    try {
+                        System.out.println("omple");
+                        espectatorController.ompleLlistaUsuaris();
+                    }catch (ParseException pe){
+                        pe.printStackTrace();
+                    }
+                }
                 break;
 
             case "anterior":

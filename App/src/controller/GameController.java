@@ -75,6 +75,7 @@ public class GameController implements KeyListener {
     }
 
     public void endGame (){
+
         new WindowEvent (gv, WindowEvent.WINDOW_CLOSED);
         stopgame = true;
         if (gv.saveGame() == 0){
