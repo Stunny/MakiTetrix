@@ -229,7 +229,7 @@ public class Partida {
     }
 
     /**
-     * Mueva la pieza una posicion hacia la abajo.
+     * Mueva la pieza una posicion hacia la abajo.a
      *
      * @see #collision(Pieza, int)
      * @see #clear(Pieza)
