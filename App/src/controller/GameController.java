@@ -222,13 +222,16 @@ public class GameController implements KeyListener {
         gv.setVisible(true);
         System.out.println("EMPIEZA EL DIRECTO");
 
-        timer = new Timer(1, new ActionListener() {
+        timer = new Timer(0, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Entro al Action Event");
                 int time = 0;
                 String aux = conexio.readMove();
+                System.out.println("MOVEDIRECT:" + aux);
                 if (aux.equals("end")){
                     PlayGame.setDirect(false);
+                    conexio.disconnect();
                     timer.stop();
                     return;
                 }
@@ -256,6 +259,6 @@ public class GameController implements KeyListener {
 
             }
         });
-        t.start();
+        timer.start();
     }
 }

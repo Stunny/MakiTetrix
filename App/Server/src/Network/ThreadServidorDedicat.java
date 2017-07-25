@@ -38,6 +38,7 @@ public class ThreadServidorDedicat extends Thread{
         this.sClient = sClient;
         this.gestioDades = gestioDades;
         this.sController = sController;
+        this.ds = new ArrayList<>();
     }
 
     @Override
@@ -297,7 +298,10 @@ public class ThreadServidorDedicat extends Thread{
 
                 //Busquem tots els espectadors als que s'han d'enviar missatges
                 ds = espectadors.getDs();
+                System.out.println("ds size "+ds.size());
                 for (int i = 0; i < ds.size(); i++){
+                    System.out.println(ds.get(i)+"fuck you");
+
                     ds.get(i).writeUTF(s);
                 }
 

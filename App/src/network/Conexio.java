@@ -11,7 +11,6 @@ import java.io.*;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -54,7 +53,7 @@ public class Conexio extends Thread {
     /**
      * Closes necesary functionalities for client-server communication
      */
-    private void disconnect()	{
+    public void disconnect()	{
         try {
             doStream.close();
         }	catch (IOException	|	NullPointerException	e)	{
@@ -236,8 +235,6 @@ public class Conexio extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        disconnect();
     }
 
     /**
@@ -268,7 +265,6 @@ public class Conexio extends Thread {
     }
 
     public String readMove (){
-        connect();
         String missatge = "";
         try {
             missatge = diStream.readUTF();
@@ -276,7 +272,6 @@ public class Conexio extends Thread {
         } catch (IOException ioe){
             ioe.printStackTrace();
         }
-        disconnect();
         return missatge;
     }
 

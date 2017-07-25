@@ -342,6 +342,7 @@ public class Partida {
         actualpiece = nextpiece.clone();
         nextpiece = new Pieza(generateRandom());
         savegame.add(new Move(nextpiece));
+        connect.sendMove(new Move(nextpiece));
 
         floortime = 2;
     }
