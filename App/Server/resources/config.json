@@ -2,7 +2,7 @@
   "port_server":"33333",
   "db_name":"makitetris",
   "db_user":"root",
-  "db_pass":"root",
+  "db_pass":"Javier.1",
   "db_ip":"localhost",
   "db_port":"3306"
 }

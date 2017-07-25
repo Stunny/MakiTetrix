@@ -4,7 +4,6 @@ import Controller.ServerController;
 import Model.Encrypter;
 import Model.GestioDades;
 import Model.exceptions.BadAccessToDatabaseException;
-import utils.GameDataManager;
 import utils.ObserveManager;
 
 import java.io.DataInputStream;

@@ -36,7 +36,6 @@ public class PlayGame extends Thread {
         running = false;
         this.gc = gc;
         this.velocidad = 1200;
-        direct = false;
         newMove = false;
         move = null;
     }
@@ -108,6 +107,11 @@ public class PlayGame extends Thread {
             public void actionPerformed(ActionEvent e)
             {
                 int time = 0;
+                if (toplay.size() == 0 && direct){
+                    timer.stop();
+                    gc.startDirect();
+                    return;
+                }
                 switch (toplay.peek().getOption()){
                     case Move.PIECE:
                         game.chargeNextPiece(toplay.peek().getPiece());
@@ -142,9 +146,6 @@ public class PlayGame extends Thread {
             }
         });
         timer.start();
-        if (direct) {
-            gc.startDirect();
-        }
     }
 
     public void setVelocidad(int v){

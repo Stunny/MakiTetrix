@@ -8,10 +8,8 @@ import model.Partida;
 import model.PlayGame;
 import network.Conexio;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import javax.swing.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -29,6 +27,7 @@ public class GameController implements KeyListener {
     private Conexio conexio;
     private MainMenuView mmv;
     private boolean endRepetetion;
+    private Timer timer;
 
     public GameController(GameView gv, Partida game, Conexio conexio, MainMenuView mmv){
         this.gv = gv;
@@ -74,6 +73,7 @@ public class GameController implements KeyListener {
      * @see Move
      */
     public void readyReplay (ArrayList<String > replay) {
+        game = new Partida(conexio);
         pg = new PlayGame(game, this);
         pg.setToPlay(toQueue(replay));
     }
@@ -83,6 +83,10 @@ public class GameController implements KeyListener {
      */
     public void startReplay () {
         pg.run();
+    }
+
+    public void readyDirect (){
+        game = new Partida(conexio);
     }
 
     /**
@@ -214,24 +218,41 @@ public class GameController implements KeyListener {
     public void startDirect() {
         gv.setVisible(true);
         System.out.println("EMPIEZA EL DIRECTO");
-        String aux;
-        while ((aux = conexio.readMove()).equals("end")){
-            Move m = new Move(aux);
-            switch (m.getOption()){
-                case Move.PIECE:
-                    game.chargeNextPiece(m.getPiece());
-                    gv.printarNextPiece(game.getNextpiece());
-                    gv.printarPantalla(game.getInterfaz());
-                    break;
-                case Move.MOVE:
-                    game.doMove(m.getMove());
-                    gv.printarPantalla(game.getInterfaz());
-                    break;
+
+        timer = new Timer(1, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int time = 0;
+                String aux = conexio.readMove();
+                if (aux.equals("end")){
+                    PlayGame.setDirect(false);
+                    timer.stop();
+                    return;
+                }
+                Move m = new Move(aux);
+                switch (m.getOption()){
+                    case Move.PIECE:
+                        game.chargeNextPiece(m.getPiece());
+                        gv.printarNextPiece(game.getNextpiece());
+                        gv.printarPantalla(game.getInterfaz());
+                        break;
+                    case Move.MOVE:
+                        game.doMove(m.getMove());
+                        gv.printarPantalla(game.getInterfaz());
+                        break;
+                }
+                game.checkLine();
+                gv.printarPantalla(game.getInterfaz());
+                gv.setNivel(game.getLevel());
+                gv.setPuntuacion(game.getPoints());
+                if (time != 0) {
+                    timer.setDelay(m.getTime() - time);
+                } else {
+                    timer.setDelay(0);
+                }
+
             }
-            game.checkLine();
-            gv.printarPantalla(game.getInterfaz());
-            gv.setNivel(game.getLevel());
-            gv.setPuntuacion(game.getPoints());
-        }
+        });
+        t.start();
     }
 }
