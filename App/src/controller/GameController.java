@@ -52,6 +52,7 @@ public class GameController implements KeyListener {
      * Inicializa Partida para empezar un partida.
      */
     public void startGame(){
+        stopgame = false;
         game.newGame();
         gv.printarPantalla(game.getInterfaz());
         gv.printarNextPiece(game.getNextpiece());
@@ -87,6 +88,7 @@ public class GameController implements KeyListener {
 
     public void readyDirect (){
         game = new Partida(conexio);
+        stopgame = true;
     }
 
     /**
@@ -107,18 +109,19 @@ public class GameController implements KeyListener {
      * Procedimientos que se deben ejecutar cuando se acaba la partida.
      */
     public void endGame (){
-        pg.setRunning(false);
-        stopgame = true;
-        if (gv.saveGame() == 0){
-            game.saveGame();
-            conexio.saveGameData(game.getPoints(), t.getTiempo(),
-                    game.getDate() + ".txt");
-            conexio.sendReplay(game.getDate() + ".txt");
-        }else{
-            System.out.println("test");
+        if (!stopgame) {
+            pg.setRunning(false);
+            if (gv.saveGame() == 0) {
+                game.saveGame();
+                conexio.saveGameData(game.getPoints(), t.getTiempo(),
+                        game.getDate() + ".txt");
+                conexio.sendReplay(game.getDate() + ".txt");
+            } else {
+                System.out.println("test");
 
+            }
+            conexio.sendEndGame();
         }
-        conexio.sendEndGame();
         gv.setVisible(false);
         mmv.setVisible(true);
     }

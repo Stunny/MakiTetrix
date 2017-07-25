@@ -115,18 +115,19 @@ public class PlayGame extends Thread {
                 switch (toplay.peek().getOption()){
                     case Move.PIECE:
                         game.chargeNextPiece(toplay.peek().getPiece());
+                        game.checkLine();
+                        gc.getGV().setNivel(game.getLevel());
+                        gc.getGV().setPuntuacion(game.getPoints());
                         gc.getGV().printarNextPiece(game.getNextpiece());
                         gc.getGV().printarPantalla(game.getInterfaz());
                         break;
                     case Move.MOVE:
                         game.doMove(toplay.peek().getMove());
                         gc.getGV().printarPantalla(game.getInterfaz());
+                        gc.getGV().setTemps(toplay.peek().getTime()/1000);
                         break;
                 }
-                game.checkLine();
-                gc.getGV().printarPantalla(game.getInterfaz());
-                gc.getGV().setNivel(game.getLevel());
-                gc.getGV().setPuntuacion(game.getPoints());
+
                 if (toplay.peek().getTime() != 0){
                     time = toplay.peek().getTime();
                 }

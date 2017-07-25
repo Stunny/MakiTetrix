@@ -286,7 +286,6 @@ public class ThreadServidorDedicat extends Thread{
 
                 break;
             case "MOVE":
-
                 String user = diStream.readUTF();
                 String s = diStream.readUTF();
 
