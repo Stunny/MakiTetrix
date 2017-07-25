@@ -22,6 +22,7 @@ public class LlistaEspectadors {
     }
     /**
      * Retorna tota la llista d'espectadors en una partida
+     * @return ds
      */
     public ArrayList <DataOutputStream> getDs(){
         return ds;
@@ -29,6 +30,7 @@ public class LlistaEspectadors {
 
     /**
      * Retorna l'usuari que està jugant una partida
+     * @return user
      */
     public String getUser(){
         return user;
@@ -47,6 +49,7 @@ public class LlistaEspectadors {
 
     /**
      * Retorna el maxim valor d'espectadors que hi ha hagut mirant la partida
+     * @return maxEspec valor d'espectadors
      */
     public int getMaxEspec(){
             return maxEspec;
@@ -70,6 +73,7 @@ public class LlistaEspectadors {
     }
     /**
      * Retorna tots els moviments que s'han fet al llarg de la partida
+     * @return historial
      */
     public ArrayList<String> getHistorial (){
         return historial;

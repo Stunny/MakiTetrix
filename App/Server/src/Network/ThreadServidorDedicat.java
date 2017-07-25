@@ -286,6 +286,7 @@ public class ThreadServidorDedicat extends Thread{
                 }
 
                 break;
+            
             case "MOVE":
                 String user = diStream.readUTF();
                 String s = diStream.readUTF();
@@ -307,6 +308,10 @@ public class ThreadServidorDedicat extends Thread{
 
                 break;
 
+            case "GIVEPARTIDES":
+                System.out.println("entro a givepartides");
+                doStream.writeInt(sController.getRetrans().size());
+                break;
             case "END_GAME_DATA":
                 currentUser = diStream.readUTF();
                 int score = diStream.readInt();

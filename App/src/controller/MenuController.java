@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by avoge on 04/04/2017.
@@ -80,6 +81,10 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 espectatorView.setVisible(true);
                 espectatorController.setEsperant(true);
                 mmv.setVisible(true);
+                espectatorController.getAp().start();
+
+
+
 
                 break;
 
