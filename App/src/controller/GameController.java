@@ -261,4 +261,7 @@ public class GameController implements KeyListener {
         });
         timer.start();
     }
+    MainMenuView getMmv (){
+        return this.mmv;
+    }
 }

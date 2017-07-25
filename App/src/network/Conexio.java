@@ -32,6 +32,7 @@ public class Conexio extends Thread {
      * Sets necesary functionalities for client-server communication
      */
     private void connect(){
+        System.out.println("conecto conexio");
         // Averiguem quina direccio IP hem d'utilitzar
         InetAddress iAddress;
         try {
@@ -54,6 +55,7 @@ public class Conexio extends Thread {
      * Closes necesary functionalities for client-server communication
      */
     public void disconnect()	{
+        System.out.println("desconecto conexio");
         try {
             doStream.close();
         }	catch (IOException	|	NullPointerException	e)	{
@@ -275,7 +277,7 @@ public class Conexio extends Thread {
 
     public void sendUserToEspectate(String userNameToEspectate, GameController gc, GameView gv) {
         System.out.println("Empiezo a espectar");
-        disconnect();
+
         connect();
         try {
             doStream.writeUTF("ESPECTATE");
@@ -284,16 +286,23 @@ public class Conexio extends Thread {
             String missatge;
             ArrayList<String> historial = new ArrayList<>();
             missatge = diStream.readUTF();
-            while (!missatge.equals("END_HISTORIAL")){
-                System.out.println("PARTE HISTORIAL MOVIMIENTOS: " + missatge);
-                historial.add(missatge);
+            if (missatge.equals("found")) {
+                System.out.println("found");
                 missatge = diStream.readUTF();
+                while (!missatge.equals("END_HISTORIAL")) {
+                    System.out.println("PARTE HISTORIAL MOVIMIENTOS: " + missatge);
+                    historial.add(missatge);
+                    missatge = diStream.readUTF();
+                }
+                gc.readyReplay(historial);
+                gc.startReplay();
+            }else{
+                System.out.println("repe");
             }
-            gc.readyReplay(historial);
-            gc.startReplay();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            } catch(IOException e){
+                e.printStackTrace();
+            }
+
     }
 
     /**

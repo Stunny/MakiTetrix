@@ -2,6 +2,7 @@ package controller;
 
 import Vista.EspectatorView;
 import Vista.GameView;
+import Vista.MainMenuView;
 import network.Conexio;
 
 import javax.swing.*;
@@ -28,6 +29,7 @@ public class EspectatorController implements MouseListener, WindowListener {
     private GameController gc;
     private GameView gv;
     private ActualitzadorPartides ap;
+    private MainMenuView mnv;
 
 
     EspectatorController(EspectatorView espectatorView, Conexio conexio, String currentUser, GameController gc, GameView gv){
@@ -37,6 +39,7 @@ public class EspectatorController implements MouseListener, WindowListener {
         this.esperant = true;
         this.gc = gc;
         this.gv = gv;
+        this.mnv = gc.getMmv();
         espectatorView.addWindowListener(this);
         gv.addWindowListener(this);
         try {
@@ -143,6 +146,7 @@ public class EspectatorController implements MouseListener, WindowListener {
     public void mouseClicked(MouseEvent e) {
         //setEsperant(false);
         gv.setVisible(false);
+        ap.setGoing(false);
         System.out.println("mouseclicked");
 
         JTable table = (JTable) e.getSource();
@@ -181,6 +185,7 @@ public class EspectatorController implements MouseListener, WindowListener {
     public void windowClosing(WindowEvent e) {
         if (e.getWindow() instanceof  EspectatorView){
             ap.setGoing(false);
+            mnv.setVisible(true);
             espectatorView.dispose();
         }
         if (e.getWindow()instanceof GameView){

@@ -233,25 +233,27 @@ public class ServerController implements ActionListener, MouseListener {
         }
 
     }
-    public void afegeixEspectador (String user, DataOutputStream d){
-        for (int i = 0; i < retrans.size(); i++){
-            if (user.equals(retrans.get(i).getUser())){
+    public void afegeixEspectador (String user, DataOutputStream d) throws IOException {
+        for (int i = 0; i < retrans.size(); i++) {
+            if (user.equals(retrans.get(i).getUser())) {
                 LlistaEspectadors aux = retrans.get(i);
-                aux.afegeixEspectador(d);
-                ArrayList<String> historial = aux.getHistorial();
-
-                //Enviamos todos los movimientos acumulados hasta ahora en la partida
-                for (int x = 0; x<historial.size(); x++){
+                if (!aux.getDs().contains(d)) {
+                    aux.afegeixEspectador(d);
+                    ArrayList<String> historial = aux.getHistorial();
+                    d.writeUTF("found");
+                    //Enviamos todos los movimientos acumulados hasta ahora en la partida
+                    for (int x = 0; x < historial.size(); x++) {
+                        try {
+                            d.writeUTF(historial.get(x));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     try {
-                        d.writeUTF(historial.get(x));
-                    }catch (IOException e){
+                        d.writeUTF("END_HISTORIAL");
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                try {
-                    d.writeUTF("END_HISTORIAL");
-                } catch (IOException e){
-                    e.printStackTrace();
                 }
             }
         }
@@ -289,7 +291,6 @@ public void afegeixLobby (DataOutputStream d){
         lobbyds.add(d);
 }
     public void actualitzaLlistesEspectadors (){
-        System.out.println("entra a actualitza llistes");
             for(int i = 0;i<lobbyds.size();i++){
                 try {
                     lobbyds.get(i).writeUTF("KO");

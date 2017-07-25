@@ -44,7 +44,7 @@ public class ActualitzadorPartides extends Thread{
                     }
                 } else {
                     System.out.println("surto");
-                    c.disconnect();
+
                     timer.stop();
                 }
             }
