@@ -79,12 +79,9 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 conexio.addEspectatorController(espectatorController);
                 espectatorView.registerEspectator(espectatorController);
                 espectatorView.setVisible(true);
-                espectatorController.setEsperant(true);
-                mmv.setVisible(true);
+                espectatorController.mostraGameView();
+                mmv.setVisible(false);
                 espectatorController.getAp().start();
-
-
-
 
                 break;
 

@@ -125,14 +125,10 @@ public class EspectatorController implements MouseListener, WindowListener {
             model.addRow(row);
         }
     }
-    public void setEsperant (boolean b){
-        esperant = b;
-        if (b){
-            gv.setVisible(true);
-        }else{
-            gv.setVisible(false);
 
-        }
+    void mostraGameView(){
+        System.out.println("entro a mostraGameView");
+        gv.setVisible(false);
     }
 
     private void actualitzaVista() throws ParseException {
@@ -144,7 +140,8 @@ public class EspectatorController implements MouseListener, WindowListener {
     }
     @Override
     public void mouseClicked(MouseEvent e) {
-        setEsperant(false);
+        //setEsperant(false);
+        gv.setVisible(false);
         System.out.println("mouseclicked");
 
         JTable table = (JTable) e.getSource();
