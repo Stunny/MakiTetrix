@@ -37,6 +37,8 @@ public class EspectatorController implements MouseListener, WindowListener {
         this.esperant = true;
         this.gc = gc;
         this.gv = gv;
+        espectatorView.addWindowListener(this);
+        gv.addWindowListener(this);
         try {
             ompleLlistaUsuaris();
         } catch (ParseException e) {
@@ -44,7 +46,6 @@ public class EspectatorController implements MouseListener, WindowListener {
         }
 
         this.ap = new ActualitzadorPartides(conexio, this);
-        System.out.println("acabo constructor");
     }
 
 
@@ -178,13 +179,19 @@ public class EspectatorController implements MouseListener, WindowListener {
 
     @Override
     public void windowClosing(WindowEvent e) {
-        espectatorView.dispose();
+        if (e.getWindow() instanceof  EspectatorView){
+            ap.setGoing(false);
+            espectatorView.dispose();
+        }
+        if (e.getWindow()instanceof GameView){
+            conexio.eliminaEspectador(currentUser);
+        }
 
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
-        ap.setGoing(false);
+
     }
 
     @Override

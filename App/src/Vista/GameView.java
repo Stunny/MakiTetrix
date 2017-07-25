@@ -1,5 +1,6 @@
 package Vista;
 
+import controller.EspectatorController;
 import model.Pieza;
 
 import javax.swing.*;
@@ -285,6 +286,9 @@ public class GameView extends JFrame{
 
     public void setNespectadors (int e){
         observador.setText("Numero de espectadores: "+e);
+    }
+    public void registerEspectator(EspectatorController espectatorController) {
+        addWindowListener(espectatorController);
     }
 
 }

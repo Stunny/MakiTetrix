@@ -308,6 +308,17 @@ public class ThreadServidorDedicat extends Thread{
 
                 break;
 
+            case "DELETESPEC":
+                ArrayList<LlistaEspectadors> retrans = sController.getRetrans();
+                for(int i = 0; i< retrans.size();i++){
+                       if (retrans.get(i).getDs().contains(doStream)){
+                           retrans.get(i).getDs().remove(doStream);
+                       }
+
+                }
+
+                break;
+
             case "GIVEPARTIDES":
                 System.out.println("entro a givepartides");
                 doStream.writeInt(sController.getRetrans().size());

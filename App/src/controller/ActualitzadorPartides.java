@@ -28,23 +28,21 @@ public class ActualitzadorPartides extends Thread{
     }
     @Override
     public synchronized void run(){
-            c.començaActualitza();
-        System.out.println("començo a run");
+
         timer = new Timer(500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (keepGoing){
+                if (getGoing()){
                     if(c.actualitza(nPartides)){
                         c.disconnect();
-                        System.out.println("actualitza");
                         nPartides = c.getPartidesOnline();
                         try {
                             ec.actualitzaLlistaUsuaris();
+
                         } catch (ParseException pe) {
                             pe.printStackTrace();
                         }
                     }
-                    System.out.println("keep going = "+keepGoing);
                 } else {
                     System.out.println("surto");
                     c.disconnect();
@@ -62,6 +60,9 @@ public class ActualitzadorPartides extends Thread{
      * @param keepGoing
      */
     public synchronized void setGoing(boolean keepGoing){
-        keepGoing = false;
+        this.keepGoing = keepGoing;
+    }
+    public synchronized boolean getGoing(){
+        return this.keepGoing;
     }
 }

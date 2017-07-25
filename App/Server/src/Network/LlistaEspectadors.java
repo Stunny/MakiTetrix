@@ -8,6 +8,7 @@ import java.util.ArrayList;
  */
 public class LlistaEspectadors {
     private String user;
+
     private ArrayList<DataOutputStream> ds;
     private ArrayList<String>historial;
     private int maxEspec;

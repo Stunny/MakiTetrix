@@ -118,6 +118,11 @@ public class Conexio extends Thread {
         }
     }
 
+    /**
+     * obtiene los valores de las teclas por defecto
+     * @param user usuario a quien va dirigido
+     * @return conjunto de valores de las teclas
+     */
     public ArrayList<Integer> getTeclesUser(String user) {
         ArrayList<Integer>result = new ArrayList<>();
 
@@ -147,6 +152,16 @@ public class Conexio extends Thread {
         return result;
     }
 
+    /**
+     * envia al servidor los valores de las teclas por defecto
+     * @param user usuario a quien se le ponen los valores
+     * @param d valor derecha
+     * @param i valor izquierda
+     * @param a valor abajo
+     * @param rd valor rotar derecha
+     * @param ri valor rotar izquierda
+     * @param p valor pausa
+     */
     public void setTeclesUser(String user, int d, int i, int a, int rd, int ri, int p) {
         try {
             connect();
@@ -211,11 +226,53 @@ public class Conexio extends Thread {
             ResponseSuccess = false;
         }
     }
+    public synchronized void començaActualitza(){
+        connect();
+        System.out.println("comença actualitza");
+
+    }
+
+
+    public synchronized int getPartidesOnline(){
+        connect();
+        int act = 1;
+        try {
+            doStream.writeUTF("GIVEPARTIDES");
+            act = diStream.readInt();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return act;
+    }
+
+        public synchronized boolean actualitza(int nPartidesActuals){
+        connect();
+        try{
+
+            doStream.writeUTF("GIVEPARTIDES");
+            int act = diStream.readInt();
+            System.out.println("rebo int ="+act);
+            if(nPartidesActuals!=act){
+                System.out.println("diferent");
+                disconnect();
+
+                return true;
+            }else{
+                return false;
+            }
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     /**
      * Sends the desired user to espectate
      * @param userNameToEspectate User to spectate name
      */
+
+
     public void sendUserToEspectate(String userNameToEspectate, GameController gc, GameView gv) {
         connect();
         try {
@@ -263,6 +320,10 @@ public class Conexio extends Thread {
         disconnect();
         return movements;
     }
+    /**
+     *lee un movimiento
+     * @return missatge movimiento
+     */
 
     public String readMove (){
         String missatge = "";
@@ -335,6 +396,7 @@ public class Conexio extends Thread {
 
     /**
      * Asks for a list of current game's time
+     * @throws IOException
      * @return String array containing all user's current play time and name
      */
     public String[] getGamingUsers() {
@@ -361,6 +423,7 @@ public class Conexio extends Thread {
 
     /**
      * Notifies the server of a game start
+     * @throws IOException
      */
     public void sendStartGame (){
         connect();
@@ -376,6 +439,7 @@ public class Conexio extends Thread {
 
     /**
      * Asks the server for the number of spectators that are watching the game the current user is playing
+     * @return espectadors numero de espectadores
      */
 
     public int pideEspectadores (){
@@ -471,6 +535,19 @@ public class Conexio extends Thread {
         disconnect();
     }
 
+    public void eliminaEspectador(String user){
+        connect();
+
+        try {
+            doStream.writeUTF("DELETESPEC");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        disconnect();
+    }
+
 
     /**
      * Sets players' key configuration and modifies BBDD gaming and startingGameTime
@@ -523,7 +600,11 @@ public class Conexio extends Thread {
     }
 
 
-
+    /**
+     * Afegeix un nou usuari que està al "lobby" (pantalla d'espectadors)
+     * @param espectatorController controlador de la finestra
+     * @throws IOException
+     */
     public void addEspectatorController(EspectatorController espectatorController) {
         System.out.println("add espectator controller");
         this.espectatorController = espectatorController;
