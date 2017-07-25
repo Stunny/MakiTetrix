@@ -301,8 +301,6 @@ public class ThreadServidorDedicat extends Thread{
                 ds = espectadors.getDs();
                 System.out.println("ds size "+ds.size());
                 for (int i = 0; i < ds.size(); i++){
-                    System.out.println(ds.get(i)+"fuck you");
-
                     ds.get(i).writeUTF(s);
                 }
 

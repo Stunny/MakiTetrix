@@ -23,7 +23,7 @@ public class ThreadSocketServer extends Thread{
     }
 
     @Override
-    public synchronized void run(){
+    public void run(){
         try {
             //creem el nostre socket
             ServerSocket serverSocket = new ServerSocket(PORT);

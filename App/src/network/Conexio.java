@@ -254,16 +254,16 @@ public class Conexio extends Thread {
             System.out.println("rebo int ="+act);
             if(nPartidesActuals!=act){
                 System.out.println("diferent");
-                disconnect();
-
                 return true;
             }else{
+                disconnect();
                 return false;
             }
 
         } catch (IOException e){
             e.printStackTrace();
         }
+        disconnect();
         return false;
     }
 
@@ -274,6 +274,8 @@ public class Conexio extends Thread {
 
 
     public void sendUserToEspectate(String userNameToEspectate, GameController gc, GameView gv) {
+        System.out.println("Empiezo a espectar");
+        disconnect();
         connect();
         try {
             doStream.writeUTF("ESPECTATE");
@@ -326,6 +328,8 @@ public class Conexio extends Thread {
      */
 
     public String readMove (){
+        disconnect();
+        connect();
         String missatge = "";
         try {
             missatge = diStream.readUTF();
@@ -333,6 +337,7 @@ public class Conexio extends Thread {
         } catch (IOException ioe){
             ioe.printStackTrace();
         }
+        disconnect();
         return missatge;
     }
 

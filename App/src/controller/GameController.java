@@ -230,8 +230,8 @@ public class GameController implements KeyListener {
                 String aux = conexio.readMove();
                 System.out.println("MOVEDIRECT:" + aux);
                 if (aux.equals("end")){
-                    PlayGame.setDirect(false);
                     conexio.disconnect();
+                    PlayGame.setDirect(false);
                     timer.stop();
                     return;
                 }
