@@ -1,11 +1,7 @@
 package controller;
 
-import Vista.GameView;
 import Vista.KeySelectMenu;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
-import model.Partida;
 import model.User;
-import model.utils.Encrypter;
 import network.Conexio;
 
 import java.awt.event.ActionEvent;

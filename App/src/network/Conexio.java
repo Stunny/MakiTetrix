@@ -321,10 +321,11 @@ public class Conexio extends Thread {
                 data = diStream.readUTF();
                 total[i] = data;
             }
+            /*
             do {
                 aux = diStream.readUTF();
             }while (aux.equals("KO"));
-
+*/
 
 
             return total;

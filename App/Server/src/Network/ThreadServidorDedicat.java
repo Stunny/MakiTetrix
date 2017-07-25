@@ -196,9 +196,11 @@ public class ThreadServidorDedicat extends Thread{
                 currentUser = diStream.readUTF();
                 ArrayList<String[]> gameInfo = gestioDades.getGameData(currentUser);
                 doStream.writeInt(gameInfo.size());
+                System.out.println("size: " + gameInfo.size());
                 for (int i = 0; i < gameInfo.size(); i++){
                     String[] aux = gameInfo.get(i);
                     String data = aux[0] + "#" + aux[1] + "#" + aux[2] + "#" + aux[3];
+                    System.out.println("data: " + data);
                     doStream.writeUTF(data);
                 }
 

@@ -397,7 +397,7 @@ public class GestioDades {
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
             Statement s = c.createStatement();
-            ResultSet r = s.executeQuery("select connected from Login WHERE user = \"" + username + "\"");
+            ResultSet r = s.executeQuery("SELECT connected FROM Login WHERE user = \"" + username + "\"");
             while (r.next()) {
                 if(r.getInt("connected") == 1)
                     isOnline = true;
@@ -583,12 +583,25 @@ public class GestioDades {
             throw new BadAccessToDatabaseException(serverConfig.getDb_user(), serverConfig.getDb_pass());
         }
 
-        String query = "DELETE FROM Login WHERE user = '" + userName + "';";
+        String query = "DELETE FROM Partida WHERE user = '" + userName + "';";
+        String query2 = "DELETE FROM Replay WHERE user = '" + userName + "';";
+        String query3 = "DELETE FROM Login WHERE user = '" + userName + "';";
+        String query4 = "DELETE FROM Login WHERE user = '" + userName + "';";
+
         PreparedStatement preparedStmt = null;
+        PreparedStatement preparedStmt2 = null;
+        PreparedStatement preparedStmt3 = null;
+        PreparedStatement preparedStmt4 = null;
 
         try {
             preparedStmt = c.prepareStatement(query);
             preparedStmt.execute();
+            preparedStmt2 = c.prepareStatement(query2);
+            preparedStmt2.execute();
+            preparedStmt3 = c.prepareStatement(query3);
+            preparedStmt3.execute();
+            preparedStmt4 = c.prepareStatement(query4);
+            preparedStmt4.execute();
             c.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -656,7 +669,10 @@ public class GestioDades {
             }
 
             c.close();
-            return totalData;
+/*            for (int i = 0; i < totalData.size(); i++){
+                System.out.println("llegeixo aquestes replays: " + totalData.get(i));
+            }
+  */          return totalData;
 
         }catch (ClassNotFoundException | SQLException cnfe){
             cnfe.printStackTrace();
