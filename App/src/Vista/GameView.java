@@ -290,5 +290,8 @@ public class GameView extends JFrame{
     public void registerEspectator(EspectatorController espectatorController) {
         addWindowListener(espectatorController);
     }
+    public void setespectadors (String s){
+        observador.setText(s);
+    }
 
 }

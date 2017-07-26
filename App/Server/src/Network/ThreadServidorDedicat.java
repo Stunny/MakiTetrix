@@ -297,11 +297,18 @@ public class ThreadServidorDedicat extends Thread{
                 break;
 
             case "DELETESPEC":
+                System.out.println("deletespec");
+                System.out.println("retrans size = "+sController.getRetrans().size());
                 ArrayList<LlistaEspectadors> retrans = sController.getRetrans();
                 for(int i = 0; i< retrans.size();i++){
-                       if (retrans.get(i).getDs().contains(doStream)){
-                           retrans.get(i).getDs().remove(doStream);
-                       }
+                    ArrayList<DataOutputStream> llaux = retrans.get(i).getDs();
+                    for(int x = 0; x<llaux.size();x++){
+                        if (llaux.get(x).toString().equals(doStream.toString())){
+                            System.out.println("llego");
+                            llaux.remove(x);
+                        }
+
+                    }
                 }
                 break;
 

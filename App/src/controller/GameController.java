@@ -28,8 +28,10 @@ public class GameController implements KeyListener {
     private MainMenuView mmv;
     private boolean endRepetetion;
     private Timer timer;
+    private boolean direct;
 
     public GameController(GameView gv, Partida game, Conexio conexio, MainMenuView mmv){
+        direct = false;
         this.gv = gv;
         this.game = game;
         gv.addKeyListener(this);
@@ -52,6 +54,7 @@ public class GameController implements KeyListener {
      * Inicializa Partida para empezar un partida.
      */
     public void startGame(){
+        direct = false;
         stopgame = false;
         game.newGame();
         gv.printarPantalla(game.getInterfaz());
@@ -74,6 +77,7 @@ public class GameController implements KeyListener {
      * @see Move
      */
     public void readyReplay (ArrayList<String > replay) {
+        stopgame = true;
         game = new Partida(conexio);
         pg = new PlayGame(game, this);
         pg.setToPlay(toQueue(replay));
@@ -83,6 +87,7 @@ public class GameController implements KeyListener {
      * Da visto bueno al thread para empezar un repetición
      */
     public void startReplay () {
+        direct = false;
         pg.run();
     }
 
@@ -121,6 +126,10 @@ public class GameController implements KeyListener {
 
             }
             conexio.sendEndGame();
+        }
+        if (direct){
+            timer.stop();
+            conexio.eliminaEspectador();
         }
         gv.setVisible(false);
         mmv.setVisible(true);
@@ -205,6 +214,7 @@ public class GameController implements KeyListener {
      * Tras carga su historia empieza a reproduccir una partida en directo.
      */
     public void startDirect() {
+        direct = true;
         gv.setVisible(true);
         System.out.println("EMPIEZA EL DIRECTO");
         timer = new Timer(0, new ActionListener() {
@@ -217,6 +227,7 @@ public class GameController implements KeyListener {
                 if (aux.equals("end")){
                     conexio.disconnect();
                     PlayGame.setDirect(false);
+                    direct = false;
                     timer.stop();
                     return;
                 }
@@ -228,18 +239,18 @@ public class GameController implements KeyListener {
                         game.chargeNextPiece(m.getPiece());
                         gv.printarNextPiece(game.getNextpiece());
                         gv.printarPantalla(game.getInterfaz());
+                        game.checkLine();
+                        gv.printarPantalla(game.getInterfaz());
+                        gv.setNivel(game.getLevel());
+                        gv.setPuntuacion(game.getPoints());
                         break;
 
                     case Move.MOVE:
                         game.doMove(m.getMove());
                         gv.printarPantalla(game.getInterfaz());
+                        gv.setTemps(m.getTime()/1000);
                         break;
                 }
-
-                game.checkLine();
-                gv.printarPantalla(game.getInterfaz());
-                gv.setNivel(game.getLevel());
-                gv.setPuntuacion(game.getPoints());
 
                 if (time != 0) {
                     timer.setDelay(m.getTime() - time);

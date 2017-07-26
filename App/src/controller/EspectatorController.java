@@ -187,7 +187,7 @@ public class EspectatorController implements MouseListener, WindowListener {
             espectatorView.dispose();
         }
         if (e.getWindow()instanceof GameView){
-            conexio.eliminaEspectador(currentUser);
+            conexio.eliminaEspectador();
         }
 
     }

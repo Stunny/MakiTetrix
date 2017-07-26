@@ -532,7 +532,7 @@ public class Conexio extends Thread {
         disconnect();
     }
 
-    public void eliminaEspectador(String user){
+    public void eliminaEspectador(){
         connect();
 
         try {
