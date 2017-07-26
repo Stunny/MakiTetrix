@@ -426,6 +426,7 @@ public class GestioDades {
     public int loginUser(String nom, String contra) throws BadAccessToDatabaseException {
         boolean ok = false;
         boolean passko = false;
+        boolean connected = false;
 
         MessageDigest messageDigest = null;
         try {
@@ -441,11 +442,16 @@ public class GestioDades {
                     serverConfig.getDb_user(), serverConfig.getDb_pass());
 
             Statement s = c.createStatement ();
-            s.executeQuery ("SELECT user, mail, password FROM Login");
+            s.executeQuery ("SELECT user, mail, password, connected FROM Login");
             ResultSet r = s.getResultSet ();
             while (r.next ()) {
                 if(r.getString("user").equals(nom)||r.getString("mail").equals(nom)){
                     if(r.getString("password").equals(contra)){
+                        if(r.getBoolean("connected")){
+                            connected = true;
+                        }else{
+
+
 
                         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                         Date date = new Date(System.currentTimeMillis());
@@ -454,6 +460,7 @@ public class GestioDades {
                         PreparedStatement preparedStmt = c.prepareStatement(query);
                         preparedStmt.execute();
                         ok = true;
+                        }
                     }
                     else {
                         passko = true;
@@ -471,10 +478,14 @@ public class GestioDades {
 
         if(ok){
             return 0;
-        }else if(passko) {
-            return 2;
-        }else{
-            return 1;
+        }if(connected) {
+            return 6;
+        } else {
+            if (passko) {
+                return 2;
+            } else {
+                return 1;
+            }
         }
     }
 

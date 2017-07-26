@@ -351,7 +351,10 @@ public class ThreadServidorDedicat extends Thread{
                 gestioDades.close(c);
                 break;
         }
+
+
     }
+
 
     /**
      * Returns server's answer to client
@@ -383,6 +386,9 @@ public class ThreadServidorDedicat extends Thread{
                 doStream.writeUTF("KO");
                 doStream.writeUTF("El email i l'usuari ja existeixen");
                 break;
+            case 6:
+                doStream.writeUTF("KO");
+                doStream.writeUTF("Aquest usuari ja està connectat");
         }
     }
 

@@ -32,7 +32,6 @@ public class Conexio extends Thread {
      * Sets necesary functionalities for client-server communication
      */
     private void connect(){
-        System.out.println("conecto conexio");
         // Averiguem quina direccio IP hem d'utilitzar
         InetAddress iAddress;
         try {
@@ -337,8 +336,7 @@ public class Conexio extends Thread {
      */
 
     public String readMove (){
-        disconnect();
-        connect();
+
         String missatge = "";
         try {
             missatge = diStream.readUTF();
@@ -346,7 +344,7 @@ public class Conexio extends Thread {
         } catch (IOException ioe){
             ioe.printStackTrace();
         }
-        disconnect();
+
         return missatge;
     }
 
@@ -620,7 +618,6 @@ public class Conexio extends Thread {
      * @throws IOException
      */
     public void addEspectatorController(EspectatorController espectatorController) {
-        System.out.println("add espectator controller");
         this.espectatorController = espectatorController;
         connect();
         try{
