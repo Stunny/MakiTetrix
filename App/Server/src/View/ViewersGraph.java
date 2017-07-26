@@ -8,7 +8,7 @@ import java.awt.geom.AffineTransform;
  * Created by angel on 12/07/2017.
  */
 public class ViewersGraph extends JPanel{
-    final int PAD = 50;
+    final int PAD = 70;
     private double maxViewers;
     private String [] userNames;
     private int[] data;
