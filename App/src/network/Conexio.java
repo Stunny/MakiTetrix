@@ -54,7 +54,6 @@ public class Conexio extends Thread {
      * Closes necesary functionalities for client-server communication
      */
     public void disconnect()	{
-        System.out.println("desconecto conexio");
         try {
             doStream.close();
         }	catch (IOException	|	NullPointerException	e)	{
