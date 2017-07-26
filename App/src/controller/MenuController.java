@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by avoge on 04/04/2017.
@@ -21,7 +20,6 @@ public class MenuController extends WindowAdapter implements ActionListener {
     private Conexio conexio;
     private User currentUser;
     private ReplaySelectController replayController;
-    private Timer timer;
 
     MenuController(MainMenuView mmv, Conexio conexio, User currentUser){
         this.mmv = mmv;
@@ -41,10 +39,9 @@ public class MenuController extends WindowAdapter implements ActionListener {
             case "teclas":
                 //modifica los valores de las teclasa gusto del usuario
                 ArrayList<Integer> tecles = conexio.getTeclesUser(currentUser.getUserName());
-
                 KeySelectMenu keyView = new KeySelectMenu();
-                if (tecles.size()>0){
 
+                if (tecles.size() > 0){
                     keyView.setTextDerecha(tecles.get(0));
                     keyView.setTextIzquierda(tecles.get(1));
                     keyView.setTextAbajo(tecles.get(2));
@@ -54,7 +51,6 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 }
 
                 KeySelectMenuController keyContoller = new KeySelectMenuController(conexio, keyView, currentUser);
-
                 keyView.registerKey(keyContoller);
                 keyView.setVisible(true);
                 break;
@@ -82,7 +78,6 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 espectatorController.mostraGameView();
                 mmv.setVisible(false);
                 espectatorController.getAp().start();
-
                 break;
 
             case "anterior":
@@ -102,8 +97,6 @@ public class MenuController extends WindowAdapter implements ActionListener {
                 break;
         }
     }
-
-
 
     /**
      * Notifies user has disconected (closed menu window)

@@ -1,14 +1,12 @@
 package Controller;
 
 import Model.GestioDades;
-import Model.User;
 import Model.exceptions.BadAccessToDatabaseException;
 import Network.LlistaEspectadors;
 import View.PointsGraph;
 import View.ReplaysView;
 import View.ServerAdminView;
 import View.ViewersGraph;
-
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -92,6 +90,7 @@ public class ServerController implements ActionListener, MouseListener {
             ViewersGraph viewersGraph = new ViewersGraph(maxViewers, data2, userNames2);
             viewersGraph.ViewersGraph();
             viewersGraph.setVisible(true);
+
         }else if(e.getActionCommand().equals(serverAdminView.ACTION_REPLAY) && !(selectedUser == null)){
             ReplaysView replaysView = new ReplaysView();
             replaysView.setVisible(true);
@@ -227,12 +226,10 @@ public class ServerController implements ActionListener, MouseListener {
         for (int i = 0; i < retrans.size(); i++){
             if (user.equals(retrans.get(i).getUser())){
                retrans.remove(retrans.get(i));
-                System.out.println("partida eliminada");
-
             }
         }
-
     }
+
     public void afegeixEspectador (String user, DataOutputStream d) throws IOException {
         for (int i = 0; i < retrans.size(); i++) {
             if (user.equals(retrans.get(i).getUser())) {
@@ -286,10 +283,11 @@ public class ServerController implements ActionListener, MouseListener {
 
 
     }
-public void afegeixLobby (DataOutputStream d){
-    System.out.println("afegeix lobby");
-        lobbyds.add(d);
-}
+
+    public void afegeixLobby (DataOutputStream d){
+            lobbyds.add(d);
+    }
+
     public void actualitzaLlistesEspectadors (){
             for(int i = 0;i<lobbyds.size();i++){
                 try {
@@ -300,6 +298,4 @@ public void afegeixLobby (DataOutputStream d){
                 }
             }
         }
-
-
 }

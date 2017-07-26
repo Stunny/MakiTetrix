@@ -2,6 +2,7 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 /**
  * Created by angel on 12/07/2017.
@@ -47,12 +48,6 @@ public class PointsGraph extends JPanel{
         }
 
         g2.setColor(Color.BLACK);
-        for (int i = 0; i < data.length; i++){
-            if (userNames[i] == null){
-                break;
-            }
-            g2.drawString(userNames[i], x0 + (int)(xScale * (i+1)), 15 + y0);
-        }
 
         g2.drawString(String.valueOf((int) maxValue), 10, PAD);
         g2.drawString(String.valueOf((int) (maxValue  * 0.85)), 10, (int) ((yScale/7)* 1 * maxValue + PAD));
@@ -63,6 +58,17 @@ public class PointsGraph extends JPanel{
         g2.drawString(String.valueOf((int) (maxValue * 0.2)), 10, (int) ((yScale/7)* 6 * maxValue + PAD));
         g2.drawString("0", 10, (int) ((yScale/6)* 7 * maxValue + PAD));
 
+        for (int i = 0; i < data.length; i++){
+            if (userNames[i] == null){
+                break;
+            }
+            Font font = new Font(null, Font.PLAIN, 10);
+            AffineTransform affineTransform = new AffineTransform();
+            affineTransform.rotate(Math.toRadians(45), 0, 0);
+            Font rotatedFont = font.deriveFont(affineTransform);
+            g2.setFont(rotatedFont);
+            g2.drawString(userNames[i], x0 + (int)(xScale * (i+1)), 15 + y0);
+        }
     }
 
     public void PointsGraph() {

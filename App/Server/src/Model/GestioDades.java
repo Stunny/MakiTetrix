@@ -2,18 +2,14 @@ package Model;
 
 import Model.exceptions.BadAccessToDatabaseException;
 
-
 import java.io.File;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Scanner;
-import java.security.MessageDigest;
 import java.util.concurrent.TimeUnit;
 
 /**

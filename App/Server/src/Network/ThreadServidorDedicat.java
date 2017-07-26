@@ -4,7 +4,6 @@ import Controller.ServerController;
 import Model.Encrypter;
 import Model.GestioDades;
 import Model.exceptions.BadAccessToDatabaseException;
-import utils.ObserveManager;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -27,18 +26,13 @@ public class ThreadServidorDedicat extends Thread{
     private GestioDades gestioDades;
     private ServerController sController;
     private String currentUser;
-    private int time;
 
-    private ObserveManager observeManager;
-    private LlistaEspectadors espectadors;
-    private ArrayList<DataOutputStream>ds;
 
 
     public ThreadServidorDedicat(Socket sClient, GestioDades gestioDades, ServerController sController){
         this.sClient = sClient;
         this.gestioDades = gestioDades;
         this.sController = sController;
-        this.ds = new ArrayList<>();
     }
 
     @Override
@@ -252,13 +246,11 @@ public class ThreadServidorDedicat extends Thread{
                 break;
 
             case "GAME_STOP":
-                System.out.println("acaba el joc");
                 //avisem a tots els espectadors que es para la transmissio i es buida l'arraylist espectadors
                 String u = diStream.readUTF();
                 LlistaEspectadors espectadors= sController.getEspectadors(u);
                 ArrayList<DataOutputStream> ds= espectadors.getDs();
                 for (int i=0; i<ds.size();i++){
-                    System.out.println("envio END a espectador");
                         ds.get(i).writeUTF("end");
                 }
                 espectadors.eliminaEspectador(doStream);
@@ -266,7 +258,6 @@ public class ThreadServidorDedicat extends Thread{
                 break;
 
             case "GAME_START":
-                System.out.println("entro a game start");
                 currentUser = diStream.readUTF();
                 sController.addPartida(currentUser);
                 //sController.actualitzaLlistesEspectadors();
@@ -299,7 +290,6 @@ public class ThreadServidorDedicat extends Thread{
 
                 //Busquem tots els espectadors als que s'han d'enviar missatges
                 ds = espectadors.getDs();
-                System.out.println("ds size "+ds.size());
                 for (int i = 0; i < ds.size(); i++){
                     ds.get(i).writeUTF(s);
                 }
@@ -312,23 +302,18 @@ public class ThreadServidorDedicat extends Thread{
                        if (retrans.get(i).getDs().contains(doStream)){
                            retrans.get(i).getDs().remove(doStream);
                        }
-
                 }
-
                 break;
 
             case "GIVEPARTIDES":
-                System.out.println("entro a givepartides");
                 doStream.writeInt(sController.getRetrans().size());
                 break;
+
             case "END_GAME_DATA":
                 currentUser = diStream.readUTF();
                 int score = diStream.readInt();
                 int millis = diStream.readInt();
                 String replay_path = diStream.readUTF();
-
-                //int numGame = gestioDades.gestNumGames(currentUser);
-                System.out.println("guardo aquesta score: " + score);
 
                 gestioDades.saveGameData(currentUser, score, millis, sController.getEspectadors(currentUser).getMaxEspec(), replay_path);
                 gestioDades.setGamingStatus(currentUser, false, null);
@@ -351,8 +336,6 @@ public class ThreadServidorDedicat extends Thread{
                 gestioDades.close(c);
                 break;
         }
-
-
     }
 
 

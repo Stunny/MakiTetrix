@@ -110,5 +110,6 @@ public class ReplaySelectController implements MouseListener{
     public ArrayList<String> getReplay (){return replay;}
 
     public void setGc (GameController gc){this.gc = gc;}
+
     public void setGv (GameView gv){this.gv = gv;}
 }

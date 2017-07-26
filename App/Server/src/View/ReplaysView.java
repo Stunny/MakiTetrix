@@ -67,7 +67,6 @@ public class ReplaysView extends JFrame {
     public void registerReplay(ReplaysController controller){
         table.addMouseListener(controller);
         jbDeleteReplay.setActionCommand("DELETE");
-
         jbDeleteReplay.addActionListener(controller);
     }
 }

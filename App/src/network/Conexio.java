@@ -248,10 +248,8 @@ public class Conexio extends Thread {
         public synchronized boolean actualitza(int nPartidesActuals){
         connect();
         try{
-
             doStream.writeUTF("GIVEPARTIDES");
             int act = diStream.readInt();
-            System.out.println("rebo int ="+act);
             if(nPartidesActuals!=act){
                 System.out.println("diferent");
                 return true;
@@ -274,8 +272,6 @@ public class Conexio extends Thread {
 
 
     public void sendUserToEspectate(String userNameToEspectate, GameController gc, GameView gv) {
-        System.out.println("Empiezo a espectar");
-
         connect();
         try {
             doStream.writeUTF("ESPECTATE");
@@ -285,7 +281,6 @@ public class Conexio extends Thread {
             ArrayList<String> historial = new ArrayList<>();
             missatge = diStream.readUTF();
             if (missatge.equals("found")) {
-                System.out.println("found");
                 missatge = diStream.readUTF();
                 while (!missatge.equals("END_HISTORIAL")) {
                     System.out.println("PARTE HISTORIAL MOVIMIENTOS: " + missatge);
@@ -295,7 +290,7 @@ public class Conexio extends Thread {
                 gc.readyReplay(historial);
                 gc.startReplay();
             }else{
-                System.out.println("repe");
+                System.out.println("Repetit");
             }
             } catch(IOException e){
                 e.printStackTrace();
@@ -314,7 +309,6 @@ public class Conexio extends Thread {
             doStream.writeUTF("GET_REPLAY");
             doStream.writeInt(replayID);
             doStream.writeUTF(currentUser.getUserName());
-            System.out.println("getDesiredUserReplay");
             String aux = null;
             do {
                 aux = diStream.readUTF();
@@ -388,18 +382,10 @@ public class Conexio extends Thread {
                 data = diStream.readUTF();
                 total[i] = data;
             }
-            /*
-            do {
-                aux = diStream.readUTF();
-            }while (aux.equals("KO"));
-*/
-
-
             return total;
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         disconnect();
 
         return null;
@@ -551,11 +537,9 @@ public class Conexio extends Thread {
 
         try {
             doStream.writeUTF("DELETESPEC");
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         disconnect();
     }
 
@@ -621,13 +605,9 @@ public class Conexio extends Thread {
         connect();
         try{
             doStream.writeUTF("NEW_LOBBY");
-
-
-
         } catch (IOException e){
             e.printStackTrace();
         }
         disconnect();
     }
-
 }

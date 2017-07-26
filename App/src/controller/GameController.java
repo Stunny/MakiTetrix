@@ -201,66 +201,56 @@ public class GameController implements KeyListener {
         return gv;
     }
 
-    public void setStopGame (boolean b) {stopgame = b;}
-
-    public PlayGame getPG() {
-        return pg;
-    }
-
-    public boolean endRepetetion() {
-        return endRepetetion;
-    }
-
-    public void setEndRepetetion (boolean end){
-        endRepetetion = end;
-    }
-
     /**
      * Tras carga su historia empieza a reproduccir una partida en directo.
      */
     public void startDirect() {
         gv.setVisible(true);
         System.out.println("EMPIEZA EL DIRECTO");
-
         timer = new Timer(0, new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Entro al Action Event");
                 int time = 0;
                 String aux = conexio.readMove();
-                System.out.println("MOVEDIRECT:" + aux);
+
                 if (aux.equals("end")){
                     conexio.disconnect();
                     PlayGame.setDirect(false);
                     timer.stop();
                     return;
                 }
+
                 Move m = new Move(aux);
                 switch (m.getOption()){
+
                     case Move.PIECE:
                         game.chargeNextPiece(m.getPiece());
                         gv.printarNextPiece(game.getNextpiece());
                         gv.printarPantalla(game.getInterfaz());
                         break;
+
                     case Move.MOVE:
                         game.doMove(m.getMove());
                         gv.printarPantalla(game.getInterfaz());
                         break;
                 }
+
                 game.checkLine();
                 gv.printarPantalla(game.getInterfaz());
                 gv.setNivel(game.getLevel());
                 gv.setPuntuacion(game.getPoints());
+
                 if (time != 0) {
                     timer.setDelay(m.getTime() - time);
                 } else {
                     timer.setDelay(0);
                 }
-
             }
         });
         timer.start();
     }
+
     MainMenuView getMmv (){
         return this.mmv;
     }

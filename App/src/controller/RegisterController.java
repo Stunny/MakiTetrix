@@ -92,7 +92,6 @@ public class RegisterController implements ActionListener {
             view.displayError("Se deben aceptar los Terminos y Condiciones");
             return false;
         }
-
         return true;
     }
 

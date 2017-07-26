@@ -8,12 +8,9 @@ import java.util.ArrayList;
  */
 public class LlistaEspectadors {
     private String user;
-
     private ArrayList<DataOutputStream> ds;
     private ArrayList<String>historial;
     private int maxEspec;
-
-
 
     public LlistaEspectadors(String u){
         maxEspec = 0;
@@ -49,7 +46,7 @@ public class LlistaEspectadors {
     /**
      * Retorna el maxim valor d'espectadors que hi ha hagut mirant la partida
      */
-    public int getMaxEspec(){
+    int getMaxEspec(){
             return maxEspec;
     }
 
@@ -57,7 +54,7 @@ public class LlistaEspectadors {
      * Elimina l'espectador especificat de la llista
      * @param d el DataOutputStream de l'espectador
      */
-    public void eliminaEspectador(DataOutputStream d) {
+    void eliminaEspectador(DataOutputStream d) {
         ds.remove(d);
     }
 
@@ -65,7 +62,7 @@ public class LlistaEspectadors {
      * Afegeix un moviment en l'historial dels moviments que s'han fet en una partida
      * @param s String del moviment
      */
-    public void afegeixMoviment(String s){
+    void afegeixMoviment(String s){
         historial.add(s);
 
     }

@@ -131,7 +131,6 @@ public class EspectatorController implements MouseListener, WindowListener {
     }
 
     void mostraGameView(){
-        System.out.println("entro a mostraGameView");
         gv.setVisible(false);
     }
 
@@ -147,7 +146,6 @@ public class EspectatorController implements MouseListener, WindowListener {
         //setEsperant(false);
         gv.setVisible(false);
         ap.setGoing(false);
-        System.out.println("mouseclicked");
 
         JTable table = (JTable) e.getSource();
         if (e.getClickCount() == 1) {
