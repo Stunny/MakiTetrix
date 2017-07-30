@@ -7,7 +7,7 @@
 -- Versió del servidor: 5.6.35
 -- Versió de PHP: 7.1.1
 
--- CREATE DATABASE MakiTetris;
+CREATE DATABASE IF NOT EXISTS MakiTetris;
 USE MakiTetris;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -15,6 +15,7 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS Partida CASCADE;
 DROP TABLE IF EXISTS Replay CASCADE;
+DROP TABLE IF EXISTS DefaultKeys CASCADE;
 DROP TABLE IF EXISTS Login CASCADE;
 
 CREATE TABLE Login (
@@ -50,7 +51,6 @@ CREATE TABLE Partida(
     FOREIGN KEY (user) REFERENCES Login (user)
 );
 
-DROP TABLE IF EXISTS DefaultKeys CASCADE;
 CREATE TABLE DefaultKeys (
   user varchar(255) NOT NULL DEFAULT '',
   derecha int(255) NOT NULL,
@@ -64,25 +64,3 @@ CREATE TABLE DefaultKeys (
 
   ALTER TABLE DefaultKeys
   ADD PRIMARY KEY (user);
-  
-  
-  ----------
-  TRUNCATE Partida;
-  TRUNCATE Replay;
-  
-  SELECT * FROM Login;
-  SELECT * FROM Partida;
-  SELECT * FROM Replay;
-  
-  
-	SELECT move FROM Replay WHERE user = 'angel' AND ID = 2 ORDER BY Order_ ASC;
-    
-    UPDATE Login SET connected = true, last_login = " + String.valueOf(dateFormat.format(date)) + " WHERE Login.user = 'angel';
-    
-  SELECT user, gaming FROM Partida WHERE gaming = true ORDER BY user DESC;
-  UPDATE Login SET connected = false;
-  DELETE FROM Partida WHERE game_date is null;
-
-  UPDATE Login SET gaming = null, startingGameTime = null, connected = false WHERE user = 'angel';
-  
-  SELECT score, time, game_date, max_espectators FROM Partida WHERE Partida.user = 'angel';

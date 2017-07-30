@@ -87,7 +87,6 @@ public class GameController implements KeyListener {
      * Da visto bueno al thread para empezar un repetición
      */
     public void startReplay () {
-        direct = false;
         pg.run();
     }
 

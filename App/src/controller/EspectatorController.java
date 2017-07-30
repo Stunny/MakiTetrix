@@ -7,12 +7,14 @@ import network.Conexio;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Vector;
@@ -91,9 +93,22 @@ public class EspectatorController implements MouseListener, WindowListener {
             row.addElement(Time.get(0));
             row.addElement(espectators.get(0));
             model.addRow(row);
+
+            TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>((DefaultTableModel) espectatorView.getTable().getModel());
+            espectatorView.getTable().setRowSorter(sorter);
+            ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
+            espectatorView.getTable().setAutoCreateRowSorter(true);
+
+            int columnIndexToSort = 4;
+            sortKeys.add(new RowSorter.SortKey(columnIndexToSort, SortOrder.DESCENDING));
+
+            sorter.setSortKeys(sortKeys);
+            sorter.sort();
         }
     }
-    public void ompleLlistaUsuaris() throws ParseException {
+
+
+    private void ompleLlistaUsuaris() throws ParseException {
         String data[] = conexio.getGamingUsers();
 
         DefaultTableModel model = (DefaultTableModel) espectatorView.getTable().getModel();
@@ -127,6 +142,7 @@ public class EspectatorController implements MouseListener, WindowListener {
             row.addElement(Time.get(0));
             row.addElement(espectators.get(0));
             model.addRow(row);
+
         }
     }
 
